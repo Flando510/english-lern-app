@@ -1,0 +1,11 @@
+<!doctype html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>English Master</title><link rel="stylesheet" href="style.css"></head><body>
+<header><div><h1>🇬🇧 English Master</h1><p>Mittelschule Aigen-Schlägl</p></div><div id="userArea"></div></header>
+<main>
+<section id="authPage" class="card auth"><h2 id="authTitle">Anmelden</h2><p id="authMessage">Melde dich an oder erstelle einen Account.</p><input id="username" placeholder="Username" maxlength="20"><input id="password" type="password" placeholder="Passwort"><button id="authBtn" onclick="login()">Einloggen</button><button class="secondary" id="switchBtn" onclick="showRegister()">Noch keinen Account? Registrieren</button><p id="error"></p></section>
+<section id="appPage" class="hidden"><div class="card"><h2>Hallo, <span id="name"></span>! 👋</h2><p>Wähle deine Klasse:</p><div class="grid"><button onclick="selectClass(1)">1. Klasse</button><button onclick="selectClass(2)">2. Klasse</button><button onclick="selectClass(3)">3. Klasse</button><button onclick="selectClass(4)">4. Klasse</button></div></div>
+<div id="learning" class="hidden"><div class="card"><h2 id="classTitle"></h2><div class="grid"><button onclick="show('vocab')">📚 Vokabeln</button><button onclick="show('quiz')">🧠 Quiz</button><button onclick="show('grammar')">📝 Grammatik</button><button onclick="show('exercise')">🎯 Übungen</button></div><p>Punkte: <b id="points">0</b></p></div>
+<section id="vocab" class="card hidden"><h2>📚 Vokabeln</h2><h3 id="word"></h3><p id="answer" class="hidden"></p><button onclick="reveal()">Antwort anzeigen</button><button onclick="nextVocab()">Nächste</button><button onclick="known()">Gewusst! +10</button></section>
+<section id="quiz" class="card hidden"><h2>🧠 Quiz</h2><p id="q"></p><div id="qa"></div><p id="qf"></p></section>
+<section id="grammar" class="card hidden"><h2>📝 Grammatik</h2><h3 id="gt"></h3><p id="gx"></p><p><b>Beispiel:</b> <span id="ge"></span></p><button onclick="nextGrammar()">Nächstes Thema</button></section>
+<section id="exercise" class="card hidden"><h2>🎯 Übungen</h2><p id="eq"></p><div id="ea"></div><p id="ef"></p></section></div></section></main>
+<footer>Inoffizielles Lernprojekt – nicht die offizielle Website der Schule.</footer><script src="script.js"></script></body></html>
