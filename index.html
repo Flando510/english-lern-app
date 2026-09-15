@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>English Master</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div id="app">
+
+    <!-- LOGIN / REGISTRIERUNG -->
+    <section id="authScreen" class="auth-screen">
+      <div class="auth-card">
+
+        <div class="logo">🇬🇧</div>
+
+        <h1>English Master</h1>
+
+        <p class="school-name">
+          Mittelschule Aigen-Schlägl
+        </p>
+
+        <p class="subtitle">
+          Englisch lernen, üben und Punkte sammeln.
+        </p>
+
+        <div class="tabs">
+          <button id="loginTab" class="tab active">
+            Anmelden
+          </button>
+
+          <button id="registerTab" class="tab">
+            Konto erstellen
+          </button>
+        </div>
+
+        <form id="authForm">
+
+          <label for="username">
+            Benutzername
+          </label>
+
+          <input
+            id="username"
+            type="text"
+            autocomplete="username"
+            placeholder="z. B. Max123"
+            maxlength="20"
+            required
+          >
+
+          <label for="password">
+            Passwort
+          </label>
+
+          <input
+            id="password"
+            type="password"
+            autocomplete="current-password"
+            placeholder="Mindestens 6 Zeichen"
+            minlength="6"
+            required
+          >
+
+          <button
+            id="authButton"
+            class="primary-btn"
+            type="submit"
+          >
+            Anmelden
+          </button>
+
+        </form>
+
+        <p id="authMessage" class="message"></p>
+
+        <p class="small-note">
+          Inoffizielles Lernprojekt – nicht die offizielle Website der Schule.
+        </p>
+
+      </div>
+    </section>
+
+
+    <!-- HAUPTAPP -->
+    <section id="mainScreen" class="hidden">
+
+      <!-- TOPBAR -->
+      <header class="topbar">
+
+        <div>
+          <div class="brand">
+            🇬🇧 English Master
+          </div>
+
+          <div class="school-name">
+            Mittelschule Aigen-Schlägl
+          </div>
+        </div>
+
+        <div class="user-area">
+
+          <span id="welcomeText"></span>
+
+          <span id="pointsBadge">
+            ⭐ 0 Punkte
+          </span>
+
+          <button
+            id="logoutButton"
+            class="secondary-btn"
+          >
+            Abmelden
+          </button>
+
+        </div>
+
+      </header>
+
+
+      <main class="container">
+
+        <!-- HERO -->
+        <section class="hero-card">
+
+          <div>
+
+            <p class="eyebrow">
+              DEIN LERNBEREICH
+            </p>
+
+            <h2>
+              Hallo, <span id="heroUsername"></span>! 👋
+            </h2>
+
+            <p>
+              Wähle deine Klasse und starte mit Vokabeln,
+              Quiz, Grammatik oder Übungen.
+            </p>
+
+          </div>
+
+          <div class="hero-points">
+
+            <span>
+              Deine Punkte
+            </span>
+
+            <strong id="heroPoints">
+              0
+            </strong>
+
+          </div>
+
+        </section>
+
+
+        <!-- KLASSE AUSWÄHLEN -->
+        <section class="class-card">
+
+          <h2>
+            Klasse auswählen
+          </h2>
+
+          <div
+            id="classButtons"
+            class="class-buttons"
+          >
+
+            <button
+              class="class-btn active"
+              data-class="1"
+            >
+              1. Klasse
+            </button>
+
+            <button
+              class="class-btn"
+              data-class="2"
+            >
+              2. Klasse
+            </button>
+
+            <button
+              class="class-btn"
+              data-class="3"
+            >
+              3. Klasse
+            </button>
+
+            <button
+              class="class-btn"
+              data-class="4"
+            >
+              4. Klasse
+            </button>
+
+          </div>
+
+        </section>
+
+
+        <!-- MODUS -->
+        <nav class="mode-buttons">
+
+          <button
+            class="mode-btn active"
+            data-mode="vocab"
+          >
+            📚 Vokabeln
+          </button>
+
+          <button
+            class="mode-btn"
+            data-mode="quiz"
+          >
+            🧠 Quiz
+          </button>
+
+          <button
+            class="mode-btn"
+            data-mode="grammar"
+          >
+            📖 Grammatik
+          </button>
+
+          <button
+            class="mode-btn"
+            data-mode="exercise"
+          >
+            ✏️ Übungen
+          </button>
+
+        </nav>
+
+
+        <!-- LERNBEREICH -->
+        <section
+          id="learningArea"
+          class="learning-area"
+        >
+
+          <!--
+            Hier wird der Inhalt von script.js eingefügt.
+
+            Bei Vokabeln wird später auch der
+            Admin-Bereich zum Hinzufügen angezeigt.
+          -->
+
+          <div
+            id="vocabAdminArea"
+            class="vocab-admin-area hidden"
+          >
+
+            <button
+              id="addVocabButton"
+              class="primary-btn add-vocab-btn"
+              type="button"
+            >
+              ➕ Vokabel hinzufügen
+            </button>
+
+          </div>
+
+        </section>
+
+
+        <!-- ADMIN-BEREICH -->
+        <section
+          id="adminPanel"
+          class="admin-panel hidden"
+        >
+
+          <div class="admin-header">
+
+            <div>
+
+              <p class="eyebrow">
+                ADMIN-BEREICH
+              </p>
+
+              <h2>
+                Benutzerübersicht
+              </h2>
+
+            </div>
+
+            <button
+              id="refreshAdmin"
+              class="secondary-btn"
+              type="button"
+            >
+              Aktualisieren
+            </button>
+
+          </div>
+
+          <p
+            id="adminMessage"
+            class="message"
+          ></p>
+
+          <div class="table-wrap">
+
+            <table>
+
+              <thead>
+
+                <tr>
+                  <th>Benutzername</th>
+                  <th>Punkte</th>
+                  <th>Admin</th>
+                  <th>Erstellt</th>
+                </tr>
+
+              </thead>
+
+              <tbody id="adminUsers"></tbody>
+
+            </table>
+
+          </div>
+
+        </section>
+
+      </main>
+
+
+      <!-- FOOTER -->
+      <footer>
+        English Master · Inoffizielles Lernprojekt
+      </footer>
+
+    </section>
+
+  </div>
+
+
+  <!-- SUPABASE -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- DEIN JAVASCRIPT -->
+  <script src="script.js"></script>
+
+</body>
+</html>

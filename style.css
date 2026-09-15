@@ -1,0 +1,636 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #172033;
+  background: #eef1f5;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #eef1f5;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* =========================
+   HILFSKLASSE
+   ========================= */
+
+.hidden {
+  display: none !important;
+}
+
+
+/* =========================
+   LOGIN
+   ========================= */
+
+.auth-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 16px;
+}
+
+.auth-card {
+  width: min(480px, 100%);
+  background: #fff;
+  border: 1px solid #dfe4eb;
+  border-radius: 18px;
+  padding: 38px;
+  box-shadow: 0 12px 35px rgba(20, 30, 50, 0.09);
+}
+
+.logo {
+  font-size: 48px;
+  text-align: center;
+}
+
+.auth-card h1 {
+  text-align: center;
+  margin: 8px 0 4px;
+  font-size: 32px;
+}
+
+.school-name {
+  color: #526071;
+  font-size: 14px;
+}
+
+.auth-card .school-name,
+.auth-card .subtitle {
+  text-align: center;
+}
+
+.subtitle {
+  margin-bottom: 28px;
+  color: #667085;
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid #dfe4eb;
+  margin-bottom: 24px;
+}
+
+.tab {
+  border: 0;
+  background: transparent;
+  padding: 13px;
+  color: #687385;
+  border-bottom: 3px solid transparent;
+}
+
+.tab.active {
+  color: #1664d9;
+  border-bottom-color: #1664d9;
+  font-weight: 700;
+}
+
+label {
+  display: block;
+  font-weight: 700;
+  margin: 16px 0 8px;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 14px 15px;
+  border: 1px solid #cbd3df;
+  border-radius: 10px;
+  outline: none;
+  background: #fff;
+}
+
+input:focus,
+select:focus {
+  border-color: #1664d9;
+  box-shadow: 0 0 0 3px rgba(22, 100, 217, 0.1);
+}
+
+
+/* =========================
+   BUTTONS
+   ========================= */
+
+.primary-btn,
+.secondary-btn,
+.class-btn,
+.mode-btn {
+  border-radius: 10px;
+  border: 1px solid #d3d9e2;
+  padding: 12px 16px;
+  font-weight: 700;
+}
+
+.primary-btn {
+  width: 100%;
+  margin-top: 24px;
+  background: #1664d9;
+  color: white;
+  border-color: #1664d9;
+  padding: 15px;
+}
+
+.primary-btn:hover {
+  background: #0f55bd;
+}
+
+.secondary-btn {
+  background: #fff;
+  color: #273449;
+}
+
+.secondary-btn:hover {
+  background: #f5f7fa;
+}
+
+.message {
+  min-height: 22px;
+  margin: 14px 0 0;
+  font-size: 14px;
+  color: #c0392b;
+}
+
+.small-note {
+  color: #7a8494;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 25px;
+}
+
+
+/* =========================
+   APP / TOPBAR
+   ========================= */
+
+.topbar {
+  background: #fff;
+  border-bottom: 1px solid #dfe4eb;
+  padding: 17px 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.brand {
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.topbar .school-name {
+  margin: 3px 0 0;
+}
+
+.user-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+#pointsBadge {
+  background: #edf5ff;
+  color: #1256b6;
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-weight: 700;
+}
+
+
+/* =========================
+   HAUPTBEREICH
+   ========================= */
+
+.container {
+  width: min(1050px, 92%);
+  margin: 28px auto 50px;
+}
+
+.hero-card {
+  background: #fff;
+  border: 1px solid #dfe4eb;
+  border-radius: 18px;
+  padding: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+}
+
+.hero-card h2 {
+  margin: 4px 0 10px;
+  font-size: 30px;
+}
+
+.hero-card p {
+  color: #657185;
+  line-height: 1.6;
+}
+
+.eyebrow {
+  color: #1664d9 !important;
+  font-size: 12px !important;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin: 0 0 5px !important;
+}
+
+.hero-points {
+  min-width: 145px;
+  text-align: center;
+  background: #f5f7fa;
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.hero-points span {
+  display: block;
+  color: #697586;
+  font-size: 13px;
+}
+
+.hero-points strong {
+  display: block;
+  font-size: 34px;
+  margin-top: 5px;
+}
+
+
+/* =========================
+   KLASSEN
+   ========================= */
+
+.class-card {
+  margin-top: 20px;
+  background: #fff;
+  border: 1px solid #dfe4eb;
+  border-radius: 18px;
+  padding: 24px;
+}
+
+.class-card h2 {
+  margin-top: 0;
+}
+
+.class-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.class-btn {
+  background: #f7f8fa;
+}
+
+.class-btn:hover {
+  border-color: #1664d9;
+}
+
+.class-btn.active {
+  background: #1664d9;
+  color: #fff;
+  border-color: #1664d9;
+}
+
+
+/* =========================
+   MODUS-BUTTONS
+   ========================= */
+
+.mode-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.mode-btn {
+  background: #fff;
+}
+
+.mode-btn:hover {
+  border-color: #1664d9;
+}
+
+.mode-btn.active {
+  border-color: #1664d9;
+  color: #1664d9;
+  background: #edf5ff;
+}
+
+
+/* =========================
+   LERNBEREICH
+   ========================= */
+
+.learning-area {
+  min-height: 300px;
+  background: #fff;
+  border: 1px solid #dfe4eb;
+  border-radius: 18px;
+  padding: 28px;
+}
+
+.learning-area h2 {
+  margin-top: 0;
+}
+
+
+/* =========================
+   VOKABEL-ADMIN-BEREICH
+   ========================= */
+
+.vocab-admin-area {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e5e8ed;
+}
+
+.add-vocab-btn {
+  width: auto;
+  margin: 0;
+  padding: 11px 18px;
+  border-radius: 10px;
+  background: #1664d9;
+  color: #fff;
+  border-color: #1664d9;
+}
+
+.add-vocab-btn:hover {
+  background: #0f55bd;
+  border-color: #0f55bd;
+}
+
+
+/* =========================
+   VOKABEL-LISTE
+   ========================= */
+
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.vocab-card {
+  position: relative;
+  border: 1px solid #e0e5ec;
+  border-radius: 12px;
+  padding: 18px;
+  background: #fafbfc;
+}
+
+.vocab-card strong {
+  font-size: 19px;
+}
+
+.vocab-card span {
+  display: block;
+  margin-top: 7px;
+  color: #687385;
+}
+
+
+/* =========================
+   VOKABEL LÖSCHEN
+   ========================= */
+
+.delete-vocab-btn {
+  margin-top: 14px;
+  border: 1px solid #e0b4b4;
+  background: #fff5f5;
+  color: #b42318;
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.delete-vocab-btn:hover {
+  background: #ffe8e8;
+}
+
+
+/* =========================
+   VOKABEL-HINZUFÜGEN-FORMULAR
+   ========================= */
+
+.vocab-form {
+  background: #f7f9fc;
+  border: 1px solid #dfe4eb;
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.vocab-form h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.vocab-form-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.vocab-form-buttons .primary-btn,
+.vocab-form-buttons .secondary-btn {
+  width: auto;
+  margin-top: 0;
+}
+
+.vocab-form .message {
+  margin-top: 10px;
+}
+
+
+/* =========================
+   QUIZ
+   ========================= */
+
+.quiz-option {
+  display: block;
+  width: 100%;
+  text-align: left;
+  margin: 10px 0;
+  background: #f7f8fa;
+}
+
+.quiz-option:hover {
+  border-color: #1664d9;
+  background: #edf5ff;
+}
+
+.quiz-result {
+  margin-top: 15px;
+  font-weight: 700;
+}
+
+
+/* =========================
+   GRAMMATIK / BEISPIELE
+   ========================= */
+
+.example {
+  background: #f5f7fa;
+  border-left: 4px solid #1664d9;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 15px;
+}
+
+
+/* =========================
+   ADMIN-BEREICH
+   ========================= */
+
+.admin-panel {
+  margin-top: 22px;
+  background: #fff;
+  border: 1px solid #dfe4eb;
+  border-radius: 18px;
+  padding: 25px;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+.admin-header h2 {
+  margin: 0;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  margin-top: 15px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 13px;
+  border-bottom: 1px solid #e5e8ed;
+}
+
+th {
+  background: #f6f7f9;
+}
+
+
+/* =========================
+   FOOTER
+   ========================= */
+
+footer {
+  text-align: center;
+  color: #7a8494;
+  font-size: 13px;
+  padding: 20px;
+}
+
+
+/* =========================
+   MOBILE
+   ========================= */
+
+@media (max-width: 720px) {
+
+  .auth-card {
+    padding: 27px 22px;
+  }
+
+  .topbar,
+  .hero-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .user-area {
+    justify-content: flex-start;
+  }
+
+  .class-buttons,
+  .mode-buttons,
+  .content-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .hero-card h2 {
+    font-size: 25px;
+  }
+
+  .vocab-admin-area {
+    justify-content: stretch;
+  }
+
+  .add-vocab-btn {
+    width: 100%;
+  }
+
+  .vocab-form-buttons {
+    flex-direction: column;
+  }
+
+  .vocab-form-buttons .primary-btn,
+  .vocab-form-buttons .secondary-btn {
+    width: 100%;
+  }
+}
+
+
+/* =========================
+   KLEINE HANDYS
+   ========================= */
+
+@media (max-width: 460px) {
+
+  .class-buttons,
+  .mode-buttons,
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .container {
+    width: 94%;
+  }
+
+  .learning-area,
+  .class-card,
+  .hero-card {
+    padding: 20px;
+  }
+
+  .add-vocab-btn {
+    width: 100%;
+  }
+}
