@@ -1,33 +1,96 @@
 /*
   ENGLISH MASTER – Supabase-Version
+
+  Login/Registrierung bleibt wie im Original.
+  Zusätzlich:
+  - Vokabeln mit Unit-System
+  - Unit-Auswahl bei Vokabeln
+  - Quiz
+  - Grammatik
+  - Übungen
 */
 
 const SUPABASE_URL = "https://amrqkjyemjpyxxyugwyu.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_EUe8HwB24WogxOBCcs3fsg_9jt0AfhJ";
+
+if (SUPABASE_PUBLISHABLE_KEY.startsWith("HIER_")) {
+  console.warn("Bitte den Supabase Publishable Key in script.js eintragen.");
+}
 
 const supabaseClient = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_PUBLISHABLE_KEY
 );
 
-// =====================================================
+
+// ============================================================
 // LERNINHALTE
-// =====================================================
+// ============================================================
 
 const lessons = {
+
   1: {
-    vocab: [
-      ["hello", "hallo"],
-      ["goodbye", "auf Wiedersehen"],
-      ["book", "Buch"],
-      ["school", "Schule"],
-      ["friend", "Freund/in"],
-      ["house", "Haus"],
-      ["dog", "Hund"],
-      ["cat", "Katze"],
-      ["water", "Wasser"],
-      ["apple", "Apfel"]
-    ],
+    units: {
+      1: [
+        ["hello", "hallo"],
+        ["goodbye", "auf Wiedersehen"],
+        ["book", "Buch"],
+        ["school", "Schule"],
+        ["friend", "Freund/in"],
+        ["house", "Haus"],
+        ["dog", "Hund"],
+        ["cat", "Katze"],
+        ["water", "Wasser"],
+        ["apple", "Apfel"]
+      ],
+
+      2: [
+        ["finger", "Finger"],
+        ["ear", "Ohr"],
+        ["nose", "Nase"],
+        ["hair", "Haare"],
+        ["eye", "Auge"],
+        ["mouth", "Mund"],
+        ["beard", "Bart"],
+        ["shoulder", "Schulter"],
+        ["leg", "Bein"],
+        ["foot", "Fuß"],
+        ["feet", "Füße"],
+        ["tooth", "Zahn"],
+        ["teeth", "Zähne"]
+      ],
+
+      3: [
+        ["tall", "groß / hoch"],
+        ["short", "klein / niedrig / kurz"],
+        ["big", "groß"],
+        ["small", "klein"],
+        ["long", "lang"]
+      ],
+
+      4: [
+        ["cold", "kalt"],
+        ["angry", "wütend"],
+        ["happy", "glücklich"],
+        ["scared", "ängstlich"],
+        ["hot", "heiß"],
+        ["excited", "aufgeregt"],
+        ["sad", "traurig"],
+        ["bored", "gelangweilt"],
+        ["hungry", "hungrig"],
+        ["nervous", "nervös"],
+        ["tired", "müde"],
+        ["proud", "stolz"]
+      ],
+
+      5: [
+        ["morning", "Morgen"],
+        ["lunchtime", "Mittag"],
+        ["afternoon", "Nachmittag"],
+        ["evening", "Abend"],
+        ["night", "Nacht"]
+      ]
+    },
 
     grammar:
       "To be: I am, you are, he/she/it is, we are, you are, they are.",
@@ -54,19 +117,25 @@ const lessons = {
     ]
   },
 
+
   2: {
-    vocab: [
-      ["morning", "Morgen"],
-      ["evening", "Abend"],
-      ["breakfast", "Frühstück"],
-      ["teacher", "Lehrer/in"],
-      ["homework", "Hausaufgabe"],
-      ["computer", "Computer"],
-      ["weather", "Wetter"],
-      ["summer", "Sommer"],
-      ["Monday", "Montag"],
-      ["beautiful", "schön"]
-    ],
+    units: {
+      1: [
+        ["morning", "Morgen"],
+        ["evening", "Abend"],
+        ["breakfast", "Frühstück"],
+        ["teacher", "Lehrer/in"],
+        ["homework", "Hausaufgabe"]
+      ],
+
+      2: [
+        ["computer", "Computer"],
+        ["weather", "Wetter"],
+        ["summer", "Sommer"],
+        ["Monday", "Montag"],
+        ["beautiful", "schön"]
+      ]
+    },
 
     grammar:
       "Simple Present: I play, you play, he/she/it plays. Bei he/she/it kommt meistens -s dazu.",
@@ -93,19 +162,25 @@ const lessons = {
     ]
   },
 
+
   3: {
-    vocab: [
-      ["usually", "normalerweise"],
-      ["sometimes", "manchmal"],
-      ["always", "immer"],
-      ["never", "nie"],
-      ["important", "wichtig"],
-      ["interesting", "interessant"],
-      ["journey", "Reise"],
-      ["environment", "Umwelt"],
-      ["future", "Zukunft"],
-      ["healthy", "gesund"]
-    ],
+    units: {
+      1: [
+        ["usually", "normalerweise"],
+        ["sometimes", "manchmal"],
+        ["always", "immer"],
+        ["never", "nie"],
+        ["important", "wichtig"]
+      ],
+
+      2: [
+        ["interesting", "interessant"],
+        ["journey", "Reise"],
+        ["environment", "Umwelt"],
+        ["future", "Zukunft"],
+        ["healthy", "gesund"]
+      ]
+    },
 
     grammar:
       "Past Simple: regelmäßige Verben bekommen oft -ed. Beispiel: play → played, visit → visited.",
@@ -132,19 +207,73 @@ const lessons = {
     ]
   },
 
+
   4: {
-    vocab: [
-      ["opportunity", "Möglichkeit"],
-      ["experience", "Erfahrung"],
-      ["decision", "Entscheidung"],
-      ["although", "obwohl"],
-      ["however", "jedoch"],
-      ["improve", "verbessern"],
-      ["probably", "wahrscheinlich"],
-      ["future", "Zukunft"],
-      ["responsibility", "Verantwortung"],
-      ["achievement", "Erfolg/Leistung"]
-    ],
+    units: {
+      1: [
+        ["opportunity", "Möglichkeit"],
+        ["experience", "Erfahrung"],
+        ["decision", "Entscheidung"],
+        ["although", "obwohl"],
+        ["however", "jedoch"]
+      ],
+
+      2: [
+        ["improve", "verbessern"],
+        ["probably", "wahrscheinlich"],
+        ["future", "Zukunft"],
+        ["responsibility", "Verantwortung"],
+        ["achievement", "Erfolg/Leistung"]
+      ],
+
+      3: [
+        ["after", "nach"],
+        ["day", "Tag"],
+        ["end", "Ende"],
+        ["fun", "Spaß"],
+        ["Go away!", "Geh weg!"],
+        ["to help", "helfen"],
+        ["home", "zu/nach Hause; Zuhause"],
+        ["It's no good.", "Es hat keinen Zweck."],
+        ["mum", "Mama, Mutti"],
+        ["next", "nächster/nächste/nächstes"],
+        ["still (not)", "immer noch (nicht)"],
+        ["a day in the life of", "ein Tag im Leben von"],
+        ["to be asleep", "schlafen"],
+        ["early", "früh"],
+        ["life (pl lives)", "Leben"],
+        ["lunchtime", "Mittagspause"],
+        ["sun", "Sonne"],
+        ["Are you OK?", "Geht's dir/euch/Ihnen gut?"],
+        ["homework", "Hausaufgaben"],
+        ["into", "in (... hinein)"],
+        ["Oh dear!", "Du meine Güte!"],
+        ["room", "Zimmer, Raum"],
+        ["why", "warum"]
+      ],
+
+      4: [
+        ["bad", "schlecht, böse"],
+        ["Don't be late.", "Komm(t) nicht zu spät., Sei(d) pünktlich."],
+        ["tomorrow", "morgen"],
+        ["birthday", "Geburtstag"],
+        ["friend", "Freund/Freundin"],
+        ["Be yourself.", "Sei du selbst."],
+        ["no one else", "niemand anders"],
+        ["bottle", "Flasche"],
+        ["to get back", "zurückholen, zurückbekommen"],
+        ["mad", "wütend, zornig"],
+        ["magic", "magisch"],
+        ["to rob", "stehlen; ausrauben"],
+        ["to break", "(zer-)brechen"],
+        ["to go to sleep", "schlafen gehen"],
+        ["because", "weil"],
+        ["It's me.", "Ich bin's."],
+        ["Try it!", "Versuch es!"],
+        ["Let go!", "Lass(t) los!"],
+        ["What's happening?", "Was ist (hier) los?"]
+      ]
+    },
 
     grammar:
       "First Conditional: If + Simple Present, will + Verb. Beispiel: If I study, I will learn more.",
@@ -170,22 +299,27 @@ const lessons = {
       }
     ]
   }
+
 };
 
-// =====================================================
-// VARIABLEN
-// =====================================================
+
+// ============================================================
+// STATUS
+// ============================================================
 
 let currentClass = 1;
 let currentMode = "vocab";
 let currentQuestion = 0;
+let currentUnit = null;
+
 let currentUser = null;
 let currentProfile = null;
 let isRegisterMode = false;
 
-// =====================================================
+
+// ============================================================
 // ELEMENTE
-// =====================================================
+// ============================================================
 
 const authScreen = document.getElementById("authScreen");
 const mainScreen = document.getElementById("mainScreen");
@@ -214,52 +348,38 @@ const adminUsers = document.getElementById("adminUsers");
 const adminMessage = document.getElementById("adminMessage");
 const refreshAdmin = document.getElementById("refreshAdmin");
 
-// =====================================================
+
+// ============================================================
 // HILFSFUNKTIONEN
-// =====================================================
+// ============================================================
 
 function setAuthMessage(text, error = true) {
-  if (!authMessage) return;
-
   authMessage.textContent = text;
-  authMessage.style.color = error
-    ? "#c0392b"
-    : "#18794e";
+  authMessage.style.color = error ? "#c0392b" : "#18794e";
 }
+
 
 function setAdminMessage(text, error = true) {
   if (!adminMessage) return;
 
   adminMessage.textContent = text;
-  adminMessage.style.color = error
-    ? "#c0392b"
-    : "#18794e";
+  adminMessage.style.color = error ? "#c0392b" : "#18794e";
 }
+
 
 function authEmail(username) {
   const safe = username
     .toLowerCase()
     .replace(/[^a-z0-9._-]/g, "_");
 
-  return safe + "@english-master.local";
+  return `${safe}@english-master.local`;
 }
+
 
 function validUsername(username) {
   return /^[A-Za-z0-9_-]{3,20}$/.test(username);
 }
 
-function escapeHtml(value) {
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-// =====================================================
-// LOGIN
-// =====================================================
 
 function showLogin() {
   isRegisterMode = false;
@@ -274,6 +394,7 @@ function showLogin() {
   setAuthMessage("");
 }
 
+
 function showRegister() {
   isRegisterMode = true;
 
@@ -287,56 +408,34 @@ function showRegister() {
   setAuthMessage("");
 }
 
-// =====================================================
-// PROFIL
-// =====================================================
 
 async function loadProfile(user) {
-  const result = await supabaseClient
+  const { data, error } = await supabaseClient
     .from("profiles")
-    .select(
-      "id, username, points, is_admin, created_at"
-    )
+    .select("id, username, points, is_admin, created_at")
     .eq("id", user.id)
     .single();
 
-  if (result.error) {
-    console.error(result.error);
+  if (error) {
+    console.error(error);
     return null;
   }
 
-  return result.data;
+  return data;
 }
 
-// =====================================================
-// USER UI
-// =====================================================
 
 function updateUserUI() {
   if (!currentProfile) return;
 
   const username = currentProfile.username;
-  const points = Number(
-    currentProfile.points || 0
-  );
+  const points = Number(currentProfile.points || 0);
 
-  if (welcomeText) {
-    welcomeText.textContent =
-      "👤 " + username;
-  }
+  welcomeText.textContent = `👤 ${username}`;
+  heroUsername.textContent = username;
 
-  if (heroUsername) {
-    heroUsername.textContent = username;
-  }
-
-  if (pointsBadge) {
-    pointsBadge.textContent =
-      "⭐ " + points + " Punkte";
-  }
-
-  if (heroPoints) {
-    heroPoints.textContent = points;
-  }
+  pointsBadge.textContent = `⭐ ${points} Punkte`;
+  heroPoints.textContent = points;
 
   if (currentProfile.is_admin) {
     if (adminPanel) {
@@ -344,18 +443,13 @@ function updateUserUI() {
     }
 
     loadAdminUsers();
-
   } else {
-
     if (adminPanel) {
       adminPanel.classList.add("hidden");
     }
   }
 }
 
-// =====================================================
-// APP ANZEIGEN
-// =====================================================
 
 async function showApp(user) {
   currentUser = user;
@@ -376,8 +470,10 @@ async function showApp(user) {
   mainScreen.classList.remove("hidden");
 
   updateUserUI();
+
   renderLearning();
 }
+
 
 function showAuth() {
   currentUser = null;
@@ -392,216 +488,163 @@ function showAuth() {
   showLogin();
 }
 
-// =====================================================
-// REGISTRIERUNG / ANMELDUNG
-// =====================================================
 
-authForm.addEventListener(
-  "submit",
-  async function(event) {
+// ============================================================
+// REGISTRIERUNG / LOGIN
+// ============================================================
 
-    event.preventDefault();
+authForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
 
-    const username =
-      usernameInput.value.trim();
+  const username = usernameInput.value.trim();
+  const password = passwordInput.value;
 
-    const password =
-      passwordInput.value;
+  if (!validUsername(username)) {
+    setAuthMessage(
+      "Benutzername: 3–20 Zeichen, nur Buchstaben, Zahlen, _ und -."
+    );
 
-    if (!validUsername(username)) {
+    return;
+  }
 
-      setAuthMessage(
-        "Benutzername: 3–20 Zeichen, nur Buchstaben, Zahlen, _ und -."
-      );
+  if (password.length < 6) {
+    setAuthMessage(
+      "Das Passwort muss mindestens 6 Zeichen haben."
+    );
 
-      return;
-    }
+    return;
+  }
 
-    if (password.length < 6) {
+  authButton.disabled = true;
 
-      setAuthMessage(
-        "Das Passwort muss mindestens 6 Zeichen haben."
-      );
+  authButton.textContent =
+    isRegisterMode
+      ? "Konto wird erstellt..."
+      : "Anmeldung...";
 
-      return;
-    }
+  try {
 
-    authButton.disabled = true;
+    const email = authEmail(username);
 
     if (isRegisterMode) {
-      authButton.textContent =
-        "Konto wird erstellt...";
-    } else {
-      authButton.textContent =
-        "Anmeldung...";
-    }
 
-    try {
-
-      const email =
-        authEmail(username);
-
-      // -----------------------------
-      // REGISTRIERUNG
-      // -----------------------------
-
-      if (isRegisterMode) {
-
-        const signup =
-          await supabaseClient.auth.signUp({
-            email: email,
-            password: password,
-            options: {
-              data: {
-                username: username
-              }
+      const { data, error } =
+        await supabaseClient.auth.signUp({
+          email,
+          password,
+          options: {
+            data: {
+              username
             }
+          }
+        });
+
+      if (error) throw error;
+
+      if (!data.user) {
+        throw new Error(
+          "Benutzer konnte nicht erstellt werden."
+        );
+      }
+
+      const { error: profileError } =
+        await supabaseClient
+          .from("profiles")
+          .insert({
+            id: data.user.id,
+            username,
+            points: 0,
+            is_admin: false
           });
 
-        if (signup.error) {
-          throw signup.error;
-        }
+      if (profileError) {
 
-        if (!signup.data.user) {
-          throw new Error(
-            "Benutzer konnte nicht erstellt werden."
-          );
-        }
+        console.error(profileError);
 
-        const profileInsert =
-          await supabaseClient
-            .from("profiles")
-            .insert({
-              id: signup.data.user.id,
-              username: username,
-              points: 0,
-              is_admin: false
-            });
+        await supabaseClient.auth.signOut();
 
-        if (profileInsert.error) {
-
-          console.error(
-            profileInsert.error
-          );
-
-          await supabaseClient.auth.signOut();
-
-          throw new Error(
-            "Konto erstellt, aber das Profil konnte nicht angelegt werden."
-          );
-        }
-
-        setAuthMessage(
-          "Konto erstellt! Du wirst angemeldet...",
-          false
-        );
-
-        await showApp(
-          signup.data.user
-        );
-
-      }
-
-      // -----------------------------
-      // LOGIN
-      // -----------------------------
-
-      else {
-
-        const login =
-          await supabaseClient
-            .auth
-            .signInWithPassword({
-              email: email,
-              password: password
-            });
-
-        if (login.error) {
-          throw login.error;
-        }
-
-        await showApp(
-          login.data.user
+        throw new Error(
+          "Konto erstellt, aber das Profil konnte nicht angelegt werden. Prüfe die Datenbank-Einstellungen."
         );
       }
-
-    } catch (error) {
-
-      console.error(error);
 
       setAuthMessage(
-        error.message ||
-        "Anmeldung fehlgeschlagen."
+        "Konto erstellt! Du wirst angemeldet...",
+        false
       );
 
-    } finally {
+      await showApp(data.user);
 
-      authButton.disabled = false;
+    } else {
 
-      if (isRegisterMode) {
-        authButton.textContent =
-          "Konto erstellen";
-      } else {
-        authButton.textContent =
-          "Anmelden";
-      }
+      const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+          email,
+          password
+        });
+
+      if (error) throw error;
+
+      await showApp(data.user);
     }
-  }
-);
 
-// =====================================================
-// LOGIN / REGISTER BUTTONS
-// =====================================================
+  } catch (error) {
+
+    console.error(error);
+
+    setAuthMessage(
+      error.message || "Anmeldung fehlgeschlagen."
+    );
+
+  } finally {
+
+    authButton.disabled = false;
+
+    authButton.textContent =
+      isRegisterMode
+        ? "Konto erstellen"
+        : "Anmelden";
+  }
+});
+
 
 loginTab.addEventListener(
   "click",
   showLogin
 );
 
+
 registerTab.addEventListener(
   "click",
   showRegister
 );
 
-// =====================================================
-// LOGOUT
-// =====================================================
 
 logoutButton.addEventListener(
   "click",
-  async function() {
-
+  async () => {
     await supabaseClient.auth.signOut();
-
     showAuth();
   }
 );
 
-// =====================================================
+
+// ============================================================
 // SESSION
-// =====================================================
+// ============================================================
 
-supabaseClient.auth
-  .getSession()
-  .then(async function(result) {
+supabaseClient.auth.getSession()
+  .then(async ({ data }) => {
 
-    if (
-      result.data.session &&
-      result.data.session.user
-    ) {
-
-      await showApp(
-        result.data.session.user
-      );
+    if (data.session?.user) {
+      await showApp(data.session.user);
     }
+
   });
 
-// =====================================================
-// AUTH STATE
-// =====================================================
 
 supabaseClient.auth.onAuthStateChange(
-  async function(event, session) {
+  async (event, session) => {
 
     if (event === "SIGNED_OUT") {
 
@@ -609,33 +652,29 @@ supabaseClient.auth.onAuthStateChange(
 
     } else if (
       event === "SIGNED_IN" &&
-      session &&
-      session.user &&
+      session?.user &&
       !currentUser
     ) {
 
-      await showApp(
-        session.user
-      );
+      await showApp(session.user);
     }
+
   }
 );
 
-// =====================================================
+
+// ============================================================
 // PUNKTE
-// =====================================================
+// ============================================================
 
 async function addPoints(amount) {
 
-  if (!currentProfile || !currentUser) {
-    return;
-  }
+  if (!currentProfile) return;
 
   const newPoints =
-    Number(currentProfile.points || 0) +
-    amount;
+    Number(currentProfile.points || 0) + amount;
 
-  const result =
+  const { data, error } =
     await supabaseClient
       .from("profiles")
       .update({
@@ -645,80 +684,81 @@ async function addPoints(amount) {
       .select("points")
       .single();
 
-  if (result.error) {
-    console.error(result.error);
+  if (error) {
+    console.error(error);
     return;
   }
 
-  currentProfile.points =
-    result.data.points;
+  currentProfile.points = data.points;
 
   updateUserUI();
 }
 
-// =====================================================
-// KLASSENAUSWAHL
-// =====================================================
 
-document
-  .querySelectorAll(".class-btn")
-  .forEach(function(button) {
+// ============================================================
+// KLASSE AUSWÄHLEN
+// ============================================================
 
-    button.addEventListener(
-      "click",
-      function() {
+document.querySelectorAll(".class-btn")
+  .forEach(button => {
 
-        currentClass =
-          Number(button.dataset.class);
+    button.addEventListener("click", () => {
 
-        document
-          .querySelectorAll(".class-btn")
-          .forEach(function(b) {
-            b.classList.remove("active");
-          });
+      currentClass =
+        Number(button.dataset.class);
 
-        button.classList.add("active");
+      currentUnit = null;
+      currentQuestion = 0;
 
-        currentQuestion = 0;
+      document
+        .querySelectorAll(".class-btn")
+        .forEach(b =>
+          b.classList.remove("active")
+        );
 
-        renderLearning();
-      }
-    );
+      button.classList.add("active");
+
+      renderLearning();
+    });
+
   });
 
-// =====================================================
-// MODUSAUSWAHL
-// =====================================================
 
-document
-  .querySelectorAll(".mode-btn")
-  .forEach(function(button) {
+// ============================================================
+// LERNMODUS
+// ============================================================
 
-    button.addEventListener(
-      "click",
-      function() {
+document.querySelectorAll(".mode-btn")
+  .forEach(button => {
 
-        currentMode =
-          button.dataset.mode;
+    button.addEventListener("click", () => {
 
-        currentQuestion = 0;
+      currentMode =
+        button.dataset.mode;
 
-        document
-          .querySelectorAll(".mode-btn")
-          .forEach(function(b) {
-            b.classList.remove("active");
-          });
+      currentQuestion = 0;
 
-        button.classList.add("active");
-
-        renderLearning();
+      if (currentMode !== "vocab") {
+        currentUnit = null;
       }
-    );
+
+      document
+        .querySelectorAll(".mode-btn")
+        .forEach(b =>
+          b.classList.remove("active")
+        );
+
+      button.classList.add("active");
+
+      renderLearning();
+    });
+
   });
 
-// =====================================================
-// LEARNING RENDER
-// =====================================================
+
+// ============================================================
+// RENDER LEARNING
+// ============================================================
 
 function renderLearning() {
 
@@ -726,12 +766,12 @@ function renderLearning() {
     renderVocab();
   }
 
-  if (currentMode === "grammar") {
-    renderGrammar();
-  }
-
   if (currentMode === "quiz") {
     renderQuiz();
+  }
+
+  if (currentMode === "grammar") {
+    renderGrammar();
   }
 
   if (currentMode === "exercise") {
@@ -739,171 +779,307 @@ function renderLearning() {
   }
 }
 
-// =====================================================
-// VOKABELN
-// =====================================================
+
+// ============================================================
+// VOKABELN MIT UNIT-SYSTEM
+// ============================================================
 
 function renderVocab() {
 
-  const words =
-    lessons[currentClass].vocab;
+  const lesson = lessons[currentClass];
 
-  learningArea.innerHTML =
-    "<h2>📚 Vokabeln – " +
-    currentClass +
-    ". Klasse</h2>" +
+  const units = lesson.units || {};
 
-    "<p>Hier kannst du wichtige Wörter wiederholen.</p>" +
+  const unitNumbers =
+    Object.keys(units)
+      .map(Number)
+      .sort((a, b) => a - b);
 
-    '<div class="content-grid">' +
+  if (
+    currentUnit !== null &&
+    !units[currentUnit]
+  ) {
+    currentUnit = null;
+  }
 
-    words
-      .map(function(word) {
 
-        return (
-          '<div class="vocab-card">' +
-            "<strong>" +
-            escapeHtml(word[0]) +
-            "</strong>" +
+  learningArea.innerHTML = `
 
-            "<span>" +
-            escapeHtml(word[1]) +
-            "</span>" +
+    <div id="vocabUnitNavigation"
+         class="vocab-unit-navigation">
 
-          "</div>"
-        );
+      <div class="unit-header">
 
-      })
-      .join("") +
+        <div>
 
-    "</div>";
+          <h2>
+            📚 Vokabeln – ${currentClass}. Klasse
+          </h2>
+
+          <p>
+            Wähle eine Unit aus.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div id="unitList"
+           class="unit-list">
+
+        ${unitNumbers.map(unitNumber => {
+
+          const wordCount =
+            units[unitNumber].length;
+
+          const isOpen =
+            currentUnit === unitNumber
+              ? "open"
+              : "";
+
+          return `
+
+            <details
+              class="unit"
+              data-unit="${unitNumber}"
+              ${isOpen}
+            >
+
+              <summary>
+
+                <strong>
+                  Unit ${unitNumber}
+                </strong>
+
+                <span>
+                  ${wordCount} Vokabeln
+                </span>
+
+              </summary>
+
+              <div class="unit-content">
+
+                <div class="content-grid">
+
+                  ${units[unitNumber]
+                    .map(([en, de]) => `
+
+                      <div class="vocab-card">
+
+                        <strong>
+                          ${escapeHtml(en)}
+                        </strong>
+
+                        <span>
+                          ${escapeHtml(de)}
+                        </span>
+
+                      </div>
+
+                    `)
+                    .join("")}
+
+                </div>
+
+              </div>
+
+            </details>
+
+          `;
+
+        }).join("")}
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  document
+    .querySelectorAll(".unit")
+    .forEach(unitElement => {
+
+      unitElement.addEventListener(
+        "toggle",
+        () => {
+
+          if (unitElement.open) {
+
+            currentUnit =
+              Number(
+                unitElement.dataset.unit
+              );
+
+            document
+              .querySelectorAll(".unit")
+              .forEach(other => {
+
+                if (other !== unitElement) {
+                  other.open = false;
+                }
+
+              });
+
+          }
+
+        }
+      );
+
+    });
 }
 
-// =====================================================
+
+// ============================================================
 // GRAMMATIK
-// =====================================================
+// ============================================================
 
 function renderGrammar() {
 
   const lesson =
     lessons[currentClass];
 
-  learningArea.innerHTML =
-    "<h2>📖 Grammatik – " +
-    currentClass +
-    ". Klasse</h2>" +
+  learningArea.innerHTML = `
 
-    "<p>" +
-    escapeHtml(
-      lesson.grammar
-    ) +
-    "</p>" +
+    <div class="content-area">
 
-    '<div class="example">' +
+      <h2>
+        📖 Grammatik – ${currentClass}. Klasse
+      </h2>
 
-      "<strong>Beispiele:</strong><br><br>" +
+      <p>
+        ${escapeHtml(lesson.grammar)}
+      </p>
 
-      escapeHtml(
-        lesson.example
-      ) +
+      <div class="example">
 
-    "</div>";
+        <strong>
+          Beispiele:
+        </strong>
+
+        <br><br>
+
+        ${escapeHtml(lesson.example)}
+
+      </div>
+
+    </div>
+
+  `;
 }
 
-// =====================================================
+
+// ============================================================
 // QUIZ
-// =====================================================
+// ============================================================
 
 function renderQuiz() {
 
   const questions =
     lessons[currentClass].questions;
 
-  if (!questions.length) {
+  if (!questions || questions.length === 0) {
 
-    learningArea.innerHTML =
-      "<h2>🧠 Quiz</h2>" +
-      "<p>Keine Fragen vorhanden.</p>";
+    learningArea.innerHTML = `
+
+      <div class="content-area">
+
+        <h2>
+          🧠 Quiz – ${currentClass}. Klasse
+        </h2>
+
+        <p>
+          Für diese Klasse gibt es noch keine Quizfragen.
+        </p>
+
+      </div>
+
+    `;
 
     return;
   }
 
-  if (
-    currentQuestion >=
-    questions.length
-  ) {
+
+  if (currentQuestion >= questions.length) {
     currentQuestion = 0;
   }
+
 
   const q =
     questions[currentQuestion];
 
-  learningArea.innerHTML =
-    "<h2>🧠 Quiz – " +
-    currentClass +
-    ". Klasse</h2>" +
 
-    "<p>Frage " +
-    (currentQuestion + 1) +
-    " von " +
-    questions.length +
-    "</p>" +
+  learningArea.innerHTML = `
 
-    "<h3>" +
-    escapeHtml(q.q) +
-    "</h3>" +
+    <div class="content-area">
 
-    '<div id="quizOptions">' +
+      <h2>
+        🧠 Quiz – ${currentClass}. Klasse
+      </h2>
 
-      q.options
-        .map(function(option, index) {
+      <p>
+        Frage ${currentQuestion + 1}
+        von ${questions.length}
+      </p>
 
-          return (
-            '<button class="quiz-option" data-answer="' +
-            index +
-            '">' +
+      <h3>
+        ${escapeHtml(q.q)}
+      </h3>
 
-            escapeHtml(option) +
+      <div id="quizOptions">
 
-            "</button>"
-          );
+        ${q.options
+          .map((option, index) => `
 
-        })
-        .join("") +
+            <button
+              class="quiz-option"
+              data-answer="${index}"
+              type="button"
+            >
+              ${escapeHtml(option)}
+            </button>
 
-    "</div>" +
+          `)
+          .join("")}
 
-    '<p id="quizResult" class="quiz-result"></p>';
+      </div>
+
+      <p
+        id="quizResult"
+        class="quiz-result"
+      ></p>
+
+    </div>
+
+  `;
+
 
   document
     .querySelectorAll(".quiz-option")
-    .forEach(function(button) {
+    .forEach(button => {
 
       button.addEventListener(
         "click",
-        function() {
+        async () => {
 
           const selected =
-            Number(
-              button.dataset.answer
-            );
+            Number(button.dataset.answer);
 
           const result =
             document.getElementById(
               "quizResult"
             );
 
+
           document
-            .querySelectorAll(
-              ".quiz-option"
-            )
-            .forEach(function(b) {
+            .querySelectorAll(".quiz-option")
+            .forEach(b => {
               b.disabled = true;
             });
 
-          if (
-            selected === q.answer
-          ) {
+
+          if (selected === q.answer) {
 
             result.textContent =
               "✅ Richtig! +10 Punkte";
@@ -911,83 +1087,124 @@ function renderQuiz() {
             result.style.color =
               "#18794e";
 
-            addPoints(10);
+            await addPoints(10);
 
           } else {
 
             result.textContent =
-              "❌ Nicht ganz. Richtig wäre: " +
-              q.options[q.answer];
+              `❌ Nicht ganz. Richtig wäre: ${q.options[q.answer]}`;
 
             result.style.color =
               "#c0392b";
           }
 
-          setTimeout(
-            function() {
 
-              currentQuestion =
-                (currentQuestion + 1) %
-                questions.length;
+          setTimeout(() => {
 
-              renderQuiz();
+            currentQuestion =
+              (currentQuestion + 1)
+              % questions.length;
 
-            },
-            1200
-          );
+            renderQuiz();
+
+          }, 1200);
+
         }
       );
+
     });
 }
 
-// =====================================================
+
+// ============================================================
 // ÜBUNGEN
-// =====================================================
+// ============================================================
 
 function renderExercise() {
 
-  const word =
-    lessons[currentClass].vocab[0][0];
+  const lesson =
+    lessons[currentClass];
 
-  learningArea.innerHTML =
-    "<h2>✏️ Übungen – " +
-    currentClass +
-    ". Klasse</h2>" +
+  const unitNumbers =
+    Object.keys(lesson.units)
+      .map(Number)
+      .sort((a, b) => a - b);
 
-    "<p>" +
-    "Schreibe einen eigenen englischen Satz mit einem Wort aus den Vokabeln." +
-    "</p>" +
+  const firstUnit =
+    unitNumbers.length > 0
+      ? unitNumbers[0]
+      : null;
 
-    '<div class="example">' +
+  const firstWord =
+    firstUnit !== null &&
+    lesson.units[firstUnit].length > 0
+      ? lesson.units[firstUnit][0][0]
+      : "friend";
 
-      "<strong>Aufgabe:</strong><br>" +
 
-      "Verwende das Wort <strong>" +
+  learningArea.innerHTML = `
 
-      escapeHtml(word) +
+    <div class="content-area">
 
-      "</strong> in einem englischen Satz." +
+      <h2>
+        ✏️ Übungen – ${currentClass}. Klasse
+      </h2>
 
-    "</div>" +
+      <p>
+        Schreibe einen eigenen englischen Satz
+        mit einem Wort aus den Vokabeln.
+      </p>
 
-    '<label for="exerciseInput">' +
-      "Dein Satz" +
-    "</label>" +
+      <div class="example">
 
-    '<input id="exerciseInput" type="text" ' +
-      'placeholder="Write your sentence here...">' +
+        <strong>
+          Aufgabe:
+        </strong>
 
-    '<button id="exerciseButton" class="primary-btn">' +
-      "Übung abschließen" +
-    "</button>" +
+        <br>
 
-    '<p id="exerciseResult" class="quiz-result"></p>';
+        Verwende das Wort
+        <strong>
+          ${escapeHtml(firstWord)}
+        </strong>
+        in einem englischen Satz.
+
+      </div>
+
+      <label for="exerciseInput">
+        Dein Satz
+      </label>
+
+      <input
+        id="exerciseInput"
+        type="text"
+        placeholder="Write your sentence here..."
+      >
+
+      <button
+        id="exerciseButton"
+        class="primary-btn"
+        type="button"
+        style="max-width:260px;"
+      >
+        Übung abschließen
+      </button>
+
+      <p
+        id="exerciseResult"
+        class="quiz-result"
+      ></p>
+
+    </div>
+
+  `;
+
 
   document
     .getElementById("exerciseButton")
     .addEventListener(
       "click",
-      async function() {
+      async () => {
 
         const input =
           document.getElementById(
@@ -998,6 +1215,7 @@ function renderExercise() {
           document.getElementById(
             "exerciseResult"
           );
+
 
         if (
           input.value.trim().length < 4
@@ -1012,6 +1230,7 @@ function renderExercise() {
           return;
         }
 
+
         result.textContent =
           "✅ Übung abgeschlossen! +5 Punkte";
 
@@ -1020,25 +1239,28 @@ function renderExercise() {
 
         input.disabled = true;
 
-        document.getElementById(
-          "exerciseButton"
-        ).disabled = true;
+        document
+          .getElementById("exerciseButton")
+          .disabled = true;
 
         await addPoints(5);
+
       }
     );
 }
 
-// =====================================================
+
+// ============================================================
 // ADMIN
-// =====================================================
+// ============================================================
 
 async function loadAdminUsers() {
 
-  if (
-    !currentProfile ||
-    !currentProfile.is_admin
-  ) {
+  if (!currentProfile?.is_admin) {
+    return;
+  }
+
+  if (!adminUsers) {
     return;
   }
 
@@ -1047,18 +1269,21 @@ async function loadAdminUsers() {
     false
   );
 
-  const result =
+
+  const {
+    data,
+    error
+  } =
     await supabaseClient.rpc(
       "admin_list_profiles"
     );
 
-  if (result.error) {
 
-    console.error(result.error);
+  if (error) {
 
-    if (adminUsers) {
-      adminUsers.innerHTML = "";
-    }
+    console.error(error);
+
+    adminUsers.innerHTML = "";
 
     setAdminMessage(
       "Admin-Liste konnte nicht geladen werden. Die Admin-SQL-Funktion muss noch eingerichtet werden."
@@ -1067,57 +1292,56 @@ async function loadAdminUsers() {
     return;
   }
 
-  if (!adminUsers) return;
 
   adminUsers.innerHTML =
-    result.data
-      .map(function(user) {
+    data.map(user => `
 
-        return (
-          "<tr>" +
+      <tr>
 
-          "<td>" +
-          escapeHtml(user.username) +
-          "</td>" +
+        <td>
+          ${escapeHtml(user.username)}
+        </td>
 
-          "<td>⭐ " +
-          Number(user.points || 0) +
-          "</td>" +
+        <td>
+          ⭐ ${Number(user.points || 0)}
+        </td>
 
-          "<td>" +
-          (
-            user.class
-              ? escapeHtml(user.class) +
-                ". Klasse"
-              : "-"
-          ) +
-          "</td>" +
+        <td>
+          ${user.class || "-"}
+        </td>
 
-          "<td>" +
-          (
-            user.is_admin
-              ? "Ja"
-              : "Nein"
-          ) +
-          "</td>" +
+        <td>
+          ${user.is_admin ? "Ja" : "Nein"}
+        </td>
 
-          "<td>" +
-          new Date(
+        <td>
+          ${new Date(
             user.created_at
-          ).toLocaleDateString("de-AT") +
-          "</td>" +
+          ).toLocaleDateString("de-AT")}
+        </td>
 
-          "</tr>"
-        );
-      })
-      .join("");
+      </tr>
+
+    `).join("");
+
 
   setAdminMessage(
-    result.data.length +
-    " Benutzer gefunden.",
+    `${data.length} Benutzer gefunden.`,
     false
   );
 }
+
+
+function escapeHtml(value) {
+
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
 
 if (refreshAdmin) {
 
@@ -1125,4 +1349,12 @@ if (refreshAdmin) {
     "click",
     loadAdminUsers
   );
+
 }
+
+
+// ============================================================
+// START
+// ============================================================
+
+renderLearning();
