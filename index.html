@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+name="description"
+content="English Master – Englisch lernen für die 1. bis 4. Klasse"
+
+>
+
+  <title>English Master</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- =====================================================
+       LOGIN / REGISTRIERUNG
+  ====================================================== -->
+
+  <section id="authScreen">
+
+```
+<div class="auth-container">
+
+  <div class="auth-logo">
+    <div class="logo-icon">📚</div>
+
+    <h1>English Master</h1>
+
+    <p>Englisch lernen leicht gemacht</p>
+  </div>
+
+  <div class="auth-tabs">
+
+    <button
+      id="loginTab"
+      class="auth-tab active"
+      type="button"
+    >
+      Anmelden
+    </button>
+
+    <button
+      id="registerTab"
+      class="auth-tab"
+      type="button"
+    >
+      Registrieren
+    </button>
+
+  </div>
+
+  <form id="authForm">
+
+    <div class="form-group">
+
+      <label for="username">
+        Benutzername
+      </label>
+
+      <input
+        id="username"
+        name="username"
+        type="text"
+        autocomplete="username"
+        placeholder="Dein Benutzername"
+        required
+        minlength="3"
+        maxlength="20"
+      >
+
+    </div>
+
+    <div class="form-group">
+
+      <label for="password">
+        Passwort
+      </label>
+
+      <input
+        id="password"
+        name="password"
+        type="password"
+        autocomplete="current-password"
+        placeholder="Dein Passwort"
+        required
+        minlength="6"
+      >
+
+    </div>
+
+    <button
+      id="authButton"
+      type="submit"
+    >
+      Anmelden
+    </button>
+
+    <p
+      id="authMessage"
+      class="message"
+    ></p>
+
+  </form>
+
+</div>
+```
+
+  </section>
+
+  <!-- =====================================================
+       HAUPTAPP
+  ====================================================== -->
+
+  <section
+    id="mainScreen"
+    class="hidden"
+  >
+
+```
+<!-- ===================================================
+     HEADER
+==================================================== -->
+
+<header class="top-header">
+
+  <div class="header-inner">
+
+    <div class="brand">
+
+      <span class="brand-icon">
+        📚
+      </span>
+
+      <span class="brand-name">
+        English Master
+      </span>
+
+    </div>
+
+    <div class="user-header">
+
+      <span id="welcomeText">
+        👤 Benutzer
+      </span>
+
+      <span id="pointsBadge">
+        ⭐ 0 Punkte
+      </span>
+
+      <button
+        id="logoutButton"
+        type="button"
+      >
+        Abmelden
+      </button>
+
+    </div>
+
+  </div>
+
+</header>
+
+
+<!-- ===================================================
+     NAVIGATION
+==================================================== -->
+
+<nav
+  id="mainNavigation"
+  class="main-navigation"
+  aria-label="Hauptnavigation"
+>
+
+  <button
+    class="nav-btn active"
+    data-page="learning"
+    type="button"
+  >
+    📚 Lernen
+  </button>
+
+  <button
+    class="nav-btn"
+    data-page="leaderboard"
+    type="button"
+  >
+    🏆 Leaderboard
+  </button>
+
+</nav>
+
+
+<!-- ===================================================
+     HAUPTCONTAINER
+==================================================== -->
+
+<main class="main-container">
+
+  <!-- =================================================
+       LERNSEITE
+  ================================================== -->
+
+  <section
+    id="learningPage"
+    class="page-section"
+  >
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+      <h1>
+        Willkommen bei English Master! 👋
+      </h1>
+
+      <p>
+        Wähle deine Klasse und starte mit
+        Vokabeln, Grammatik, Quiz oder Übungen.
+      </p>
+
+      <div class="hero-points">
+
+        ⭐
+
+        <span>
+          Deine Punkte:
+        </span>
+
+        <strong id="heroPoints">
+          0
+        </strong>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         KLASSENAUSWAHL
+    ================================================== -->
+
+    <h2 class="section-title">
+      Klasse auswählen
+    </h2>
+
+    <div class="class-selection">
+
+      <button
+        class="class-btn active"
+        data-class="1"
+        type="button"
+      >
+        1. Klasse
+      </button>
+
+      <button
+        class="class-btn"
+        data-class="2"
+        type="button"
+      >
+        2. Klasse
+      </button>
+
+      <button
+        class="class-btn"
+        data-class="3"
+        type="button"
+      >
+        3. Klasse
+      </button>
+
+      <button
+        class="class-btn"
+        data-class="4"
+        type="button"
+      >
+        4. Klasse
+      </button>
+
+    </div>
+
+
+    <!-- =================================================
+         LERNMODI
+    ================================================== -->
+
+    <h2 class="section-title">
+      Lernmodus auswählen
+    </h2>
+
+    <div class="mode-selection">
+
+      <button
+        class="mode-btn active"
+        data-mode="vocab"
+        type="button"
+      >
+        📚 Vokabeln
+      </button>
+
+      <button
+        class="mode-btn"
+        data-mode="grammar"
+        type="button"
+      >
+        📖 Grammatik
+      </button>
+
+      <button
+        class="mode-btn"
+        data-mode="quiz"
+        type="button"
+      >
+        🧠 Quiz
+      </button>
+
+      <button
+        class="mode-btn"
+        data-mode="exercise"
+        type="button"
+      >
+        ✏️ Üben
+      </button>
+
+    </div>
+
+
+    <!-- =================================================
+         LERNBEREICH
+    ================================================== -->
+
+    <section
+      id="learningArea"
+      class="learning-area"
+    >
+
+      <!-- =================================================
+           VOKABEL-UNIT-NAVIGATION
+
+           BLEIBT ERHALTEN
+      ================================================== -->
+
+      <div
+        id="vocabUnitNavigation"
+        class="vocab-unit-navigation"
+      >
+
+        <div class="unit-header">
+
+          <div>
+
+            <h2>
+              📚 Vokabeln
+            </h2>
+
+            <p>
+              Wähle eine Unit aus.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div
+          id="unitList"
+          class="unit-list"
+        >
+
+          <!-- Wird von JavaScript gefüllt -->
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           QUIZ-AUSWAHL
+
+           Wird vom JavaScript angezeigt, wenn Quiz
+           ausgewählt wurde.
+      ================================================== -->
+
+      <div
+        id="quizSelection"
+        class="quiz-selection hidden"
+      >
+
+        <div class="quiz-selection-header">
+
+          <h2>
+            🧠 Quiz auswählen
+          </h2>
+
+          <p>
+            Wähle aus, welche Vokabeln du im Quiz
+            lernen möchtest.
+          </p>
+
+        </div>
+
+        <div class="quiz-selection-options">
+
+          <button
+            id="quizAllButton"
+            class="quiz-selection-btn active"
+            data-quiz-selection="all"
+            type="button"
+          >
+            📚 Alle Vokabeln
+          </button>
+
+          <button
+            class="quiz-selection-btn"
+            data-quiz-selection="unit-1"
+            type="button"
+          >
+            📘 Unit 1
+          </button>
+
+          <button
+            class="quiz-selection-btn"
+            data-quiz-selection="unit-2"
+            type="button"
+          >
+            📗 Unit 2
+          </button>
+
+          <button
+            class="quiz-selection-btn"
+            data-quiz-selection="unit-3"
+            type="button"
+          >
+            📙 Unit 3
+          </button>
+
+          <button
+            class="quiz-selection-btn"
+            data-quiz-selection="unit-4"
+            type="button"
+          >
+            📕 Unit 4
+          </button>
+
+          <button
+            class="quiz-selection-btn"
+            data-quiz-selection="grammar"
+            type="button"
+          >
+            📖 Grammatik
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           CONTENT AREA
+      ================================================== -->
+
+      <div
+        id="contentArea"
+        class="content-area"
+      >
+
+        <h2>
+          📚 Vokabeln – 1. Klasse
+        </h2>
+
+        <p>
+          Vokabeln werden geladen...
+        </p>
+
+      </div>
+
+    </section>
+
+  </section>
+
+
+  <!-- =================================================
+       LEADERBOARD
+  ================================================== -->
+
+  <section
+    id="leaderboardPage"
+    class="page-section hidden"
+  >
+
+    <div class="leaderboard-container">
+
+      <div class="leaderboard-header">
+
+        <div>
+
+          <h1>
+            🏆 Leaderboard
+          </h1>
+
+          <p>
+            Vergleiche deine Punkte mit anderen
+            Lernenden.
+          </p>
+
+        </div>
+
+        <div class="leaderboard-my-score">
+
+          <span>
+            Deine Punkte
+          </span>
+
+          <strong id="leaderboardMyPoints">
+            0
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- LEADERBOARD FILTER -->
+
+      <div class="leaderboard-controls">
+
+        <label for="leaderboardClass">
+          Klasse
+        </label>
+
+        <select id="leaderboardClass">
+
+          <option value="all">
+            Alle Klassen
+          </option>
+
+          <option value="1">
+            1. Klasse
+          </option>
+
+          <option value="2">
+            2. Klasse
+          </option>
+
+          <option value="3">
+            3. Klasse
+          </option>
+
+          <option value="4">
+            4. Klasse
+          </option>
+
+        </select>
+
+        <button
+          id="refreshLeaderboard"
+          class="secondary-btn"
+          type="button"
+        >
+          🔄 Aktualisieren
+        </button>
+
+      </div>
+
+
+      <!-- LEADERBOARD LISTE -->
+
+      <div
+        id="leaderboardList"
+        class="leaderboard-list"
+      >
+
+        <div class="leaderboard-loading">
+          Leaderboard wird geladen...
+        </div>
+
+      </div>
+
+      <p
+        id="leaderboardMessage"
+        class="message"
+      ></p>
+
+    </div>
+
+  </section>
+
+
+  <!-- =================================================
+       ADMIN PANEL
+  ================================================== -->
+
+  <section
+    id="adminPanel"
+    class="hidden"
+  >
+
+    <div class="admin-header">
+
+      <h2>
+        🛠️ Admin-Bereich
+      </h2>
+
+      <p>
+        Nur Administratoren können diesen Bereich sehen.
+      </p>
+
+    </div>
+
+
+    <!-- =================================================
+         VOKABELN HINZUFÜGEN
+    ================================================== -->
+
+    <div class="admin-vocab-section">
+
+      <h3>
+        ➕ Gemeinsame Vokabel hinzufügen
+      </h3>
+
+      <p>
+        Diese Vokabel kann anschließend von den
+        ausgewählten Klassen verwendet werden.
+      </p>
+
+      <form
+        id="vocabForm"
+        class="vocab-form"
+      >
+
+        <div class="form-group">
+
+          <label for="vocabEnglish">
+            Englisches Wort
+          </label>
+
+          <input
+            id="vocabEnglish"
+            name="english"
+            type="text"
+            placeholder="z. B. week"
+            required
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="vocabGerman">
+            Deutsche Übersetzung
+          </label>
+
+          <input
+            id="vocabGerman"
+            name="german"
+            type="text"
+            placeholder="z. B. Woche"
+            required
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="vocabUnit">
+            Unit
+          </label>
+
+          <input
+            id="vocabUnit"
+            name="unit"
+            type="number"
+            min="1"
+            placeholder="z. B. 1"
+            required
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="vocabClass">
+            Klasse
+          </label>
+
+          <select
+            id="vocabClass"
+            name="class"
+            required
+          >
+
+            <option value="1">
+              1. Klasse
+            </option>
+
+            <option value="2">
+              2. Klasse
+            </option>
+
+            <option value="3">
+              3. Klasse
+            </option>
+
+            <option value="4">
+              4. Klasse
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="vocabExample">
+            Beispielsatz
+          </label>
+
+          <input
+            id="vocabExample"
+            name="example"
+            type="text"
+            placeholder="z. B. I have a good week."
+          >
+
+        </div>
+
+
+        <div class="vocab-form-buttons">
+
+          <button
+            id="addVocabButton"
+            class="primary-btn"
+            type="submit"
+          >
+            ➕ Vokabel hinzufügen
+          </button>
+
+        </div>
+
+
+        <p
+          id="vocabMessage"
+          class="message"
+        ></p>
+
+      </form>
+
+    </div>
+
+
+    <!-- =================================================
+         BENUTZERÜBERSICHT
+    ================================================== -->
+
+    <div class="admin-users-section">
+
+      <h3>
+        👥 Benutzerübersicht
+      </h3>
+
+      <button
+        id="refreshAdmin"
+        class="secondary-btn"
+        type="button"
+      >
+        🔄 Benutzer aktualisieren
+      </button>
+
+      <p
+        id="adminMessage"
+        class="message"
+      ></p>
+
+      <div class="admin-table-wrapper">
+
+        <table class="admin-table">
+
+          <thead>
+
+            <tr>
+
+              <th>
+                Benutzername
+              </th>
+
+              <th>
+                Punkte
+              </th>
+
+              <th>
+                Klasse
+              </th>
+
+              <th>
+                Admin
+              </th>
+
+              <th>
+                Erstellt
+              </th>
+
+            </tr>
+
+          </thead>
+
+          <tbody id="adminUsers">
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+<footer class="footer">
+
+  English Master • Englisch lernen für Klasse 1–4
+
+</footer>
+```
+
+  </section>
+
+  <!-- =====================================================
+       SUPABASE
+  ====================================================== -->
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+  ></script>
+
+  <!-- =====================================================
+       DEINE JAVASCRIPT-DATEI
+  ====================================================== -->
+
+  <script src="script.js"></script>
+
+</body>
+</html>
