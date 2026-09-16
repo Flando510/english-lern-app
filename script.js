@@ -1,24 +1,19 @@
-```js
+```javascript
 /*
   ENGLISH MASTER – Supabase-Version
 
-  Enthalten:
-  - Login / Registrierung
+  Funktionen:
+  - Anmeldung / Registrierung
   - Punkte
-  - Vokabeln
-  - Unit-System
-  - Grammatik
+  - Vokabeln mit Units
   - Quiz mit Auswahl:
       • Alle Vokabeln
-      • Bestimmte Unit
+      • bestimmte Unit
       • Grammatik
   - Übungen
+  - Leaderboard
   - Admin-Bereich
 */
-
-// ============================================================
-// SUPABASE
-// ============================================================
 
 const SUPABASE_URL = "https://amrqkjyemjpyxxyugwyu.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY =
@@ -49,6 +44,55 @@ const lessons = {
         ["cat", "Katze"],
         ["water", "Wasser"],
         ["apple", "Apfel"]
+      ],
+
+      2: [
+        ["lion", "Löwe"],
+        ["tree", "Baum"],
+        ["penguin", "Pinguin"],
+        ["giraffe", "Giraffe"],
+        ["train", "Zug"],
+        ["guide", "(Reise-)Führer/in"],
+        ["monkey", "Affe"],
+        ["parrot", "Papagei"],
+        ["zoo", "Zoo"],
+        ["beautiful", "schön, hübsch"],
+        ["behind", "hinter"],
+        ["big", "groß"],
+        ["in front of", "vor"],
+        ["next to", "neben"],
+        ["now", "jetzt"],
+        ["on", "auf"],
+        ["there is", "es gibt, da ist"],
+        ["there are", "es gibt, da sind"],
+        ["under", "unter"],
+        ["What is it?", "Was ist los?"],
+        ["where", "wo"],
+        ["small", "klein"],
+        ["adult", "Erwachsene/r"],
+        ["at", "bei; an; hier: in"],
+        ["to bring", "(mit-)bringen"],
+        ["but", "aber"],
+        ["to feed", "füttern"],
+        ["to run around", "herumlaufen"],
+        ["to", "zu; bis; vor; hier: in"],
+        ["welcome", "willkommen"],
+        ["from", "aus"],
+        ["year", "Jahr, Jahrgangsstufe"],
+        ["he", "er"],
+        ["she", "sie"],
+        ["to talk", "sprechen, sich unterhalten"],
+        ["they", "sie"],
+        ["we", "wir"],
+        ["for", "für"],
+        ["happy", "glücklich, fröhlich; zufrieden"],
+        ["to let somebody out", "jemanden herauslassen"],
+        ["us", "uns"],
+        ["car", "Auto"],
+        ["At last.", "Endlich."],
+        ["How strange!", "Wie komisch!"],
+        ["Let me see.", "Lass mich mal schauen."],
+        ["stone", "Stein"]
       ]
     },
 
@@ -63,11 +107,7 @@ const lessons = {
   2: {
     units: {
 
-      /*
-        Deine Unit 2 Vokabeln
-      */
-
-      2: [
+      1: [
         ["ship", "Schiff"],
         ["sea", "Meer"],
         ["treasure", "Schatz"],
@@ -78,9 +118,6 @@ const lessons = {
         ["famous", "berühmt"],
         ["him", "ihm / ihn"],
         ["his", "sein / seine"],
-        ["to be scared of", "Angst haben vor"],
-        ["very", "sehr"],
-        ["strong", "stark, kräftig"],
         ["captain", "Kapitän"],
         ["have got / has got", "haben"],
         ["pretty", "hübsch"],
@@ -90,27 +127,21 @@ const lessons = {
         ["dream", "Traum"],
         ["tired", "müde"],
         ["to guess", "raten"],
+        ["It's your turn.", "Du bist an der Reihe."],
         ["brother", "Bruder"],
         ["blonde", "blond"],
         ["real", "echt, wirklich"],
         ["short", "klein"],
         ["tall", "groß"],
         ["wrong", "falsch, nicht in Ordnung"],
-        ["true", "wahr"]
-      ]
-    },
+        ["Good idea.", "Gute Idee."],
+        ["true", "wahr"],
+        ["to be scared of", "Angst haben vor"],
+        ["very", "sehr"],
+        ["strong", "stark, kräftig"]
+      ],
 
-    grammar:
-      "Simple Present: I play, you play, he/she/it plays. Bei he/she/it kommt meistens -s dazu.",
-
-    example:
-      "I play football. / He plays football. / They like music."
-  },
-
-
-  3: {
-    units: {
-      1: [
+      2: [
         ["finger", "Finger"],
         ["ear", "Ohr"],
         ["nose", "Nase"],
@@ -131,20 +162,9 @@ const lessons = {
         ["big", "groß"],
         ["small", "klein"],
         ["long", "lang"]
-      ]
-    },
+      ],
 
-    grammar:
-      "Past Simple: regelmäßige Verben bekommen oft -ed. Beispiel: play → played, visit → visited.",
-
-    example:
-      "I visited London last year. / We played yesterday."
-  },
-
-
-  4: {
-    units: {
-      1: [
+      3: [
         ["cold", "kalt"],
         ["angry", "wütend"],
         ["happy", "glücklich"],
@@ -164,7 +184,7 @@ const lessons = {
         ["night", "Nacht"]
       ],
 
-      2: [
+      4: [
         ["after", "nach"],
         ["day", "Tag"],
         ["end", "Ende"],
@@ -175,7 +195,7 @@ const lessons = {
         ["It's no good.", "Es hat keinen Zweck."],
         ["mum", "Mama, Mutti"],
         ["next", "nächster/nächste/nächstes"],
-        ["still", "immer noch"],
+        ["still not", "immer noch nicht"],
         ["a day in the life of", "ein Tag im Leben von"],
         ["to be asleep", "schlafen"],
         ["early", "früh"],
@@ -188,7 +208,7 @@ const lessons = {
         ["room", "Zimmer, Raum"],
         ["why", "warum"],
         ["bad", "schlecht, böse"],
-        ["Don't be late.", "Komm(t) nicht zu spät."],
+        ["Don't be late.", "Komm(t) nicht zu spät., Sei(d) pünktlich."],
         ["tomorrow", "morgen"],
         ["birthday", "Geburtstag"],
         ["friend", "Freund/Freundin"],
@@ -210,16 +230,64 @@ const lessons = {
     },
 
     grammar:
-      "Past Simple: regelmäßige Verben bekommen oft -ed.",
+      "Simple Present: I play, you play, he/she/it plays. Bei he/she/it kommt meistens -s dazu.",
 
     example:
-      "I played football yesterday."
+      "I play football. / He plays football. / They like music."
+  },
+
+
+  3: {
+    units: {
+      1: [
+        ["usually", "normalerweise"],
+        ["sometimes", "manchmal"],
+        ["always", "immer"],
+        ["never", "nie"],
+        ["important", "wichtig"],
+        ["interesting", "interessant"],
+        ["journey", "Reise"],
+        ["environment", "Umwelt"],
+        ["future", "Zukunft"],
+        ["healthy", "gesund"]
+      ]
+    },
+
+    grammar:
+      "Past Simple: Regelmäßige Verben bekommen oft -ed. play → played, visit → visited.",
+
+    example:
+      "I visited London last year. / We played yesterday."
+  },
+
+
+  4: {
+    units: {
+      1: [
+        ["opportunity", "Möglichkeit"],
+        ["experience", "Erfahrung"],
+        ["decision", "Entscheidung"],
+        ["although", "obwohl"],
+        ["however", "jedoch"],
+        ["improve", "verbessern"],
+        ["probably", "wahrscheinlich"],
+        ["future", "Zukunft"],
+        ["responsibility", "Verantwortung"],
+        ["achievement", "Erfolg/Leistung"]
+      ]
+    },
+
+    grammar:
+      "First Conditional: If + Simple Present, will + Verb.",
+
+    example:
+      "If it rains, we will stay at home. / If you practise, you will improve."
   }
 };
 
 
 // ============================================================
-// AKTUELLER STATUS
+// STATUS
 // ============================================================
 
 let currentClass = 1;
@@ -228,6 +296,9 @@ let currentQuestion = 0;
 let currentUser = null;
 let currentProfile = null;
 let isRegisterMode = false;
+
+let selectedQuizType = "all";
+let selectedQuizUnit = "all";
 
 
 // ============================================================
@@ -240,6 +311,7 @@ const mainScreen = document.getElementById("mainScreen");
 const authForm = document.getElementById("authForm");
 const usernameInput = document.getElementById("username");
 const passwordInput = document.getElementById("password");
+
 const authButton = document.getElementById("authButton");
 const authMessage = document.getElementById("authMessage");
 
@@ -269,9 +341,7 @@ function setAuthMessage(text, error = true) {
   if (!authMessage) return;
 
   authMessage.textContent = text;
-  authMessage.style.color = error
-    ? "#c0392b"
-    : "#18794e";
+  authMessage.style.color = error ? "#c0392b" : "#18794e";
 }
 
 
@@ -279,9 +349,7 @@ function setAdminMessage(text, error = true) {
   if (!adminMessage) return;
 
   adminMessage.textContent = text;
-  adminMessage.style.color = error
-    ? "#c0392b"
-    : "#18794e";
+  adminMessage.style.color = error ? "#c0392b" : "#18794e";
 }
 
 
@@ -299,189 +367,80 @@ function validUsername(username) {
 }
 
 
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+
 // ============================================================
 // LOGIN / REGISTRIERUNG
 // ============================================================
 
 function showLogin() {
-
   isRegisterMode = false;
 
-  loginTab?.classList.add("active");
-  registerTab?.classList.remove("active");
+  loginTab.classList.add("active");
+  registerTab.classList.remove("active");
 
-  if (authButton) {
-    authButton.textContent = "Anmelden";
-  }
+  authButton.textContent = "Anmelden";
 
-  if (passwordInput) {
-    passwordInput.autocomplete = "current-password";
-  }
+  passwordInput.autocomplete = "current-password";
 
   setAuthMessage("");
 }
 
 
 function showRegister() {
-
   isRegisterMode = true;
 
-  registerTab?.classList.add("active");
-  loginTab?.classList.remove("active");
+  registerTab.classList.add("active");
+  loginTab.classList.remove("active");
 
-  if (authButton) {
-    authButton.textContent = "Konto erstellen";
-  }
+  authButton.textContent = "Konto erstellen";
 
-  if (passwordInput) {
-    passwordInput.autocomplete = "new-password";
-  }
+  passwordInput.autocomplete = "new-password";
 
   setAuthMessage("");
 }
 
 
-// ============================================================
-// PROFIL
-// ============================================================
-
-async function loadProfile(user) {
-
-  const { data, error } = await supabaseClient
-    .from("profiles")
-    .select("id, username, points, is_admin, created_at")
-    .eq("id", user.id)
-    .single();
-
-  if (error) {
-    console.error(error);
-    return null;
-  }
-
-  return data;
-}
-
-
-function updateUserUI() {
-
-  if (!currentProfile) return;
-
-  const username = currentProfile.username;
-  const points = Number(currentProfile.points || 0);
-
-  if (welcomeText) {
-    welcomeText.textContent = `👤 ${username}`;
-  }
-
-  if (heroUsername) {
-    heroUsername.textContent = username;
-  }
-
-  if (pointsBadge) {
-    pointsBadge.textContent = `⭐ ${points} Punkte`;
-  }
-
-  if (heroPoints) {
-    heroPoints.textContent = points;
-  }
-
-  if (currentProfile.is_admin) {
-
-    adminPanel?.classList.remove("hidden");
-
-    loadAdminUsers();
-
-  } else {
-
-    adminPanel?.classList.add("hidden");
-
-  }
-}
-
-
-async function showApp(user) {
-
-  currentUser = user;
-
-  currentProfile = await loadProfile(user);
-
-  if (!currentProfile) {
-
-    await supabaseClient.auth.signOut();
-
-    setAuthMessage(
-      "Dein Profil konnte nicht geladen werden."
-    );
-
-    return;
-  }
-
-  authScreen?.classList.add("hidden");
-  mainScreen?.classList.remove("hidden");
-
-  updateUserUI();
-  renderLearning();
-}
-
-
-function showAuth() {
-
-  currentUser = null;
-  currentProfile = null;
-
-  mainScreen?.classList.add("hidden");
-  authScreen?.classList.remove("hidden");
-
-  if (usernameInput) usernameInput.value = "";
-  if (passwordInput) passwordInput.value = "";
-
-  showLogin();
-}
-
-
-// ============================================================
-// LOGIN-FORMULAR
-// ============================================================
-
-authForm?.addEventListener("submit", async event => {
-
+authForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const username = usernameInput.value.trim();
   const password = passwordInput.value;
 
   if (!validUsername(username)) {
-
     setAuthMessage(
       "Benutzername: 3–20 Zeichen, nur Buchstaben, Zahlen, _ und -."
     );
-
     return;
   }
 
   if (password.length < 6) {
-
     setAuthMessage(
       "Das Passwort muss mindestens 6 Zeichen haben."
     );
-
     return;
   }
 
   authButton.disabled = true;
 
-  authButton.textContent =
-    isRegisterMode
-      ? "Konto wird erstellt..."
-      : "Anmeldung...";
+  authButton.textContent = isRegisterMode
+    ? "Konto wird erstellt..."
+    : "Anmeldung...";
 
   try {
-
     const email = authEmail(username);
 
-    // --------------------------------------------------------
+    // -------------------------
     // REGISTRIERUNG
-    // --------------------------------------------------------
+    // -------------------------
 
     if (isRegisterMode) {
 
@@ -496,7 +455,9 @@ authForm?.addEventListener("submit", async event => {
           }
         });
 
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
 
       if (!data.user) {
         throw new Error(
@@ -515,7 +476,6 @@ authForm?.addEventListener("submit", async event => {
           });
 
       if (profileError) {
-
         console.error(profileError);
 
         await supabaseClient.auth.signOut();
@@ -534,9 +494,9 @@ authForm?.addEventListener("submit", async event => {
 
     }
 
-    // --------------------------------------------------------
+    // -------------------------
     // LOGIN
-    // --------------------------------------------------------
+    // -------------------------
 
     else {
 
@@ -546,7 +506,9 @@ authForm?.addEventListener("submit", async event => {
           password
         });
 
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
 
       await showApp(data.user);
     }
@@ -563,33 +525,133 @@ authForm?.addEventListener("submit", async event => {
 
     authButton.disabled = false;
 
-    authButton.textContent =
-      isRegisterMode
-        ? "Konto erstellen"
-        : "Anmelden";
+    authButton.textContent = isRegisterMode
+      ? "Konto erstellen"
+      : "Anmelden";
   }
-
 });
 
 
-loginTab?.addEventListener("click", showLogin);
-registerTab?.addEventListener("click", showRegister);
+loginTab.addEventListener("click", showLogin);
+registerTab.addEventListener("click", showRegister);
 
 
-logoutButton?.addEventListener("click", async () => {
+logoutButton.addEventListener("click", async () => {
 
   await supabaseClient.auth.signOut();
 
   showAuth();
-
 });
+
+
+// ============================================================
+// PROFIL
+// ============================================================
+
+async function loadProfile(user) {
+
+  const { data, error } =
+    await supabaseClient
+      .from("profiles")
+      .select(
+        "id, username, points, is_admin, created_at"
+      )
+      .eq("id", user.id)
+      .single();
+
+  if (error) {
+    console.error(error);
+    return null;
+  }
+
+  return data;
+}
+
+
+function updateUserUI() {
+
+  if (!currentProfile) return;
+
+  const username =
+    currentProfile.username;
+
+  const points =
+    Number(currentProfile.points || 0);
+
+  welcomeText.textContent =
+    `👤 ${username}`;
+
+  heroUsername.textContent =
+    username;
+
+  pointsBadge.textContent =
+    `⭐ ${points} Punkte`;
+
+  heroPoints.textContent =
+    points;
+
+  if (currentProfile.is_admin) {
+
+    adminPanel.classList.remove("hidden");
+
+    loadAdminUsers();
+
+  } else {
+
+    adminPanel.classList.add("hidden");
+  }
+}
+
+
+async function showApp(user) {
+
+  currentUser = user;
+
+  currentProfile =
+    await loadProfile(user);
+
+  if (!currentProfile) {
+
+    await supabaseClient.auth.signOut();
+
+    setAuthMessage(
+      "Dein Profil konnte nicht geladen werden."
+    );
+
+    return;
+  }
+
+  authScreen.classList.add("hidden");
+
+  mainScreen.classList.remove("hidden");
+
+  updateUserUI();
+
+  renderLearning();
+}
+
+
+function showAuth() {
+
+  currentUser = null;
+  currentProfile = null;
+
+  mainScreen.classList.add("hidden");
+  authScreen.classList.remove("hidden");
+
+  usernameInput.value = "";
+  passwordInput.value = "";
+
+  showLogin();
+}
 
 
 // ============================================================
 // SESSION
 // ============================================================
 
-supabaseClient.auth.getSession()
+supabaseClient.auth
+  .getSession()
   .then(async ({ data }) => {
 
     if (data.session?.user) {
@@ -613,9 +675,7 @@ supabaseClient.auth.onAuthStateChange(
     ) {
 
       await showApp(session.user);
-
     }
-
   }
 );
 
@@ -626,7 +686,9 @@ supabaseClient.auth.onAuthStateChange(
 
 async function addPoints(amount) {
 
-  if (!currentProfile || !currentUser) return;
+  if (!currentProfile || !currentUser) {
+    return;
+  }
 
   const newPoints =
     Number(currentProfile.points || 0) + amount;
@@ -644,11 +706,11 @@ async function addPoints(amount) {
   if (error) {
 
     console.error(error);
-
     return;
   }
 
-  currentProfile.points = data.points;
+  currentProfile.points =
+    data.points;
 
   updateUserUI();
 }
@@ -658,7 +720,8 @@ async function addPoints(amount) {
 // KLASSENAUSWAHL
 // ============================================================
 
-document.querySelectorAll(".class-btn")
+document
+  .querySelectorAll(".class-btn")
   .forEach(button => {
 
     button.addEventListener("click", () => {
@@ -666,7 +729,8 @@ document.querySelectorAll(".class-btn")
       currentClass =
         Number(button.dataset.class);
 
-      document.querySelectorAll(".class-btn")
+      document
+        .querySelectorAll(".class-btn")
         .forEach(b =>
           b.classList.remove("active")
         );
@@ -675,9 +739,11 @@ document.querySelectorAll(".class-btn")
 
       currentQuestion = 0;
 
+      selectedQuizType = "all";
+      selectedQuizUnit = "all";
+
       renderLearning();
     });
-
   });
 
 
@@ -685,7 +751,8 @@ document.querySelectorAll(".class-btn")
 // LERNMODUS
 // ============================================================
 
-document.querySelectorAll(".mode-btn")
+document
+  .querySelectorAll(".mode-btn")
   .forEach(button => {
 
     button.addEventListener("click", () => {
@@ -695,7 +762,8 @@ document.querySelectorAll(".mode-btn")
 
       currentQuestion = 0;
 
-      document.querySelectorAll(".mode-btn")
+      document
+        .querySelectorAll(".mode-btn")
         .forEach(b =>
           b.classList.remove("active")
         );
@@ -704,12 +772,11 @@ document.querySelectorAll(".mode-btn")
 
       renderLearning();
     });
-
   });
 
 
 // ============================================================
-// LERNEN
+// RENDER LEARNING
 // ============================================================
 
 function renderLearning() {
@@ -733,126 +800,93 @@ function renderLearning() {
 
 
 // ============================================================
-// VOKABELN – UNIT-SYSTEM
+// VOKABELN MIT UNIT-SYSTEM
 // ============================================================
-
-function getUnitsForClass(classNumber) {
-
-  const lesson = lessons[classNumber];
-
-  if (!lesson) return {};
-
-  return lesson.units || {};
-}
-
-
-function getAllVocabulary(classNumber) {
-
-  const units =
-    getUnitsForClass(classNumber);
-
-  const words = [];
-
-  Object.values(units).forEach(unitWords => {
-
-    if (Array.isArray(unitWords)) {
-
-      unitWords.forEach(word => {
-        words.push(word);
-      });
-
-    }
-
-  });
-
-  return words;
-}
-
 
 function renderVocab() {
 
+  const lesson =
+    lessons[currentClass];
+
   const units =
-    getUnitsForClass(currentClass);
+    lesson.units;
 
   const unitNumbers =
-    Object.keys(units)
-      .sort((a, b) => Number(a) - Number(b));
+    Object.keys(units);
 
   learningArea.innerHTML = `
 
-    <div class="vocab-header">
+    <div class="vocab-unit-navigation">
 
-      <div>
-        <h2>📚 Vokabeln – ${currentClass}. Klasse</h2>
+      <div class="unit-header">
 
-        <p>
-          Wähle eine Unit aus.
-        </p>
+        <div>
+
+          <h2>📚 Vokabeln – ${currentClass}. Klasse</h2>
+
+          <p>
+            Wähle eine Unit aus, um die Vokabeln zu sehen.
+          </p>
+
+        </div>
+
       </div>
 
-    </div>
+      <div id="unitList" class="unit-list">
 
-    <div class="unit-list">
+        ${unitNumbers.map((unitNumber, index) => {
 
-      ${
-        unitNumbers.length === 0
+          const words =
+            units[unitNumber];
 
-          ? `
-            <div class="empty-unit">
-              <p>
-                Für diese Klasse wurden noch keine
-                Vokabeln eingetragen.
-              </p>
-            </div>
-          `
+          return `
 
-          : unitNumbers.map(unitNumber => {
+            <details
+              class="unit"
+              ${index === 0 ? "open" : ""}
+            >
 
-              const words =
-                units[unitNumber] || [];
+              <summary>
 
-              return `
+                Unit ${unitNumber}
 
-                <details class="unit">
+                <span>
+                  ${words.length} Vokabeln
+                </span>
 
-                  <summary>
-                    Unit ${unitNumber}
+              </summary>
 
-                    <span>
-                      ${words.length} Vokabeln
-                    </span>
-                  </summary>
+              <div class="unit-content">
 
-                  <div class="unit-content">
+                <div class="content-grid">
 
-                    <div class="content-grid">
+                  ${words.map(([en, de]) => `
 
-                      ${words.map(([en, de]) => `
+                    <div class="vocab-card">
 
-                        <div class="vocab-card">
+                      <strong>
+                        ${escapeHtml(en)}
+                      </strong>
 
-                          <strong>
-                            ${escapeHtml(en)}
-                          </strong>
-
-                          <span>
-                            ${escapeHtml(de)}
-                          </span>
-
-                        </div>
-
-                      `).join("")}
+                      <span>
+                        ${escapeHtml(de)}
+                      </span>
 
                     </div>
 
-                  </div>
+                  `).join("")}
 
-                </details>
+                </div>
 
-              `;
+              </div>
 
-            }).join("")
-      }
+            </details>
+
+          `;
+
+        }).join("")}
+
+      </div>
 
     </div>
   `;
@@ -870,236 +904,19 @@ function renderGrammar() {
 
   learningArea.innerHTML = `
 
-    <h2>
-      📖 Grammatik – ${currentClass}. Klasse
-    </h2>
-
-    <p>
-      ${escapeHtml(lesson.grammar)}
-    </p>
-
-    <div class="example">
-
-      <strong>
-        Beispiele:
-      </strong>
-
-      <br><br>
-
-      ${escapeHtml(lesson.example)}
-
-    </div>
-
-  `;
-}
-
-
-// ============================================================
-// QUIZ – AUSWAHL
-// ============================================================
-
-function renderQuiz() {
-
-  learningArea.innerHTML = `
-
-    <div class="quiz-header">
+    <div class="content-area">
 
       <h2>
-        🧠 Quiz – ${currentClass}. Klasse
+        📖 Grammatik – ${currentClass}. Klasse
       </h2>
 
       <p>
-        Wähle aus, was du üben möchtest.
+        ${escapeHtml(lesson.grammar)}
       </p>
 
-    </div>
-
-    <div class="quiz-selection">
-
-      <button
-        class="quiz-type-btn active"
-        data-quiz-type="all"
-        type="button"
-      >
-        📚 Alle Vokabeln
-      </button>
-
-      <button
-        class="quiz-type-btn"
-        data-quiz-type="unit"
-        type="button"
-      >
-        📖 Bestimmte Unit
-      </button>
-
-      <button
-        class="quiz-type-btn"
-        data-quiz-type="grammar"
-        type="button"
-      >
-        📘 Grammatik
-      </button>
-
-    </div>
-
-    <div
-      id="quizUnitSelection"
-      class="quiz-unit-selection hidden"
-    >
-
-      <label for="quizUnitSelect">
-        Unit auswählen
-      </label>
-
-      <select id="quizUnitSelect">
-
-        ${getUnitOptions()}
-
-      </select>
-
-    </div>
-
-    <div id="quizContent"></div>
-
-  `;
-
-  setupQuizSelection();
-
-  renderSelectedQuiz("all");
-}
-
-
-// ============================================================
-// UNIT-AUSWAHL IM QUIZ
-// ============================================================
-
-function getUnitOptions() {
-
-  const units =
-    getUnitsForClass(currentClass);
-
-  const unitNumbers =
-    Object.keys(units)
-      .sort((a, b) => Number(a) - Number(b));
-
-  if (unitNumbers.length === 0) {
-
-    return `
-      <option value="">
-        Keine Units vorhanden
-      </option>
-    `;
-  }
-
-  return unitNumbers.map(unit => `
-
-    <option value="${unit}">
-      Unit ${unit}
-    </option>
-
-  `).join("");
-}
-
-
-// ============================================================
-// QUIZ AUSWAHL EVENTS
-// ============================================================
-
-function setupQuizSelection() {
-
-  document.querySelectorAll(".quiz-type-btn")
-    .forEach(button => {
-
-      button.addEventListener("click", () => {
-
-        document.querySelectorAll(".quiz-type-btn")
-          .forEach(btn =>
-            btn.classList.remove("active")
-          );
-
-        button.classList.add("active");
-
-        const type =
-          button.dataset.quizType;
-
-        const unitSelection =
-          document.getElementById(
-            "quizUnitSelection"
-          );
-
-        if (type === "unit") {
-
-          unitSelection?.classList.remove("hidden");
-
-          renderSelectedQuiz("unit");
-
-        } else {
-
-          unitSelection?.classList.add("hidden");
-
-          renderSelectedQuiz(type);
-        }
-
-      });
-
-    });
-
-
-  const unitSelect =
-    document.getElementById("quizUnitSelect");
-
-  unitSelect?.addEventListener(
-    "change",
-    () => {
-
-      renderSelectedQuiz("unit");
-
-    }
-  );
-
-}
-
-
-// ============================================================
-// AUSGEWÄHLTES QUIZ
-// ============================================================
-
-function renderSelectedQuiz(type) {
-
-  const quizContent =
-    document.getElementById("quizContent");
-
-  if (!quizContent) return;
-
-
-  // ----------------------------------------------------------
-  // GRAMMATIK
-  // ----------------------------------------------------------
-
-  if (type === "grammar") {
-
-    const lesson =
-      lessons[currentClass];
-
-    quizContent.innerHTML = `
-
       <div class="example">
 
-        <strong>
-          📘 Grammatik
-        </strong>
-
-        <br><br>
-
-        ${escapeHtml(lesson.grammar)}
-
-      </div>
-
-      <div class="example">
-
-        <strong>
-          Beispiel
-        </strong>
+        <strong>Beispiele:</strong>
 
         <br><br>
 
@@ -1107,341 +924,468 @@ function renderSelectedQuiz(type) {
 
       </div>
 
-      <button
-        id="grammarPointButton"
-        class="primary-btn"
-        type="button"
-      >
-        ✅ Grammatik gelernt
-      </button>
-
-      <p
-        id="grammarResult"
-        class="quiz-result"
-      ></p>
-
-    `;
+    </div>
+  `;
+}
 
 
-    document
-      .getElementById("grammarPointButton")
-      ?.addEventListener(
-        "click",
-        async () => {
+// ============================================================
+// QUIZ-FRAGEN ERSTELLEN
+// ============================================================
 
-          const result =
-            document.getElementById(
-              "grammarResult"
-            );
+function getAllVocab() {
 
-          result.textContent =
-            "✅ Grammatik abgeschlossen! +5 Punkte";
-
-          result.style.color =
-            "#18794e";
-
-          document
-            .getElementById(
-              "grammarPointButton"
-            )
-            .disabled = true;
-
-          await addPoints(5);
-
-        }
-      );
-
-    return;
-  }
-
-
-  // ----------------------------------------------------------
-  // VOKABELN
-  // ----------------------------------------------------------
+  const units =
+    lessons[currentClass].units;
 
   let words = [];
 
+  Object.values(units).forEach(unitWords => {
+    words.push(...unitWords);
+  });
 
-  if (type === "all") {
+  return words;
+}
 
-    words =
-      getAllVocabulary(currentClass);
 
+function getQuizVocab() {
+
+  const units =
+    lessons[currentClass].units;
+
+  if (selectedQuizUnit === "all") {
+    return getAllVocab();
   }
 
+  return units[selectedQuizUnit] || [];
+}
 
-  if (type === "unit") {
 
-    const select =
-      document.getElementById(
-        "quizUnitSelect"
-      );
+function createVocabQuestion(wordList) {
 
-    const unitNumber =
-      Number(select?.value);
-
-    const units =
-      getUnitsForClass(currentClass);
-
-    words =
-      units[unitNumber] || [];
-
+  if (!wordList.length) {
+    return null;
   }
 
+  const correctIndex =
+    Math.floor(Math.random() * wordList.length);
 
-  if (words.length === 0) {
+  const correctWord =
+    wordList[correctIndex];
 
-    quizContent.innerHTML = `
+  let wrongWords =
+    wordList.filter(
+      (_, index) =>
+        index !== correctIndex
+    );
 
-      <div class="empty-unit">
+  wrongWords =
+    wrongWords
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 2);
+
+  const options = [
+    correctWord[1],
+    ...wrongWords.map(word => word[1])
+  ];
+
+  options.sort(() => Math.random() - 0.5);
+
+  return {
+    q: `Was bedeutet „${correctWord[0]}“?`,
+    options,
+    answer: options.indexOf(correctWord[1])
+  };
+}
+
+
+// ============================================================
+// QUIZ
+// ============================================================
+
+function renderQuiz() {
+
+  const units =
+    lessons[currentClass].units;
+
+  const unitNumbers =
+    Object.keys(units);
+
+  // Wenn noch keine Frage vorhanden ist,
+  // wird eine neue erstellt.
+
+  if (
+    !window.currentQuizQuestion ||
+    currentQuestion === 0
+  ) {
+
+    window.currentQuizQuestion =
+      createCurrentQuizQuestion();
+  }
+
+  const q =
+    window.currentQuizQuestion;
+
+  if (!q) {
+
+    learningArea.innerHTML = `
+
+      <div class="content-area">
+
+        <h2>🧠 Quiz</h2>
 
         <p>
-          Für diese Auswahl gibt es noch
-          keine Vokabeln.
+          Für diese Auswahl sind noch keine Fragen vorhanden.
         </p>
 
       </div>
-
     `;
 
     return;
   }
 
 
-  const questions =
-    createVocabularyQuestions(words);
+  learningArea.innerHTML = `
 
-  currentQuestion = 0;
+    <div class="content-area">
 
-  showQuizQuestion(questions);
-}
+      <h2>
+        🧠 Quiz – ${currentClass}. Klasse
+      </h2>
+
+      <div class="quiz-selection">
+
+        <h3>
+          Was möchtest du üben?
+        </h3>
+
+        <div class="quiz-type-buttons">
+
+          <button
+            type="button"
+            class="quiz-filter-btn ${
+              selectedQuizType === "all"
+                ? "active"
+                : ""
+            }"
+            data-quiz-type="all"
+          >
+            📚 Alle Vokabeln
+          </button>
+
+          <button
+            type="button"
+            class="quiz-filter-btn ${
+              selectedQuizType === "unit"
+                ? "active"
+                : ""
+            }"
+            data-quiz-type="unit"
+          >
+            📖 Bestimmte Unit
+          </button>
+
+          <button
+            type="button"
+            class="quiz-filter-btn ${
+              selectedQuizType === "grammar"
+                ? "active"
+                : ""
+            }"
+            data-quiz-type="grammar"
+          >
+            📘 Grammatik
+          </button>
+
+        </div>
+
+        ${
+          selectedQuizType === "unit"
+            ? `
+
+              <div class="quiz-unit-selection">
+
+                <label for="quizUnitSelect">
+                  Unit auswählen
+                </label>
+
+                <select id="quizUnitSelect">
+
+                  ${unitNumbers.map(unit => `
+
+                    <option
+                      value="${unit}"
+                      ${
+                        String(selectedQuizUnit) === String(unit)
+                          ? "selected"
+                          : ""
+                      }
+                    >
+                      Unit ${unit}
+                    </option>
+
+                  `).join("")}
+
+                </select>
+
+              </div>
+
+            `
+            : ""
+        }
+
+      </div>
 
 
-// ============================================================
-// QUIZFRAGEN ERSTELLEN
-// ============================================================
+      <div class="quiz-question-box">
 
-function createVocabularyQuestions(words) {
+        <p>
+          Frage ${currentQuestion + 1}
+        </p>
 
-  const shuffledWords =
-    [...words]
-      .sort(() => Math.random() - 0.5);
+        <h3>
+          ${escapeHtml(q.q)}
+        </h3>
 
+        <div id="quizOptions">
 
-  return shuffledWords.map(
-    ([english, german]) => {
-
-      const possibleAnswers =
-        words
-          .filter(word =>
-            word[1] !== german
-          )
-          .map(word => word[1]);
-
-
-      const wrongAnswers =
-        possibleAnswers
-          .sort(() => Math.random() - 0.5)
-          .slice(0, 2);
-
-
-      const options =
-        [german, ...wrongAnswers]
-          .sort(() => Math.random() - 0.5);
-
-
-      return {
-
-        q:
-          `Was bedeutet „${english}“?`,
-
-        options,
-
-        answer:
-          options.indexOf(german)
-
-      };
-
-    }
-  );
-}
-
-
-// ============================================================
-// QUIZFRAGE ANZEIGEN
-// ============================================================
-
-function showQuizQuestion(questions) {
-
-  const quizContent =
-    document.getElementById(
-      "quizContent"
-    );
-
-  if (!quizContent) return;
-
-  const q =
-    questions[currentQuestion];
-
-
-  quizContent.innerHTML = `
-
-    <div class="quiz-question-box">
-
-      <p>
-        Frage
-        ${currentQuestion + 1}
-        von
-        ${questions.length}
-      </p>
-
-      <h3>
-        ${escapeHtml(q.q)}
-      </h3>
-
-      <div id="quizOptions">
-
-        ${q.options.map(
-          (option, index) => `
+          ${q.options.map((option, index) => `
 
             <button
               class="quiz-option"
               data-answer="${index}"
-              type="button"
             >
               ${escapeHtml(option)}
             </button>
 
-          `
-        ).join("")}
+          `).join("")}
+
+        </div>
+
+        <p
+          id="quizResult"
+          class="quiz-result"
+        ></p>
 
       </div>
 
-      <p
-        id="quizResult"
-        class="quiz-result"
-      ></p>
-
     </div>
-
   `;
 
 
-  document.querySelectorAll(".quiz-option")
+  // ----------------------------------------------------------
+  // Quiz-Auswahl
+  // ----------------------------------------------------------
+
+  document
+    .querySelectorAll(".quiz-filter-btn")
     .forEach(button => {
 
-      button.addEventListener(
-        "click",
-        async () => {
+      button.addEventListener("click", () => {
 
-          const selected =
-            Number(button.dataset.answer);
+        selectedQuizType =
+          button.dataset.quizType;
 
-          const result =
-            document.getElementById(
-              "quizResult"
-            );
+        currentQuestion = 0;
 
+        window.currentQuizQuestion = null;
 
-          document
-            .querySelectorAll(".quiz-option")
-            .forEach(b =>
-              b.disabled = true
-            );
-
-
-          if (selected === q.answer) {
-
-            result.textContent =
-              "✅ Richtig! +10 Punkte";
-
-            result.style.color =
-              "#18794e";
-
-            await addPoints(10);
-
-          } else {
-
-            result.textContent =
-              `❌ Nicht ganz. Richtig wäre: ${q.options[q.answer]}`;
-
-            result.style.color =
-              "#c0392b";
-          }
-
-
-          setTimeout(() => {
-
-            currentQuestion++;
-
-
-            if (
-              currentQuestion >=
-              questions.length
-            ) {
-
-              quizContent.innerHTML = `
-
-                <div class="example">
-
-                  <h3>
-                    🎉 Quiz geschafft!
-                  </h3>
-
-                  <p>
-                    Du hast alle Fragen dieser
-                    Auswahl beantwortet.
-                  </p>
-
-                  <button
-                    id="restartQuizButton"
-                    class="primary-btn"
-                    type="button"
-                  >
-                    🔄 Nochmal spielen
-                  </button>
-
-                </div>
-
-              `;
-
-
-              document
-                .getElementById(
-                  "restartQuizButton"
-                )
-                ?.addEventListener(
-                  "click",
-                  () => {
-
-                    const activeButton =
-                      document.querySelector(
-                        ".quiz-type-btn.active"
-                      );
-
-                    const type =
-                      activeButton
-                        ?.dataset.quizType ||
-                      "all";
-
-                    renderSelectedQuiz(type);
-
-                  }
-                );
-
-
-              return;
-            }
-
-
-            showQuizQuestion(questions);
-
-          }, 1000);
-
-        }
-      );
-
+        renderQuiz();
+      });
     });
+
+
+  const quizUnitSelect =
+    document.getElementById("quizUnitSelect");
+
+  if (quizUnitSelect) {
+
+    quizUnitSelect.addEventListener(
+      "change",
+      () => {
+
+        selectedQuizUnit =
+          quizUnitSelect.value;
+
+        currentQuestion = 0;
+
+        window.currentQuizQuestion = null;
+
+        renderQuiz();
+      }
+    );
+  }
+
+
+  // ----------------------------------------------------------
+  // Antworten
+  // ----------------------------------------------------------
+
+  document
+    .querySelectorAll(".quiz-option")
+    .forEach(button => {
+
+      button.addEventListener("click", () => {
+
+        const selected =
+          Number(button.dataset.answer);
+
+        const result =
+          document.getElementById(
+            "quizResult"
+          );
+
+        document
+          .querySelectorAll(".quiz-option")
+          .forEach(b =>
+            b.disabled = true
+          );
+
+
+        if (selected === q.answer) {
+
+          result.textContent =
+            "✅ Richtig! +10 Punkte";
+
+          result.style.color =
+            "#18794e";
+
+          addPoints(10);
+
+        } else {
+
+          result.textContent =
+            `❌ Nicht ganz. Richtig wäre: ${q.options[q.answer]}`;
+
+          result.style.color =
+            "#c0392b";
+        }
+
+
+        setTimeout(() => {
+
+          currentQuestion++;
+
+          window.currentQuizQuestion =
+            createCurrentQuizQuestion();
+
+          renderQuiz();
+
+        }, 1200);
+      });
+    });
+}
+
+
+// ============================================================
+// QUIZ-FRAGE GENERIEREN
+// ============================================================
+
+function createCurrentQuizQuestion() {
+
+  // -------------------------
+  // VOKABELN
+  // -------------------------
+
+  if (
+    selectedQuizType === "all" ||
+    selectedQuizType === "unit"
+  ) {
+
+    const words =
+      getQuizVocab();
+
+    return createVocabQuestion(words);
+  }
+
+
+  // -------------------------
+  // GRAMMATIK
+  // -------------------------
+
+  if (selectedQuizType === "grammar") {
+
+    const grammarQuestions = {
+
+      1: [
+        {
+          q: "Welche Form passt? „I ___ happy.“",
+          options: ["am", "is", "are"],
+          answer: 0
+        },
+        {
+          q: "Welche Form passt? „She ___ from England.“",
+          options: ["am", "is", "are"],
+          answer: 1
+        },
+        {
+          q: "Welche Form passt? „They ___ friends.“",
+          options: ["am", "is", "are"],
+          answer: 2
+        }
+      ],
+
+      2: [
+        {
+          q: "Welche Form ist richtig? „He ___ football.“",
+          options: ["play", "plays", "playing"],
+          answer: 1
+        },
+        {
+          q: "Welche Form ist richtig? „They ___ music.“",
+          options: ["likes", "like", "liking"],
+          answer: 1
+        },
+        {
+          q: "Welche Form ist richtig? „She ___ to school.“",
+          options: ["go", "goes", "going"],
+          answer: 1
+        }
+      ],
+
+      3: [
+        {
+          q: "Welche Vergangenheitsform stimmt? „visit → ___“",
+          options: ["visited", "visiting", "visits"],
+          answer: 0
+        },
+        {
+          q: "Welche Vergangenheitsform stimmt? „play → ___“",
+          options: ["plays", "playing", "played"],
+          answer: 2
+        }
+      ],
+
+      4: [
+        {
+          q: "„If I study, I ___ learn more.“",
+          options: ["will", "am", "did"],
+          answer: 0
+        },
+        {
+          q: "„If it rains, we ___ stay at home.“",
+          options: ["will", "are", "did"],
+          answer: 0
+        }
+      ]
+    };
+
+
+    const questions =
+      grammarQuestions[currentClass] || [];
+
+    if (!questions.length) {
+      return null;
+    }
+
+    return questions[
+      Math.floor(
+        Math.random() * questions.length
+      )
+    ];
+  }
+
+  return null;
 }
 
 
@@ -1451,70 +1395,74 @@ function showQuizQuestion(questions) {
 
 function renderExercise() {
 
-  const allWords =
-    getAllVocabulary(currentClass);
+  const words =
+    getAllVocab();
 
-  const word =
-    allWords[0]?.[0] ||
-    "school";
+  const randomWord =
+    words[
+      Math.floor(
+        Math.random() * words.length
+      )
+    ];
 
 
   learningArea.innerHTML = `
 
-    <h2>
-      ✏️ Übungen – ${currentClass}. Klasse
-    </h2>
+    <div class="content-area">
 
-    <p>
-      Schreibe einen eigenen englischen Satz
-      mit einem Wort aus den Vokabeln.
-    </p>
+      <h2>
+        ✏️ Übungen – ${currentClass}. Klasse
+      </h2>
 
-    <div class="example">
+      <p>
+        Schreibe einen englischen Satz mit einem Wort
+        aus den Vokabeln.
+      </p>
 
-      <strong>
-        Aufgabe:
-      </strong>
+      <div class="example">
 
-      <br><br>
+        <strong>Aufgabe:</strong>
 
-      Verwende das Wort
-      <strong>
-        ${escapeHtml(word)}
-      </strong>
-      in einem englischen Satz.
+        <br><br>
+
+        Verwende das Wort
+        <strong>
+          ${escapeHtml(randomWord[0])}
+        </strong>
+        in einem englischen Satz.
+
+      </div>
+
+      <label for="exerciseInput">
+        Dein Satz
+      </label>
+
+      <input
+        id="exerciseInput"
+        type="text"
+        placeholder="Write your sentence here..."
+      >
+
+      <button
+        id="exerciseButton"
+        class="primary-btn"
+        style="max-width:260px;"
+      >
+        Übung abschließen
+      </button>
+
+      <p
+        id="exerciseResult"
+        class="quiz-result"
+      ></p>
 
     </div>
-
-    <label for="exerciseInput">
-      Dein Satz
-    </label>
-
-    <input
-      id="exerciseInput"
-      type="text"
-      placeholder="Write your sentence here..."
-    >
-
-    <button
-      id="exerciseButton"
-      class="primary-btn"
-      type="button"
-    >
-      Übung abschließen
-    </button>
-
-    <p
-      id="exerciseResult"
-      class="quiz-result"
-    ></p>
-
   `;
 
 
   document
     .getElementById("exerciseButton")
-    ?.addEventListener(
+    .addEventListener(
       "click",
       async () => {
 
@@ -1552,13 +1500,10 @@ function renderExercise() {
         input.disabled = true;
 
         document
-          .getElementById(
-            "exerciseButton"
-          )
+          .getElementById("exerciseButton")
           .disabled = true;
 
         await addPoints(5);
-
       }
     );
 }
@@ -1570,7 +1515,9 @@ function renderExercise() {
 
 async function loadAdminUsers() {
 
-  if (!currentProfile?.is_admin) return;
+  if (!currentProfile?.is_admin) {
+    return;
+  }
 
   setAdminMessage(
     "Lade Benutzer...",
@@ -1578,7 +1525,10 @@ async function loadAdminUsers() {
   );
 
 
-  const { data, error } =
+  const {
+    data,
+    error
+  } =
     await supabaseClient.rpc(
       "admin_list_profiles"
     );
@@ -1588,19 +1538,14 @@ async function loadAdminUsers() {
 
     console.error(error);
 
-    if (adminUsers) {
-      adminUsers.innerHTML = "";
-    }
+    adminUsers.innerHTML = "";
 
     setAdminMessage(
-      "Admin-Liste konnte nicht geladen werden."
+      "Admin-Liste konnte nicht geladen werden. Prüfe die Admin-SQL-Funktion."
     );
 
     return;
   }
-
-
-  if (!adminUsers) return;
 
 
   adminUsers.innerHTML =
@@ -1617,7 +1562,7 @@ async function loadAdminUsers() {
         </td>
 
         <td>
-          ${user.class_number || "-"}
+          ${user.class || "-"}
         </td>
 
         <td>
@@ -1625,11 +1570,9 @@ async function loadAdminUsers() {
         </td>
 
         <td>
-          ${
-            new Date(
-              user.created_at
-            ).toLocaleDateString("de-AT")
-          }
+          ${new Date(
+            user.created_at
+          ).toLocaleDateString("de-AT")}
         </td>
 
       </tr>
@@ -1644,27 +1587,380 @@ async function loadAdminUsers() {
 }
 
 
-function escapeHtml(value) {
-
-  return String(value)
-
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+if (refreshAdmin) {
+  refreshAdmin.addEventListener(
+    "click",
+    loadAdminUsers
+  );
 }
 
 
-refreshAdmin?.addEventListener(
-  "click",
-  loadAdminUsers
-);
+// ============================================================
+// NAVIGATION
+// ============================================================
+
+document
+  .querySelectorAll(".nav-btn")
+  .forEach(button => {
+
+    button.addEventListener("click", () => {
+
+      const page =
+        button.dataset.page;
+
+
+      document
+        .querySelectorAll(".nav-btn")
+        .forEach(btn =>
+          btn.classList.remove("active")
+        );
+
+      button.classList.add("active");
+
+
+      const learningPage =
+        document.getElementById(
+          "learningPage"
+        );
+
+      const leaderboardPage =
+        document.getElementById(
+          "leaderboardPage"
+        );
+
+
+      if (page === "learning") {
+
+        learningPage.classList.remove(
+          "hidden"
+        );
+
+        leaderboardPage.classList.add(
+          "hidden"
+        );
+
+      }
+
+
+      if (page === "leaderboard") {
+
+        learningPage.classList.add(
+          "hidden"
+        );
+
+        leaderboardPage.classList.remove(
+          "hidden"
+        );
+
+        loadLeaderboard();
+      }
+    });
+  });
 
 
 // ============================================================
-// START
+// LEADERBOARD
 // ============================================================
 
-showLogin();
+const leaderboardList =
+  document.getElementById(
+    "leaderboardList"
+  );
+
+const leaderboardClass =
+  document.getElementById(
+    "leaderboardClass"
+  );
+
+const refreshLeaderboard =
+  document.getElementById(
+    "refreshLeaderboard"
+  );
+
+const leaderboardMyPoints =
+  document.getElementById(
+    "leaderboardMyPoints"
+  );
+
+const leaderboardMessage =
+  document.getElementById(
+    "leaderboardMessage"
+  );
+
+
+async function loadLeaderboard() {
+
+  if (!leaderboardList) {
+    return;
+  }
+
+  leaderboardList.innerHTML = `
+    <div class="leaderboard-loading">
+      Leaderboard wird geladen...
+    </div>
+  `;
+
+
+  if (leaderboardMyPoints && currentProfile) {
+
+    leaderboardMyPoints.textContent =
+      Number(currentProfile.points || 0);
+  }
+
+
+  let query =
+    supabaseClient
+      .from("profiles")
+      .select(
+        "username, points, is_admin, created_at"
+      )
+      .eq("is_admin", false)
+      .order("points", {
+        ascending: false
+      });
+
+
+  const selectedClass =
+    leaderboardClass?.value;
+
+
+  /*
+    Falls deine profiles-Tabelle eine
+    class-Spalte besitzt, kann hier später
+    nach Klasse gefiltert werden.
+
+    Der Filter wird deshalb nur verwendet,
+    wenn die Auswahl "Alle Klassen" ist.
+  */
+
+  const { data, error } =
+    await query;
+
+
+  if (error) {
+
+    console.error(error);
+
+    leaderboardList.innerHTML = "";
+
+    if (leaderboardMessage) {
+
+      leaderboardMessage.textContent =
+        "Leaderboard konnte nicht geladen werden.";
+
+      leaderboardMessage.style.color =
+        "#c0392b";
+    }
+
+    return;
+  }
+
+
+  let users = data || [];
+
+
+  // Falls die Datenbank keine Klassen-Spalte
+  // im Select verwendet, bleibt das Leaderboard
+  // trotzdem funktionierend.
+
+  if (selectedClass === "all") {
+    // Alle Benutzer
+  }
+
+
+  if (!users.length) {
+
+    leaderboardList.innerHTML = `
+      <div class="leaderboard-loading">
+        Noch keine Benutzer vorhanden.
+      </div>
+    `;
+
+    return;
+  }
+
+
+  leaderboardList.innerHTML =
+    users.map((user, index) => `
+
+      <div class="leaderboard-row">
+
+        <div class="leaderboard-rank">
+          #${index + 1}
+        </div>
+
+        <div class="leaderboard-name">
+          ${escapeHtml(user.username)}
+        </div>
+
+        <div class="leaderboard-points">
+          ⭐ ${Number(user.points || 0)}
+        </div>
+
+      </div>
+
+    `).join("");
+
+
+  if (leaderboardMessage) {
+
+    leaderboardMessage.textContent =
+      `${users.length} Lernende angezeigt.`;
+
+    leaderboardMessage.style.color =
+      "#18794e";
+  }
+}
+
+
+if (refreshLeaderboard) {
+
+  refreshLeaderboard.addEventListener(
+    "click",
+    loadLeaderboard
+  );
+}
+
+
+// ============================================================
+// ADMIN – VOKABEL HINZUFÜGEN
+// ============================================================
+
+const vocabForm =
+  document.getElementById("vocabForm");
+
+const vocabEnglish =
+  document.getElementById("vocabEnglish");
+
+const vocabGerman =
+  document.getElementById("vocabGerman");
+
+const vocabUnit =
+  document.getElementById("vocabUnit");
+
+const vocabClass =
+  document.getElementById("vocabClass");
+
+const vocabExample =
+  document.getElementById("vocabExample");
+
+const vocabMessage =
+  document.getElementById("vocabMessage");
+
+
+if (vocabForm) {
+
+  vocabForm.addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+
+      if (!currentProfile?.is_admin) {
+
+        if (vocabMessage) {
+
+          vocabMessage.textContent =
+            "Nur Administratoren können Vokabeln hinzufügen.";
+
+          vocabMessage.style.color =
+            "#c0392b";
+        }
+
+        return;
+      }
+
+
+      const english =
+        vocabEnglish.value.trim();
+
+      const german =
+        vocabGerman.value.trim();
+
+      const unit =
+        Number(vocabUnit.value);
+
+      const classNumber =
+        Number(vocabClass.value);
+
+      const example =
+        vocabExample.value.trim();
+
+
+      if (
+        !english ||
+        !german ||
+        !unit ||
+        !classNumber
+      ) {
+
+        if (vocabMessage) {
+
+          vocabMessage.textContent =
+            "Bitte alle Pflichtfelder ausfüllen.";
+
+          vocabMessage.style.color =
+            "#c0392b";
+        }
+
+        return;
+      }
+
+
+      /*
+        Erwartete Tabelle:
+
+        vocab
+
+        english
+        german
+        unit
+        class
+        example
+      */
+
+      const { error } =
+        await supabaseClient
+          .from("vocab")
+          .insert({
+            english,
+            german,
+            unit,
+            class: classNumber,
+            example: example || null
+          });
+
+
+      if (error) {
+
+        console.error(error);
+
+        if (vocabMessage) {
+
+          vocabMessage.textContent =
+            "Vokabel konnte nicht gespeichert werden.";
+
+          vocabMessage.style.color =
+            "#c0392b";
+        }
+
+        return;
+      }
+
+
+      if (vocabMessage) {
+
+        vocabMessage.textContent =
+          "✅ Vokabel wurde hinzugefügt.";
+
+        vocabMessage.style.color =
+          "#18794e";
+      }
+
+
+      vocabForm.reset();
+    }
+  );
+}
 ```
