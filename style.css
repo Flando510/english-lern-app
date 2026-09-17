@@ -1,7 +1,11 @@
-```css
 /* ============================================================
    ENGLISH MASTER
    STYLE.CSS
+   ============================================================ */
+
+
+/* ============================================================
+   GRUNDLAGEN
    ============================================================ */
 
 * {
@@ -13,6 +17,7 @@
     Arial,
     Helvetica,
     sans-serif;
+
   color: #172033;
   background: #eef1f5;
 }
@@ -50,7 +55,7 @@ button:disabled {
 
 /* ============================================================
    LOGIN / REGISTRIERUNG
-============================================================ */
+   ============================================================ */
 
 #authScreen {
   min-height: 100vh;
@@ -66,8 +71,12 @@ button:disabled {
   border: 1px solid #dfe4eb;
   border-radius: 18px;
   padding: 38px;
-  box-shadow: 0 12px 35px rgba(20, 30, 50, 0.09);
+  box-shadow:
+    0 12px 35px rgba(20, 30, 50, 0.09);
 }
+
+
+/* Logo */
 
 .auth-logo {
   text-align: center;
@@ -90,6 +99,9 @@ button:disabled {
   color: #667085;
   font-size: 15px;
 }
+
+
+/* Tabs */
 
 .auth-tabs {
   display: grid;
@@ -117,6 +129,9 @@ button:disabled {
   font-weight: 700;
 }
 
+
+/* Formulare */
+
 .form-group {
   margin-bottom: 16px;
 }
@@ -141,12 +156,16 @@ select {
 input:focus,
 select:focus {
   border-color: #1664d9;
-  box-shadow: 0 0 0 3px rgba(22, 100, 217, 0.1);
+  box-shadow:
+    0 0 0 3px rgba(22, 100, 217, 0.1);
 }
 
 input::placeholder {
   color: #9aa3b2;
 }
+
+
+/* Login Button */
 
 #authButton {
   width: 100%;
@@ -170,6 +189,9 @@ input::placeholder {
   transform: translateY(1px);
 }
 
+
+/* Meldungen */
+
 .message {
   min-height: 22px;
   margin: 14px 0 0;
@@ -180,7 +202,7 @@ input::placeholder {
 
 /* ============================================================
    HEADER
-============================================================ */
+   ============================================================ */
 
 .top-header {
   background: #ffffff;
@@ -200,6 +222,9 @@ input::placeholder {
   gap: 20px;
 }
 
+
+/* Brand */
+
 .brand {
   display: flex;
   align-items: center;
@@ -215,6 +240,9 @@ input::placeholder {
 .brand-name {
   white-space: nowrap;
 }
+
+
+/* User */
 
 .user-header {
   display: flex;
@@ -254,7 +282,7 @@ input::placeholder {
 
 /* ============================================================
    NAVIGATION
-============================================================ */
+   ============================================================ */
 
 .main-navigation {
   width: 100%;
@@ -291,7 +319,7 @@ input::placeholder {
 
 /* ============================================================
    HAUPTCONTAINER
-============================================================ */
+   ============================================================ */
 
 .main-container {
   width: min(1150px, 92%);
@@ -301,7 +329,7 @@ input::placeholder {
 
 /* ============================================================
    HERO
-============================================================ */
+   ============================================================ */
 
 .hero {
   background: #ffffff;
@@ -346,7 +374,7 @@ input::placeholder {
 
 /* ============================================================
    SECTION TITLES
-============================================================ */
+   ============================================================ */
 
 .section-title {
   margin: 28px 0 14px;
@@ -356,7 +384,7 @@ input::placeholder {
 
 /* ============================================================
    KLASSENAUSWAHL
-============================================================ */
+   ============================================================ */
 
 .class-selection {
   display: grid;
@@ -391,7 +419,7 @@ input::placeholder {
 
 /* ============================================================
    LERNMODI
-============================================================ */
+   ============================================================ */
 
 .mode-selection {
   display: grid;
@@ -427,7 +455,7 @@ input::placeholder {
 
 /* ============================================================
    LERNBEREICH
-============================================================ */
+   ============================================================ */
 
 .learning-area {
   min-height: 350px;
@@ -454,7 +482,7 @@ input::placeholder {
 
 /* ============================================================
    UNIT NAVIGATION – VOKABELN
-============================================================ */
+   ============================================================ */
 
 .vocab-unit-navigation {
   margin-bottom: 20px;
@@ -477,11 +505,17 @@ input::placeholder {
   color: #657185;
 }
 
+
+/* Unit Liste */
+
 .unit-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
+
+
+/* Unit */
 
 .unit {
   border: 1px solid #dfe4eb;
@@ -510,7 +544,8 @@ input::placeholder {
   content: "›";
   font-size: 23px;
   color: #687385;
-  transition: transform 0.15s ease;
+  transition:
+    transform 0.15s ease;
 }
 
 .unit[open] summary::after {
@@ -537,7 +572,7 @@ input::placeholder {
 
 /* ============================================================
    VOKABEL HEADER
-============================================================ */
+   ============================================================ */
 
 .vocab-header {
   display: flex;
@@ -565,7 +600,7 @@ input::placeholder {
 
 /* ============================================================
    VOKABELN
-============================================================ */
+   ============================================================ */
 
 .content-grid {
   display: grid;
@@ -588,7 +623,8 @@ input::placeholder {
 
 .vocab-card:hover {
   border-color: #cdd8e8;
-  box-shadow: 0 3px 12px rgba(20, 30, 50, 0.05);
+  box-shadow:
+    0 3px 12px rgba(20, 30, 50, 0.05);
 }
 
 .vocab-card strong {
@@ -605,12 +641,13 @@ input::placeholder {
 .empty-unit {
   padding: 20px;
   text-align: center;
+  background: #ffffff;
 }
 
 
 /* ============================================================
    ADMIN DELETE BUTTON
-============================================================ */
+   ============================================================ */
 
 .delete-vocab-btn {
   align-self: flex-start;
@@ -631,7 +668,7 @@ input::placeholder {
 
 /* ============================================================
    BEISPIEL
-============================================================ */
+   ============================================================ */
 
 .example {
   background: #f5f7fa;
@@ -645,7 +682,7 @@ input::placeholder {
 
 /* ============================================================
    QUIZ
-============================================================ */
+   ============================================================ */
 
 #quizOptions {
   margin-top: 20px;
@@ -664,12 +701,14 @@ input::placeholder {
   font-weight: 600;
   transition:
     border-color 0.15s ease,
-    background 0.15s ease;
+    background 0.15s ease,
+    transform 0.15s ease;
 }
 
 .quiz-option:hover:not(:disabled) {
   border-color: #1664d9;
   background: #edf5ff;
+  transform: translateY(-1px);
 }
 
 .quiz-result {
@@ -681,96 +720,111 @@ input::placeholder {
 
 /* ============================================================
    QUIZ – UNIT AUSWAHL
-============================================================ */
+   ============================================================ */
 
 .quiz-selection {
-  margin: 20px 0 26px;
+  margin: 20px 0 25px;
   padding: 20px;
-  background: #f8fafc;
-  border: 1px solid #e1e6ed;
-  border-radius: 16px;
+  background: #f7f8fa;
+  border: 1px solid #e0e5ec;
+  border-radius: 14px;
 }
 
 .quiz-selection h3 {
-  margin: 0 0 7px;
-  font-size: 20px;
-  color: #172033;
+  margin: 0 0 6px;
+  font-size: 17px;
 }
 
 .quiz-selection p {
-  margin: 0 0 17px;
-  color: #657185;
+  margin: 0 0 16px;
+  color: #687385;
   line-height: 1.5;
 }
 
+
+/* Grid für die Units */
+
 .quiz-unit-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
 }
 
+
+/* Einzelne Unit-Karte */
+
 .quiz-unit-btn {
-  position: relative;
-  width: 100%;
   min-height: 82px;
-  border: 1px solid #d7dee8;
-  border-radius: 14px;
-  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 5px;
+
+  padding: 14px 16px;
+
+  border: 1px solid #d3d9e2;
+  border-radius: 12px;
+
   background: #ffffff;
   color: #273449;
+
   text-align: left;
-  font-weight: 700;
+
   transition:
-    transform 0.15s ease,
-    border-color 0.15s ease,
     background 0.15s ease,
-    box-shadow 0.15s ease;
+    border-color 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
 }
 
 .quiz-unit-btn:hover {
   border-color: #1664d9;
   background: #f8fbff;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 16px rgba(20, 30, 50, 0.08);
+  color: #1664d9;
+  box-shadow:
+    0 3px 10px rgba(20, 30, 50, 0.06);
+  transform: translateY(-1px);
 }
+
+
+/* Aktive Unit */
 
 .quiz-unit-btn.active {
   border-color: #1664d9;
   background: #edf5ff;
-  color: #1256b6;
-  box-shadow: 0 4px 14px rgba(22, 100, 217, 0.12);
+  color: #1664d9;
+  box-shadow:
+    0 3px 12px rgba(22, 100, 217, 0.12);
 }
 
 .quiz-unit-title {
-  display: block;
-  font-size: 17px;
-  margin-bottom: 5px;
+  font-size: 15px;
+  font-weight: 800;
 }
 
 .quiz-unit-info {
-  display: block;
-  color: #687385;
-  font-size: 13px;
-  font-weight: 500;
+  color: #7a8494;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .quiz-unit-btn.active .quiz-unit-info {
-  color: #3971b9;
+  color: #4c78b5;
 }
+
+
+/* Alle Vokabeln */
 
 .quiz-all-btn {
-  grid-column: 1 / -1;
-  background: #f7f8fa;
-}
-
-.quiz-all-btn.active {
-  background: #edf5ff;
+  border-width: 2px;
 }
 
 
 /* ============================================================
    ÜBUNGEN
-============================================================ */
+   ============================================================ */
 
 #exerciseInput {
   margin-top: 8px;
@@ -792,8 +846,105 @@ input::placeholder {
 
 
 /* ============================================================
+   ÜBUNGEN – AUSWAHL
+   ============================================================ */
+
+.exercise-selection {
+  margin: 20px 0;
+  padding: 20px;
+  background: #f7f8fa;
+  border: 1px solid #e0e5ec;
+  border-radius: 14px;
+}
+
+.exercise-selection h3 {
+  margin: 0 0 6px;
+}
+
+.exercise-selection p {
+  color: #687385;
+  margin: 0 0 15px;
+}
+
+.exercise-type-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.exercise-type-btn {
+  min-height: 75px;
+
+  border: 1px solid #d3d9e2;
+  border-radius: 12px;
+
+  background: #ffffff;
+  color: #273449;
+
+  padding: 14px 16px;
+
+  text-align: left;
+  font-weight: 700;
+
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.exercise-type-btn:hover {
+  border-color: #1664d9;
+  background: #f8fbff;
+  color: #1664d9;
+}
+
+.exercise-type-btn.active {
+  border-color: #1664d9;
+  background: #edf5ff;
+  color: #1664d9;
+}
+
+
+/* ============================================================
+   RECHTSCHREIBUNG / GRAMMATIK ÜBUNG
+   ============================================================ */
+
+.spelling-exercise,
+.grammar-exercise {
+  margin-top: 20px;
+  padding: 20px;
+
+  background: #fafbfc;
+  border: 1px solid #e0e5ec;
+  border-radius: 14px;
+}
+
+.spelling-exercise h3,
+.grammar-exercise h3 {
+  margin-top: 0;
+}
+
+.exercise-feedback {
+  min-height: 24px;
+  margin-top: 14px;
+  font-weight: 700;
+}
+
+.correct-answer {
+  margin-top: 12px;
+  padding: 12px 14px;
+
+  background: #f5f7fa;
+  border-radius: 9px;
+
+  line-height: 1.5;
+}
+
+
+/* ============================================================
    ALLGEMEINE BUTTONS
-============================================================ */
+   ============================================================ */
 
 .primary-btn,
 .secondary-btn {
@@ -825,7 +976,7 @@ input::placeholder {
 
 /* ============================================================
    LEADERBOARD
-============================================================ */
+   ============================================================ */
 
 #leaderboardPage {
   width: 100%;
@@ -876,6 +1027,9 @@ input::placeholder {
   font-size: 28px;
 }
 
+
+/* Controls */
+
 .leaderboard-controls {
   display: flex;
   align-items: center;
@@ -893,6 +1047,9 @@ input::placeholder {
   width: auto;
   min-width: 170px;
 }
+
+
+/* Liste */
 
 .leaderboard-list {
   display: flex;
@@ -938,7 +1095,7 @@ input::placeholder {
 
 /* ============================================================
    ADMIN PANEL
-============================================================ */
+   ============================================================ */
 
 #adminPanel {
   margin-top: 25px;
@@ -961,6 +1118,9 @@ input::placeholder {
   color: #657185;
 }
 
+
+/* Admin Sections */
+
 .admin-vocab-section,
 .admin-users-section {
   border-top: 1px solid #e5e8ed;
@@ -978,6 +1138,9 @@ input::placeholder {
   color: #657185;
   line-height: 1.5;
 }
+
+
+/* Admin Formular */
 
 .vocab-form {
   margin-top: 20px;
@@ -1006,7 +1169,7 @@ input::placeholder {
 
 /* ============================================================
    ADMIN TABELLE
-============================================================ */
+   ============================================================ */
 
 .admin-table-wrapper {
   width: 100%;
@@ -1045,7 +1208,7 @@ input::placeholder {
 
 /* ============================================================
    FOOTER
-============================================================ */
+   ============================================================ */
 
 .footer {
   text-align: center;
@@ -1057,7 +1220,7 @@ input::placeholder {
 
 /* ============================================================
    FEHLER / LEERE ZUSTÄNDE
-============================================================ */
+   ============================================================ */
 
 .content-area > .message {
   margin-top: 15px;
@@ -1070,7 +1233,7 @@ input::placeholder {
 
 /* ============================================================
    RESPONSIVE – TABLET
-============================================================ */
+   ============================================================ */
 
 @media (max-width: 800px) {
 
@@ -1104,19 +1267,19 @@ input::placeholder {
     grid-template-columns: 55px 1fr auto;
   }
 
+
+  /* Quiz */
+
   .quiz-unit-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .quiz-all-btn {
-    grid-column: auto;
-  }
 }
 
 
 /* ============================================================
    RESPONSIVE – HANDY
-============================================================ */
+   ============================================================ */
 
 @media (max-width: 600px) {
 
@@ -1131,6 +1294,9 @@ input::placeholder {
   .auth-logo h1 {
     font-size: 28px;
   }
+
+
+  /* Header */
 
   .top-header {
     position: static;
@@ -1150,6 +1316,9 @@ input::placeholder {
     justify-content: center;
   }
 
+
+  /* Navigation */
+
   .main-navigation {
     overflow-x: auto;
     justify-content: flex-start;
@@ -1159,10 +1328,16 @@ input::placeholder {
     white-space: nowrap;
   }
 
+
+  /* Main */
+
   .main-container {
     width: 94%;
     margin-top: 20px;
   }
+
+
+  /* Hero */
 
   .hero {
     padding: 22px;
@@ -1172,14 +1347,23 @@ input::placeholder {
     font-size: 25px;
   }
 
+
+  /* Auswahl */
+
   .class-selection,
   .mode-selection {
     grid-template-columns: 1fr;
   }
 
+
+  /* Learning */
+
   .learning-area {
     padding: 20px;
   }
+
+
+  /* Vocab */
 
   .vocab-header {
     flex-direction: column;
@@ -1189,6 +1373,9 @@ input::placeholder {
     width: 100% !important;
   }
 
+
+  /* Units */
+
   .unit summary {
     padding: 14px;
   }
@@ -1197,14 +1384,30 @@ input::placeholder {
     display: none;
   }
 
+
+  /* Quiz */
+
   .quiz-selection {
-    padding: 16px;
+    padding: 15px;
+  }
+
+  .quiz-unit-grid {
+    grid-template-columns: 1fr;
   }
 
   .quiz-unit-btn {
-    min-height: 76px;
-    padding: 15px;
+    min-height: 70px;
   }
+
+
+  /* Übungen */
+
+  .exercise-type-grid {
+    grid-template-columns: 1fr;
+  }
+
+
+  /* Leaderboard */
 
   .leaderboard-container {
     padding: 20px;
@@ -1241,6 +1444,9 @@ input::placeholder {
     grid-column: 2;
   }
 
+
+  /* Admin */
+
   #adminPanel {
     padding: 20px;
   }
@@ -1248,12 +1454,13 @@ input::placeholder {
   .admin-table-wrapper {
     margin-left: 0;
   }
+
 }
 
 
 /* ============================================================
    RESPONSIVE – SEHR KLEINE HANDYS
-============================================================ */
+   ============================================================ */
 
 @media (max-width: 400px) {
 
@@ -1285,11 +1492,7 @@ input::placeholder {
   }
 
   .quiz-selection {
-    padding: 14px;
+    padding: 12px;
   }
 
-  .quiz-unit-btn {
-    padding: 14px;
-  }
 }
-```
