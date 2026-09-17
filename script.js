@@ -1,12 +1,18 @@
-```javascript
 /*
   ENGLISH MASTER – Supabase-Version
 
-  Originaler Login bleibt erhalten.
+  Login bleibt erhalten.
+  Vokabeln:
+  - Units
   Quiz:
   - Alle Vokabeln
   - einzelne Units
   - Grammatik
+  Übungen:
+  - Rechtschreibung / Satzprüfung
+  Leaderboard:
+  - anklickbar
+  - Punkte aus profiles
 */
 
 
@@ -14,15 +20,17 @@
 // SUPABASE
 // ============================================================
 
-const SUPABASE_URL = "https://amrqkjyemjpyxxyugwyu.supabase.co";
+const SUPABASE_URL =
+  "https://amrqkjyemjpyxxyugwyu.supabase.co";
 
 const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_EUe8HwB24WogxOBCcs3fsg_9jt0AfhJ";
 
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
 
 
 // ============================================================
@@ -170,7 +178,6 @@ let currentProfile = null;
 
 let isRegisterMode = false;
 
-// Quiz-Auswahl
 let quizSelection = "all";
 
 
@@ -178,33 +185,62 @@ let quizSelection = "all";
 // ELEMENTE
 // ============================================================
 
-const authScreen = document.getElementById("authScreen");
-const mainScreen = document.getElementById("mainScreen");
+const authScreen =
+  document.getElementById("authScreen");
 
-const authForm = document.getElementById("authForm");
+const mainScreen =
+  document.getElementById("mainScreen");
 
-const usernameInput = document.getElementById("username");
-const passwordInput = document.getElementById("password");
+const authForm =
+  document.getElementById("authForm");
 
-const authButton = document.getElementById("authButton");
-const authMessage = document.getElementById("authMessage");
+const usernameInput =
+  document.getElementById("username");
 
-const loginTab = document.getElementById("loginTab");
-const registerTab = document.getElementById("registerTab");
+const passwordInput =
+  document.getElementById("password");
 
-const learningArea = document.getElementById("learningArea");
+const authButton =
+  document.getElementById("authButton");
 
-const pointsBadge = document.getElementById("pointsBadge");
-const heroPoints = document.getElementById("heroPoints");
-const heroUsername = document.getElementById("heroUsername");
-const welcomeText = document.getElementById("welcomeText");
+const authMessage =
+  document.getElementById("authMessage");
 
-const logoutButton = document.getElementById("logoutButton");
+const loginTab =
+  document.getElementById("loginTab");
 
-const adminPanel = document.getElementById("adminPanel");
-const adminUsers = document.getElementById("adminUsers");
-const adminMessage = document.getElementById("adminMessage");
-const refreshAdmin = document.getElementById("refreshAdmin");
+const registerTab =
+  document.getElementById("registerTab");
+
+const learningArea =
+  document.getElementById("learningArea");
+
+const pointsBadge =
+  document.getElementById("pointsBadge");
+
+const heroPoints =
+  document.getElementById("heroPoints");
+
+const heroUsername =
+  document.getElementById("heroUsername");
+
+const welcomeText =
+  document.getElementById("welcomeText");
+
+const logoutButton =
+  document.getElementById("logoutButton");
+
+const adminPanel =
+  document.getElementById("adminPanel");
+
+const adminUsers =
+  document.getElementById("adminUsers");
+
+const adminMessage =
+  document.getElementById("adminMessage");
+
+const refreshAdmin =
+  document.getElementById("refreshAdmin");
 
 
 // ============================================================
@@ -215,6 +251,7 @@ function setAuthMessage(text, error = true) {
   if (!authMessage) return;
 
   authMessage.textContent = text;
+
   authMessage.style.color = error
     ? "#c0392b"
     : "#18794e";
@@ -225,6 +262,7 @@ function setAdminMessage(text, error = true) {
   if (!adminMessage) return;
 
   adminMessage.textContent = text;
+
   adminMessage.style.color = error
     ? "#c0392b"
     : "#18794e";
@@ -232,9 +270,10 @@ function setAdminMessage(text, error = true) {
 
 
 function authEmail(username) {
-  const safe = username
-    .toLowerCase()
-    .replace(/[^a-z0-9._-]/g, "_");
+  const safe =
+    username
+      .toLowerCase()
+      .replace(/[^a-z0-9._-]/g, "_");
 
   return `${safe}@english-master.local`;
 }
@@ -245,6 +284,42 @@ function validUsername(username) {
 }
 
 
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+
+function shuffleArray(array) {
+  const result = [...array];
+
+  for (
+    let i = result.length - 1;
+    i > 0;
+    i--
+  ) {
+    const j =
+      Math.floor(
+        Math.random() * (i + 1)
+      );
+
+    [
+      result[i],
+      result[j]
+    ] = [
+      result[j],
+      result[i]
+    ];
+  }
+
+  return result;
+}
+
+
 // ============================================================
 // LOGIN / REGISTRIERUNG
 // ============================================================
@@ -252,12 +327,18 @@ function validUsername(username) {
 function showLogin() {
   isRegisterMode = false;
 
-  loginTab.classList.add("active");
-  registerTab.classList.remove("active");
+  if (loginTab)
+    loginTab.classList.add("active");
 
-  authButton.textContent = "Anmelden";
+  if (registerTab)
+    registerTab.classList.remove("active");
 
-  passwordInput.autocomplete = "current-password";
+  if (authButton)
+    authButton.textContent = "Anmelden";
+
+  if (passwordInput)
+    passwordInput.autocomplete =
+      "current-password";
 
   setAuthMessage("");
 }
@@ -266,23 +347,40 @@ function showLogin() {
 function showRegister() {
   isRegisterMode = true;
 
-  registerTab.classList.add("active");
-  loginTab.classList.remove("active");
+  if (registerTab)
+    registerTab.classList.add("active");
 
-  authButton.textContent = "Konto erstellen";
+  if (loginTab)
+    loginTab.classList.remove("active");
 
-  passwordInput.autocomplete = "new-password";
+  if (authButton)
+    authButton.textContent =
+      "Konto erstellen";
+
+  if (passwordInput)
+    passwordInput.autocomplete =
+      "new-password";
 
   setAuthMessage("");
 }
 
 
+// ============================================================
+// PROFIL
+// ============================================================
+
 async function loadProfile(user) {
-  const { data, error } = await supabaseClient
-    .from("profiles")
-    .select("id, username, points, is_admin, created_at")
-    .eq("id", user.id)
-    .single();
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select(
+        "id, username, points, is_admin, created_at"
+      )
+      .eq("id", user.id)
+      .single();
 
   if (error) {
     console.error(error);
@@ -296,30 +394,48 @@ async function loadProfile(user) {
 function updateUserUI() {
   if (!currentProfile) return;
 
-  const username = currentProfile.username;
-  const points = Number(currentProfile.points || 0);
+  const username =
+    currentProfile.username;
 
-  welcomeText.textContent = `👤 ${username}`;
+  const points =
+    Number(currentProfile.points || 0);
 
-  heroUsername.textContent = username;
+  if (welcomeText)
+    welcomeText.textContent =
+      `👤 ${username}`;
 
-  pointsBadge.textContent = `⭐ ${points} Punkte`;
+  if (heroUsername)
+    heroUsername.textContent =
+      username;
 
-  heroPoints.textContent = points;
+  if (pointsBadge)
+    pointsBadge.textContent =
+      `⭐ ${points} Punkte`;
 
-  if (currentProfile.is_admin) {
-    adminPanel.classList.remove("hidden");
-    loadAdminUsers();
-  } else {
-    adminPanel.classList.add("hidden");
+  if (heroPoints)
+    heroPoints.textContent =
+      points;
+
+  if (adminPanel) {
+    if (currentProfile.is_admin) {
+      adminPanel.classList.remove("hidden");
+      loadAdminUsers();
+    } else {
+      adminPanel.classList.add("hidden");
+    }
   }
 }
 
 
+// ============================================================
+// APP
+// ============================================================
+
 async function showApp(user) {
   currentUser = user;
 
-  currentProfile = await loadProfile(user);
+  currentProfile =
+    await loadProfile(user);
 
   if (!currentProfile) {
     await supabaseClient.auth.signOut();
@@ -331,9 +447,11 @@ async function showApp(user) {
     return;
   }
 
-  authScreen.classList.add("hidden");
+  if (authScreen)
+    authScreen.classList.add("hidden");
 
-  mainScreen.classList.remove("hidden");
+  if (mainScreen)
+    mainScreen.classList.remove("hidden");
 
   updateUserUI();
 
@@ -345,12 +463,17 @@ function showAuth() {
   currentUser = null;
   currentProfile = null;
 
-  mainScreen.classList.add("hidden");
+  if (mainScreen)
+    mainScreen.classList.add("hidden");
 
-  authScreen.classList.remove("hidden");
+  if (authScreen)
+    authScreen.classList.remove("hidden");
 
-  usernameInput.value = "";
-  passwordInput.value = "";
+  if (usernameInput)
+    usernameInput.value = "";
+
+  if (passwordInput)
+    passwordInput.value = "";
 
   showLogin();
 }
@@ -360,146 +483,185 @@ function showAuth() {
 // AUTH FORM
 // ============================================================
 
-authForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
+if (authForm) {
+  authForm.addEventListener(
+    "submit",
+    async event => {
 
-  const username = usernameInput.value.trim();
-  const password = passwordInput.value;
+      event.preventDefault();
 
-  if (!validUsername(username)) {
-    setAuthMessage(
-      "Benutzername: 3–20 Zeichen, nur Buchstaben, Zahlen, _ und -."
-    );
+      const username =
+        usernameInput.value.trim();
 
-    return;
-  }
+      const password =
+        passwordInput.value;
 
-  if (password.length < 6) {
-    setAuthMessage(
-      "Das Passwort muss mindestens 6 Zeichen haben."
-    );
+      if (!validUsername(username)) {
+        setAuthMessage(
+          "Benutzername: 3–20 Zeichen, nur Buchstaben, Zahlen, _ und -."
+        );
 
-    return;
-  }
+        return;
+      }
 
-  authButton.disabled = true;
+      if (password.length < 6) {
+        setAuthMessage(
+          "Das Passwort muss mindestens 6 Zeichen haben."
+        );
 
-  authButton.textContent = isRegisterMode
-    ? "Konto wird erstellt..."
-    : "Anmeldung...";
+        return;
+      }
 
-  try {
-    const email = authEmail(username);
+      authButton.disabled = true;
 
-    // --------------------------------------------------------
-    // REGISTRIEREN
-    // --------------------------------------------------------
+      authButton.textContent =
+        isRegisterMode
+          ? "Konto wird erstellt..."
+          : "Anmeldung...";
 
-    if (isRegisterMode) {
+      try {
 
-      const { data, error } =
-        await supabaseClient.auth.signUp({
-          email,
-          password,
+        const email =
+          authEmail(username);
 
-          options: {
-            data: {
-              username
-            }
+
+        // ======================================================
+        // REGISTRIEREN
+        // ======================================================
+
+        if (isRegisterMode) {
+
+          const {
+            data,
+            error
+          } =
+            await supabaseClient.auth.signUp({
+              email,
+              password,
+
+              options: {
+                data: {
+                  username
+                }
+              }
+            });
+
+          if (error)
+            throw error;
+
+          if (!data.user) {
+            throw new Error(
+              "Benutzer konnte nicht erstellt werden."
+            );
           }
-        });
 
-      if (error) throw error;
 
-      if (!data.user) {
-        throw new Error(
-          "Benutzer konnte nicht erstellt werden."
+          const {
+            error: profileError
+          } =
+            await supabaseClient
+              .from("profiles")
+              .insert({
+                id: data.user.id,
+                username,
+                points: 0,
+                is_admin: false
+              });
+
+
+          if (profileError) {
+            console.error(profileError);
+
+            await supabaseClient.auth.signOut();
+
+            throw new Error(
+              "Konto erstellt, aber das Profil konnte nicht angelegt werden."
+            );
+          }
+
+
+          setAuthMessage(
+            "Konto erstellt! Du wirst angemeldet...",
+            false
+          );
+
+          await showApp(data.user);
+
+        }
+
+
+        // ======================================================
+        // ANMELDEN
+        // ======================================================
+
+        else {
+
+          const {
+            data,
+            error
+          } =
+            await supabaseClient.auth
+              .signInWithPassword({
+                email,
+                password
+              });
+
+          if (error)
+            throw error;
+
+          await showApp(data.user);
+        }
+
+      } catch (error) {
+
+        console.error(error);
+
+        setAuthMessage(
+          error.message ||
+          "Anmeldung fehlgeschlagen."
         );
+
+      } finally {
+
+        authButton.disabled = false;
+
+        authButton.textContent =
+          isRegisterMode
+            ? "Konto erstellen"
+            : "Anmelden";
       }
-
-      const { error: profileError } =
-        await supabaseClient
-          .from("profiles")
-          .insert({
-            id: data.user.id,
-            username,
-            points: 0,
-            is_admin: false
-          });
-
-      if (profileError) {
-        console.error(profileError);
-
-        await supabaseClient.auth.signOut();
-
-        throw new Error(
-          "Konto erstellt, aber das Profil konnte nicht angelegt werden."
-        );
-      }
-
-      setAuthMessage(
-        "Konto erstellt! Du wirst angemeldet...",
-        false
-      );
-
-      await showApp(data.user);
-
     }
+  );
+}
 
-    // --------------------------------------------------------
-    // ANMELDEN
-    // --------------------------------------------------------
 
-    else {
+if (loginTab) {
+  loginTab.addEventListener(
+    "click",
+    showLogin
+  );
+}
 
-      const { data, error } =
-        await supabaseClient.auth.signInWithPassword({
-          email,
-          password
-        });
 
-      if (error) throw error;
+if (registerTab) {
+  registerTab.addEventListener(
+    "click",
+    showRegister
+  );
+}
 
-      await showApp(data.user);
+
+if (logoutButton) {
+  logoutButton.addEventListener(
+    "click",
+    async () => {
+
+      await supabaseClient.auth.signOut();
+
+      showAuth();
     }
-
-  } catch (error) {
-
-    console.error(error);
-
-    setAuthMessage(
-      error.message || "Anmeldung fehlgeschlagen."
-    );
-
-  } finally {
-
-    authButton.disabled = false;
-
-    authButton.textContent = isRegisterMode
-      ? "Konto erstellen"
-      : "Anmelden";
-  }
-});
-
-
-loginTab.addEventListener(
-  "click",
-  showLogin
-);
-
-registerTab.addEventListener(
-  "click",
-  showRegister
-);
-
-
-logoutButton.addEventListener(
-  "click",
-  async () => {
-    await supabaseClient.auth.signOut();
-    showAuth();
-  }
-);
+  );
+}
 
 
 // ============================================================
@@ -511,7 +673,9 @@ supabaseClient.auth
   .then(async ({ data }) => {
 
     if (data.session?.user) {
-      await showApp(data.session.user);
+      await showApp(
+        data.session.user
+      );
     }
 
   });
@@ -530,7 +694,9 @@ supabaseClient.auth.onAuthStateChange(
       !currentUser
     ) {
 
-      await showApp(session.user);
+      await showApp(
+        session.user
+      );
     }
 
   }
@@ -543,12 +709,19 @@ supabaseClient.auth.onAuthStateChange(
 
 async function addPoints(amount) {
 
-  if (!currentProfile || !currentUser) return;
+  if (!currentProfile || !currentUser)
+    return;
 
   const newPoints =
-    Number(currentProfile.points || 0) + amount;
+    Number(
+      currentProfile.points || 0
+    ) + amount;
 
-  const { data, error } =
+
+  const {
+    data,
+    error
+  } =
     await supabaseClient
       .from("profiles")
       .update({
@@ -558,12 +731,15 @@ async function addPoints(amount) {
       .select("points")
       .single();
 
+
   if (error) {
     console.error(error);
     return;
   }
 
-  currentProfile.points = data.points;
+
+  currentProfile.points =
+    data.points;
 
   updateUserUI();
 }
@@ -577,25 +753,30 @@ document
   .querySelectorAll(".class-btn")
   .forEach(button => {
 
-    button.addEventListener("click", () => {
+    button.addEventListener(
+      "click",
+      () => {
 
-      currentClass =
-        Number(button.dataset.class);
+        currentClass =
+          Number(
+            button.dataset.class
+          );
 
-      document
-        .querySelectorAll(".class-btn")
-        .forEach(b =>
-          b.classList.remove("active")
-        );
+        document
+          .querySelectorAll(".class-btn")
+          .forEach(b =>
+            b.classList.remove("active")
+          );
 
-      button.classList.add("active");
+        button.classList.add("active");
 
-      currentQuestion = 0;
+        currentQuestion = 0;
 
-      quizSelection = "all";
+        quizSelection = "all";
 
-      renderLearning();
-    });
+        renderLearning();
+      }
+    );
 
   });
 
@@ -608,36 +789,43 @@ document
   .querySelectorAll(".mode-btn")
   .forEach(button => {
 
-    button.addEventListener("click", () => {
+    button.addEventListener(
+      "click",
+      () => {
 
-      currentMode =
-        button.dataset.mode;
+        currentMode =
+          button.dataset.mode;
 
-      currentQuestion = 0;
+        currentQuestion = 0;
 
-      if (currentMode === "quiz") {
-        quizSelection = "all";
+        if (currentMode === "quiz") {
+          quizSelection = "all";
+        }
+
+        document
+          .querySelectorAll(".mode-btn")
+          .forEach(b =>
+            b.classList.remove("active")
+          );
+
+        button.classList.add("active");
+
+        hideLeaderboard();
+
+        renderLearning();
       }
-
-      document
-        .querySelectorAll(".mode-btn")
-        .forEach(b =>
-          b.classList.remove("active")
-        );
-
-      button.classList.add("active");
-
-      renderLearning();
-    });
+    );
 
   });
 
 
 // ============================================================
-// RENDER LEARNING
+// LEARNING RENDER
 // ============================================================
 
 function renderLearning() {
+
+  hideLeaderboard();
 
   if (currentMode === "vocab") {
     renderVocab();
@@ -663,9 +851,12 @@ function renderLearning() {
 
 function renderVocab() {
 
-  const lesson = lessons[currentClass];
+  const lesson =
+    lessons[currentClass];
 
-  const units = lesson.units;
+  const units =
+    lesson.units;
+
 
   learningArea.innerHTML = `
 
@@ -686,7 +877,10 @@ function renderVocab() {
       </div>
 
 
-      <div id="unitList" class="unit-list">
+      <div
+        id="unitList"
+        class="unit-list"
+      >
 
         ${units.map(unit => `
 
@@ -704,21 +898,28 @@ function renderVocab() {
 
             </summary>
 
+
             <div class="unit-content">
 
               <div class="content-grid">
 
-                ${unit.vocab.map(([en, de]) => `
+                ${unit.vocab.map(
+                  ([en, de]) => `
 
-                  <div class="vocab-card">
+                    <div class="vocab-card">
 
-                    <strong>${escapeHtml(en)}</strong>
+                      <strong>
+                        ${escapeHtml(en)}
+                      </strong>
 
-                    <span>${escapeHtml(de)}</span>
+                      <span>
+                        ${escapeHtml(de)}
+                      </span>
 
-                  </div>
+                    </div>
 
-                `).join("")}
+                  `
+                ).join("")}
 
               </div>
 
@@ -742,7 +943,9 @@ function renderVocab() {
 
 function renderGrammar() {
 
-  const lesson = lessons[currentClass];
+  const lesson =
+    lessons[currentClass];
+
 
   learningArea.innerHTML = `
 
@@ -769,38 +972,58 @@ function renderGrammar() {
 
 
 // ============================================================
-// QUIZ-FRAGEN AUS VOKABELN ERSTELLEN
+// QUIZ FRAGEN
 // ============================================================
 
 function createVocabQuestions(words) {
 
   const questions = [];
 
-  words.forEach(([english, german]) => {
 
-    const otherWords =
-      words
-        .filter(word => word[0] !== english)
-        .map(word => word[1]);
+  words.forEach(
+    ([english, german]) => {
 
-    const wrongAnswers =
-      shuffleArray(otherWords).slice(0, 2);
+      const otherWords =
+        words
+          .filter(
+            word =>
+              word[0] !== english
+          )
+          .map(
+            word => word[1]
+          );
 
-    if (wrongAnswers.length < 2) return;
 
-    const options =
-      shuffleArray([
-        german,
-        ...wrongAnswers
-      ]);
+      const wrongAnswers =
+        shuffleArray(
+          otherWords
+        ).slice(0, 2);
 
-    questions.push({
-      q: `Was bedeutet „${english}“?`,
-      options,
-      answer: options.indexOf(german)
-    });
 
-  });
+      if (wrongAnswers.length < 2)
+        return;
+
+
+      const options =
+        shuffleArray([
+          german,
+          ...wrongAnswers
+        ]);
+
+
+      questions.push({
+        q:
+          `Was bedeutet „${english}“?`,
+
+        options,
+
+        answer:
+          options.indexOf(german)
+      });
+
+    }
+  );
+
 
   return questions;
 }
@@ -812,32 +1035,36 @@ function createVocabQuestions(words) {
 
 function renderQuiz() {
 
-  const lesson = lessons[currentClass];
+  const lesson =
+    lessons[currentClass];
+
 
   const allWords =
-    lesson.units.flatMap(unit => unit.vocab);
+    lesson.units.flatMap(
+      unit => unit.vocab
+    );
 
-
-  // ----------------------------------------------------------
-  // GRAMMATIK QUIZ
-  // ----------------------------------------------------------
 
   const grammarQuestion = {
-    q: "Welche Aussage gehört zur Grammatik dieser Klasse?",
+
+    q:
+      "Welche Aussage gehört zur Grammatik dieser Klasse?",
+
     options: [
       lesson.grammar,
+
       "Diese Regel gibt es im Englischen nicht.",
+
       "Im Englischen werden alle Verben gleich verwendet."
     ],
+
     answer: 0
   };
 
 
-  // ----------------------------------------------------------
-  // AUSGEWÄHLTE VOKABELN
-  // ----------------------------------------------------------
+  let selectedWords =
+    allWords;
 
-  let selectedWords = allWords;
 
   if (quizSelection !== "all") {
 
@@ -848,23 +1075,28 @@ function renderQuiz() {
           String(quizSelection)
       );
 
+
     if (selectedUnit) {
-      selectedWords = selectedUnit.vocab;
+      selectedWords =
+        selectedUnit.vocab;
     }
   }
 
 
   let questions;
 
+
   if (quizSelection === "grammar") {
 
-    questions = [grammarQuestion];
+    questions =
+      [grammarQuestion];
 
   } else {
 
     questions =
-      createVocabQuestions(selectedWords);
-
+      createVocabQuestions(
+        selectedWords
+      );
   }
 
 
@@ -872,7 +1104,9 @@ function renderQuiz() {
 
     learningArea.innerHTML = `
 
-      <h2>🧠 Quiz – ${currentClass}. Klasse</h2>
+      <h2>
+        🧠 Quiz – ${currentClass}. Klasse
+      </h2>
 
       <p>
         Für diese Auswahl sind noch keine Quizfragen vorhanden.
@@ -884,17 +1118,17 @@ function renderQuiz() {
   }
 
 
-  if (currentQuestion >= questions.length) {
+  if (
+    currentQuestion >=
+    questions.length
+  ) {
     currentQuestion = 0;
   }
 
 
-  const q = questions[currentQuestion];
+  const q =
+    questions[currentQuestion];
 
-
-  // ----------------------------------------------------------
-  // QUIZ AUSWAHL
-  // ----------------------------------------------------------
 
   learningArea.innerHTML = `
 
@@ -910,15 +1144,22 @@ function renderQuiz() {
       </h3>
 
       <p>
-        Wähle alle Vokabeln, eine bestimmte Unit oder Grammatik.
+        Wähle alle Vokabeln,
+        eine bestimmte Unit
+        oder Grammatik.
       </p>
 
 
       <div class="quiz-unit-grid">
 
+
         <button
           type="button"
-          class="quiz-unit-btn quiz-all-btn ${quizSelection === "all" ? "active" : ""}"
+          class="quiz-unit-btn quiz-all-btn ${
+            quizSelection === "all"
+              ? "active"
+              : ""
+          }"
           data-quiz-selection="all"
         >
 
@@ -933,30 +1174,41 @@ function renderQuiz() {
         </button>
 
 
-        ${lesson.units.map(unit => `
+        ${lesson.units.map(
+          unit => `
 
-          <button
-            type="button"
-            class="quiz-unit-btn ${String(quizSelection) === String(unit.unit) ? "active" : ""}"
-            data-quiz-selection="${unit.unit}"
-          >
+            <button
+              type="button"
+              class="quiz-unit-btn ${
+                String(quizSelection) ===
+                String(unit.unit)
+                  ? "active"
+                  : ""
+              }"
+              data-quiz-selection="${unit.unit}"
+            >
 
-            <span class="quiz-unit-title">
-              📖 Unit ${unit.unit}
-            </span>
+              <span class="quiz-unit-title">
+                📖 Unit ${unit.unit}
+              </span>
 
-            <span class="quiz-unit-info">
-              ${unit.vocab.length} Vokabeln
-            </span>
+              <span class="quiz-unit-info">
+                ${unit.vocab.length} Vokabeln
+              </span>
 
-          </button>
+            </button>
 
-        `).join("")}
+          `
+        ).join("")}
 
 
         <button
           type="button"
-          class="quiz-unit-btn ${quizSelection === "grammar" ? "active" : ""}"
+          class="quiz-unit-btn ${
+            quizSelection === "grammar"
+              ? "active"
+              : ""
+          }"
           data-quiz-selection="grammar"
         >
 
@@ -969,6 +1221,7 @@ function renderQuiz() {
           </span>
 
         </button>
+
 
       </div>
 
@@ -988,17 +1241,19 @@ function renderQuiz() {
 
     <div id="quizOptions">
 
-      ${q.options.map((option, index) => `
+      ${q.options.map(
+        (option, index) => `
 
-        <button
-          class="quiz-option"
-          data-answer="${index}"
-          type="button"
-        >
-          ${escapeHtml(option)}
-        </button>
+          <button
+            class="quiz-option"
+            data-answer="${index}"
+            type="button"
+          >
+            ${escapeHtml(option)}
+          </button>
 
-      `).join("")}
+        `
+      ).join("")}
 
     </div>
 
@@ -1011,83 +1266,105 @@ function renderQuiz() {
   `;
 
 
-  // ----------------------------------------------------------
+  // ==========================================================
   // QUIZ UNIT BUTTONS
-  // ----------------------------------------------------------
+  // ==========================================================
 
   document
-    .querySelectorAll("[data-quiz-selection]")
+    .querySelectorAll(
+      "[data-quiz-selection]"
+    )
     .forEach(button => {
 
-      button.addEventListener("click", () => {
+      button.addEventListener(
+        "click",
+        () => {
 
-        quizSelection =
-          button.dataset.quizSelection;
+          quizSelection =
+            button.dataset.quizSelection;
 
-        currentQuestion = 0;
+          currentQuestion = 0;
 
-        renderQuiz();
-
-      });
+          renderQuiz();
+        }
+      );
 
     });
 
 
-  // ----------------------------------------------------------
-  // ANTWORTEN
-  // ----------------------------------------------------------
+  // ==========================================================
+  // QUIZ ANTWORTEN
+  // ==========================================================
 
   document
     .querySelectorAll(".quiz-option")
     .forEach(button => {
 
-      button.addEventListener("click", () => {
+      button.addEventListener(
+        "click",
+        () => {
 
-        const selected =
-          Number(button.dataset.answer);
-
-        const result =
-          document.getElementById("quizResult");
-
-
-        document
-          .querySelectorAll(".quiz-option")
-          .forEach(b => {
-            b.disabled = true;
-          });
+          const selected =
+            Number(
+              button.dataset.answer
+            );
 
 
-        if (selected === q.answer) {
+          const result =
+            document.getElementById(
+              "quizResult"
+            );
 
-          result.textContent =
-            "✅ Richtig! +10 Punkte";
 
-          result.style.color =
-            "#18794e";
+          document
+            .querySelectorAll(
+              ".quiz-option"
+            )
+            .forEach(b => {
+              b.disabled = true;
+            });
 
-          addPoints(10);
 
-        } else {
+          if (
+            selected ===
+            q.answer
+          ) {
 
-          result.textContent =
-            `❌ Nicht ganz. Richtig wäre: ${q.options[q.answer]}`;
+            result.textContent =
+              "✅ Richtig! +10 Punkte";
 
-          result.style.color =
-            "#c0392b";
+            result.style.color =
+              "#18794e";
+
+            addPoints(10);
+
+          } else {
+
+            result.textContent =
+              `❌ Nicht ganz. Richtig wäre: ${q.options[q.answer]}`;
+
+            result.style.color =
+              "#c0392b";
+          }
+
+
+          setTimeout(
+            () => {
+
+              currentQuestion =
+                (
+                  currentQuestion + 1
+                ) %
+                questions.length;
+
+              renderQuiz();
+
+            },
+            1200
+          );
+
         }
-
-
-        setTimeout(() => {
-
-          currentQuestion =
-            (currentQuestion + 1) %
-            questions.length;
-
-          renderQuiz();
-
-        }, 1200);
-
-      });
+      );
 
     });
 
@@ -1100,14 +1377,22 @@ function renderQuiz() {
 
 function renderExercise() {
 
-  const lesson = lessons[currentClass];
+  const lesson =
+    lessons[currentClass];
+
 
   const allWords =
-    lesson.units.flatMap(unit => unit.vocab);
+    lesson.units.flatMap(
+      unit => unit.vocab
+    );
+
 
   const randomWord =
     allWords[
-      Math.floor(Math.random() * allWords.length)
+      Math.floor(
+        Math.random() *
+        allWords.length
+      )
     ];
 
 
@@ -1171,188 +1456,530 @@ function renderExercise() {
 
 
   document
-    .getElementById("exerciseButton")
-    .addEventListener("click", async () => {
+    .getElementById(
+      "exerciseButton"
+    )
+    .addEventListener(
+      "click",
+      async () => {
 
-      const input =
-        document.getElementById("exerciseInput");
+        const input =
+          document.getElementById(
+            "exerciseInput"
+          );
 
-      const result =
-        document.getElementById("exerciseResult");
+        const result =
+          document.getElementById(
+            "exerciseResult"
+          );
 
 
-      const sentence =
-        input.value.trim();
+        const sentence =
+          input.value.trim();
 
 
-      if (sentence.length < 4) {
+        if (sentence.length < 4) {
+
+          result.textContent =
+            "❌ Bitte schreibe einen vollständigen Satz.";
+
+          result.style.color =
+            "#c0392b";
+
+          return;
+        }
+
+
+        const normalizedSentence =
+          sentence
+            .toLowerCase()
+            .replace(/[.,!?]/g, "")
+            .trim();
+
+
+        const normalizedWord =
+          randomWord[0]
+            .toLowerCase()
+            .trim();
+
+
+        if (
+          !normalizedSentence.includes(
+            normalizedWord
+          )
+        ) {
+
+          result.textContent =
+            `❌ Dein Satz sollte das Wort „${randomWord[0]}“ enthalten.`;
+
+          result.style.color =
+            "#c0392b";
+
+          return;
+        }
+
+
+        const words =
+          normalizedSentence
+            .split(/\s+/);
+
+
+        if (words.length < 3) {
+
+          result.textContent =
+            "❌ Versuche einen etwas längeren Satz zu schreiben.";
+
+          result.style.color =
+            "#c0392b";
+
+          return;
+        }
+
+
+        const firstCharacter =
+          sentence.charAt(0);
+
+
+        if (
+          firstCharacter !==
+          firstCharacter.toUpperCase()
+        ) {
+
+          result.textContent =
+            "❌ Beginne deinen Satz mit einem Großbuchstaben.";
+
+          result.style.color =
+            "#c0392b";
+
+          return;
+        }
+
+
+        if (!/[.!?]$/.test(sentence)) {
+
+          result.textContent =
+            "❌ Setze am Ende des Satzes ein Satzzeichen.";
+
+          result.style.color =
+            "#c0392b";
+
+          return;
+        }
+
 
         result.textContent =
-          "❌ Bitte schreibe einen vollständigen Satz.";
+          "✅ Sehr gut! Satz ist korrekt aufgebaut. +5 Punkte";
 
         result.style.color =
-          "#c0392b";
+          "#18794e";
 
-        return;
+
+        input.disabled = true;
+
+        document.getElementById(
+          "exerciseButton"
+        ).disabled = true;
+
+
+        await addPoints(5);
+
       }
-
-
-      // ------------------------------------------------------
-      // Einfaches Rechtschreibsystem
-      // ------------------------------------------------------
-
-      const normalizedSentence =
-        sentence
-          .toLowerCase()
-          .replace(/[.,!?]/g, "")
-          .trim();
-
-
-      const normalizedWord =
-        randomWord[0]
-          .toLowerCase()
-          .trim();
-
-
-      if (
-        !normalizedSentence.includes(
-          normalizedWord
-        )
-      ) {
-
-        result.textContent =
-          `❌ Dein Satz sollte das Wort „${randomWord[0]}“ enthalten.`;
-
-        result.style.color =
-          "#c0392b";
-
-        return;
-      }
-
-
-      // ------------------------------------------------------
-      // Einfache Satzprüfung
-      // ------------------------------------------------------
-
-      const words =
-        normalizedSentence.split(/\s+/);
-
-
-      if (words.length < 3) {
-
-        result.textContent =
-          "❌ Versuche einen etwas längeren Satz zu schreiben.";
-
-        result.style.color =
-          "#c0392b";
-
-        return;
-      }
-
-
-      // Großbuchstaben am Satzanfang prüfen
-      const firstCharacter =
-        sentence.charAt(0);
-
-      if (
-        firstCharacter !==
-        firstCharacter.toUpperCase()
-      ) {
-
-        result.textContent =
-          "❌ Beginne deinen Satz mit einem Großbuchstaben.";
-
-        result.style.color =
-          "#c0392b";
-
-        return;
-      }
-
-
-      // Satzzeichen prüfen
-      if (!/[.!?]$/.test(sentence)) {
-
-        result.textContent =
-          "❌ Setze am Ende des Satzes ein Satzzeichen.";
-
-        result.style.color =
-          "#c0392b";
-
-        return;
-      }
-
-
-      // ------------------------------------------------------
-      // ERFOLG
-      // ------------------------------------------------------
-
-      result.textContent =
-        "✅ Sehr gut! Satz ist korrekt aufgebaut. +5 Punkte";
-
-      result.style.color =
-        "#18794e";
-
-
-      input.disabled = true;
-
-      document
-        .getElementById("exerciseButton")
-        .disabled = true;
-
-
-      await addPoints(5);
-
-    });
-
+    );
 }
 
 
 // ============================================================
-// SHUFFLE
+// LEADERBOARD
 // ============================================================
 
-function shuffleArray(array) {
+let leaderboardVisible = false;
 
-  const result =
-    [...array];
 
-  for (
-    let i = result.length - 1;
-    i > 0;
-    i--
-  ) {
+function showLeaderboard() {
 
-    const j =
-      Math.floor(
-        Math.random() * (i + 1)
-      );
+  leaderboardVisible = true;
 
-    [
-      result[i],
-      result[j]
-    ] = [
-      result[j],
-      result[i]
-    ];
+
+  if (learningArea) {
+    learningArea.classList.add(
+      "hidden"
+    );
   }
 
-  return result;
+
+  let leaderboardPage =
+    document.getElementById(
+      "leaderboardPage"
+    );
+
+
+  if (!leaderboardPage) {
+
+    leaderboardPage =
+      document.createElement("div");
+
+    leaderboardPage.id =
+      "leaderboardPage";
+
+    leaderboardPage.className =
+      "leaderboard-container";
+
+
+    const main =
+      document.getElementById(
+        "mainScreen"
+      );
+
+
+    if (main) {
+      main.appendChild(
+        leaderboardPage
+      );
+    }
+  }
+
+
+  leaderboardPage.classList.remove(
+    "hidden"
+  );
+
+
+  leaderboardPage.innerHTML = `
+
+    <div class="leaderboard-header">
+
+      <div>
+
+        <h1>
+          🏆 Leaderboard
+        </h1>
+
+        <p>
+          Die Benutzer mit den meisten Punkten.
+        </p>
+
+      </div>
+
+
+      <div class="leaderboard-my-score">
+
+        <span>
+          Deine Punkte
+        </span>
+
+        <strong>
+          ${Number(
+            currentProfile?.points || 0
+          )} Punkte
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="leaderboard-controls">
+
+      <label for="leaderboardClass">
+        Klasse:
+      </label>
+
+      <select
+        id="leaderboardClass"
+      >
+
+        <option value="all">
+          Alle Klassen
+        </option>
+
+        <option value="1">
+          1. Klasse
+        </option>
+
+        <option value="2">
+          2. Klasse
+        </option>
+
+        <option value="3">
+          3. Klasse
+        </option>
+
+        <option value="4">
+          4. Klasse
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <div
+      id="leaderboardList"
+      class="leaderboard-list"
+    >
+      <div class="leaderboard-loading">
+        Leaderboard wird geladen...
+      </div>
+    </div>
+
+  `;
+
+
+  const classSelect =
+    document.getElementById(
+      "leaderboardClass"
+    );
+
+
+  if (classSelect) {
+
+    classSelect.addEventListener(
+      "change",
+      loadLeaderboard
+    );
+
+  }
+
+
+  loadLeaderboard();
+}
+
+
+function hideLeaderboard() {
+
+  leaderboardVisible = false;
+
+
+  const leaderboardPage =
+    document.getElementById(
+      "leaderboardPage"
+    );
+
+
+  if (leaderboardPage) {
+
+    leaderboardPage.classList.add(
+      "hidden"
+    );
+
+  }
+
+
+  if (learningArea) {
+
+    learningArea.classList.remove(
+      "hidden"
+    );
+
+  }
+}
+
+
+async function loadLeaderboard() {
+
+  const list =
+    document.getElementById(
+      "leaderboardList"
+    );
+
+
+  if (!list)
+    return;
+
+
+  list.innerHTML = `
+
+    <div class="leaderboard-loading">
+      Leaderboard wird geladen...
+    </div>
+
+  `;
+
+
+  try {
+
+    const classSelect =
+      document.getElementById(
+        "leaderboardClass"
+      );
+
+
+    const selectedClass =
+      classSelect
+        ? classSelect.value
+        : "all";
+
+
+    /*
+      Wir verwenden absichtlich nur
+      username + points.
+      Dadurch funktioniert das
+      Leaderboard auch ohne class-Spalte.
+    */
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("profiles")
+        .select(
+          "username, points"
+        )
+        .order(
+          "points",
+          {
+            ascending: false
+          }
+        )
+        .limit(100);
+
+
+    if (error)
+      throw error;
+
+
+    if (!data || data.length === 0) {
+
+      list.innerHTML = `
+
+        <div class="leaderboard-loading">
+          Noch keine Benutzer vorhanden.
+        </div>
+
+      `;
+
+      return;
+    }
+
+
+    list.innerHTML =
+      data.map(
+        (user, index) => `
+
+          <div class="leaderboard-row">
+
+            <div class="leaderboard-rank">
+              #${index + 1}
+            </div>
+
+            <div class="leaderboard-name">
+              ${escapeHtml(
+                user.username ||
+                "Unbekannt"
+              )}
+            </div>
+
+            <div class="leaderboard-points">
+              ⭐ ${Number(
+                user.points || 0
+              )} Punkte
+            </div>
+
+          </div>
+
+        `
+      ).join("");
+
+
+    /*
+      Wenn nach Klasse gefiltert wird,
+      zeigen wir zumindest keine
+      falschen SQL-Fehler an.
+      Der Filter wird nur genutzt,
+      wenn eine class-Spalte später
+      vorhanden ist.
+    */
+
+    if (
+      selectedClass !== "all"
+    ) {
+      // Kein zusätzlicher Filter,
+      // falls profiles keine class-Spalte hat.
+    }
+
+
+  } catch (error) {
+
+    console.error(
+      "Leaderboard-Fehler:",
+      error
+    );
+
+
+    list.innerHTML = `
+
+      <div class="leaderboard-loading">
+        Leaderboard konnte nicht geladen werden.
+      </div>
+
+    `;
+  }
 }
 
 
 // ============================================================
-// HTML SICHER AUSGEBEN
+// NAVIGATION – LEADERBOARD
 // ============================================================
 
-function escapeHtml(value) {
+document
+  .querySelectorAll(".nav-btn")
+  .forEach(button => {
 
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
+    button.addEventListener(
+      "click",
+      () => {
+
+        const page =
+          button.dataset.page ||
+          button.dataset.target ||
+          button.dataset.mode ||
+          "";
+
+
+        const text =
+          button.textContent
+            .trim()
+            .toLowerCase();
+
+
+        const isLeaderboard =
+          page === "leaderboard" ||
+          page === "ranking" ||
+          text.includes(
+            "leaderboard"
+          ) ||
+          text.includes(
+            "rangliste"
+          );
+
+
+        if (!isLeaderboard)
+          return;
+
+
+        document
+          .querySelectorAll(
+            ".nav-btn"
+          )
+          .forEach(btn =>
+            btn.classList.remove(
+              "active"
+            )
+          );
+
+
+        button.classList.add(
+          "active"
+        );
+
+
+        showLeaderboard();
+
+      }
+    );
+
+  });
 
 
 // ============================================================
@@ -1361,9 +1988,15 @@ function escapeHtml(value) {
 
 async function loadAdminUsers() {
 
-  if (!currentProfile?.is_admin) {
+  if (
+    !currentProfile?.is_admin
+  ) {
     return;
   }
+
+
+  if (!adminUsers)
+    return;
 
 
   setAdminMessage(
@@ -1377,7 +2010,9 @@ async function loadAdminUsers() {
     error
   } =
     await supabaseClient
-      .rpc("admin_list_profiles");
+      .rpc(
+        "admin_list_profiles"
+      );
 
 
   if (error) {
@@ -1395,35 +2030,49 @@ async function loadAdminUsers() {
 
 
   adminUsers.innerHTML =
-    data.map(user => `
+    data.map(
+      user => `
 
-      <tr>
+        <tr>
 
-        <td>
-          ${escapeHtml(user.username)}
-        </td>
+          <td>
+            ${escapeHtml(
+              user.username
+            )}
+          </td>
 
-        <td>
-          ⭐ ${Number(user.points || 0)}
-        </td>
+          <td>
+            ⭐ ${Number(
+              user.points || 0
+            )}
+          </td>
 
-        <td>
-          ${escapeHtml(user.class || "-")}
-        </td>
+          <td>
+            ${escapeHtml(
+              user.class || "-"
+            )}
+          </td>
 
-        <td>
-          ${user.is_admin ? "Ja" : "Nein"}
-        </td>
+          <td>
+            ${
+              user.is_admin
+                ? "Ja"
+                : "Nein"
+            }
+          </td>
 
-        <td>
-          ${new Date(
-            user.created_at
-          ).toLocaleDateString("de-AT")}
-        </td>
+          <td>
+            ${new Date(
+              user.created_at
+            ).toLocaleDateString(
+              "de-AT"
+            )}
+          </td>
 
-      </tr>
+        </tr>
 
-    `).join("");
+      `
+    ).join("");
 
 
   setAdminMessage(
@@ -1441,4 +2090,3 @@ if (refreshAdmin) {
   );
 
 }
-```
