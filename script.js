@@ -1,14 +1,12 @@
+```javascript
 /*
-============================================================
-ENGLISH MASTER - script.js
-============================================================
-- Login / Registrierung
-- Vokabeln aus Supabase
-- Vokabel-Units
-- Quiz: alle Vokabeln / Unit / Grammatik
-- Üben: Rechtschreibung + Grammatik
-- Admin-Vokabeln hinzufügen
-============================================================
+  ENGLISH MASTER – Supabase-Version
+
+  Originaler Login bleibt erhalten.
+  Quiz:
+  - Alle Vokabeln
+  - einzelne Units
+  - Grammatik
 */
 
 
@@ -16,359 +14,278 @@ ENGLISH MASTER - script.js
 // SUPABASE
 // ============================================================
 
-const SUPABASE_URL =
-  "https://amrqkjyemjpyxxyugwyu.supabase.co";
+const SUPABASE_URL = "https://amrqkjyemjpyxxyugwyu.supabase.co";
 
 const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_EUe8HwB24WogxOBCcs3fsg_9jt0AfhJ";
 
-const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
-  );
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
 
 
 // ============================================================
-// APP-STATUS
+// LERNINHALTE
+// ============================================================
+
+const lessons = {
+  1: {
+    units: [
+      {
+        unit: 1,
+        vocab: [
+          ["hello", "hallo"],
+          ["goodbye", "auf Wiedersehen"],
+          ["book", "Buch"],
+          ["school", "Schule"],
+          ["friend", "Freund/in"]
+        ]
+      },
+      {
+        unit: 2,
+        vocab: [
+          ["house", "Haus"],
+          ["dog", "Hund"],
+          ["cat", "Katze"],
+          ["water", "Wasser"],
+          ["apple", "Apfel"]
+        ]
+      }
+    ],
+
+    grammar:
+      "To be: I am, you are, he/she/it is, we are, you are, they are.",
+
+    example:
+      "I am a student. / You are my friend. / She is happy."
+  },
+
+  2: {
+    units: [
+      {
+        unit: 1,
+        vocab: [
+          ["morning", "Morgen"],
+          ["evening", "Abend"],
+          ["breakfast", "Frühstück"],
+          ["teacher", "Lehrer/in"],
+          ["homework", "Hausaufgabe"]
+        ]
+      },
+      {
+        unit: 2,
+        vocab: [
+          ["computer", "Computer"],
+          ["weather", "Wetter"],
+          ["summer", "Sommer"],
+          ["Monday", "Montag"],
+          ["beautiful", "schön"]
+        ]
+      }
+    ],
+
+    grammar:
+      "Simple Present: I play, you play, he/she/it plays. Bei he/she/it kommt meistens -s dazu.",
+
+    example:
+      "I play football. / He plays football. / They like music."
+  },
+
+  3: {
+    units: [
+      {
+        unit: 1,
+        vocab: [
+          ["usually", "normalerweise"],
+          ["sometimes", "manchmal"],
+          ["always", "immer"],
+          ["never", "nie"],
+          ["important", "wichtig"]
+        ]
+      },
+      {
+        unit: 2,
+        vocab: [
+          ["interesting", "interessant"],
+          ["journey", "Reise"],
+          ["environment", "Umwelt"],
+          ["future", "Zukunft"],
+          ["healthy", "gesund"]
+        ]
+      }
+    ],
+
+    grammar:
+      "Past Simple: regelmäßige Verben bekommen oft -ed. Beispiel: play → played, visit → visited.",
+
+    example:
+      "I visited London last year. / We played yesterday."
+  },
+
+  4: {
+    units: [
+      {
+        unit: 1,
+        vocab: [
+          ["opportunity", "Möglichkeit"],
+          ["experience", "Erfahrung"],
+          ["decision", "Entscheidung"],
+          ["although", "obwohl"],
+          ["however", "jedoch"]
+        ]
+      },
+      {
+        unit: 2,
+        vocab: [
+          ["improve", "verbessern"],
+          ["probably", "wahrscheinlich"],
+          ["future", "Zukunft"],
+          ["responsibility", "Verantwortung"],
+          ["achievement", "Erfolg/Leistung"]
+        ]
+      }
+    ],
+
+    grammar:
+      "First Conditional: If + Simple Present, will + Verb. Beispiel: If I study, I will learn more.",
+
+    example:
+      "If it rains, we will stay at home. / If you practise, you will improve."
+  }
+};
+
+
+// ============================================================
+// VARIABLEN
 // ============================================================
 
 let currentClass = 1;
 let currentMode = "vocab";
+
+let currentQuestion = 0;
 
 let currentUser = null;
 let currentProfile = null;
 
 let isRegisterMode = false;
 
-let currentUnit = null;
-
-let quizSource = null;
-let quizQuestions = [];
-let quizQuestionIndex = 0;
+// Quiz-Auswahl
+let quizSelection = "all";
 
 
 // ============================================================
-// GRAMMATIK
+// ELEMENTE
 // ============================================================
 
-const grammarLessons = {
+const authScreen = document.getElementById("authScreen");
+const mainScreen = document.getElementById("mainScreen");
 
-  1: {
-    title: "To be",
-    text:
-      "Das Verb „to be“ bedeutet „sein“. Die Formen sind: I am, you are, he/she/it is, we are, you are, they are.",
-    example:
-      "I am happy. / You are my friend. / She is at school.",
+const authForm = document.getElementById("authForm");
 
-    questions: [
-      {
-        question: "I ___ happy.",
-        options: ["am", "is", "are"],
-        answer: 0
-      },
-      {
-        question: "She ___ my friend.",
-        options: ["am", "is", "are"],
-        answer: 1
-      },
-      {
-        question: "They ___ at school.",
-        options: ["am", "is", "are"],
-        answer: 2
-      }
-    ]
-  },
+const usernameInput = document.getElementById("username");
+const passwordInput = document.getElementById("password");
 
-  2: {
-    title: "Simple Present",
-    text:
-      "Im Simple Present wird bei he, she und it meistens ein -s an das Verb angehängt.",
-    example:
-      "I play football. / He plays football.",
+const authButton = document.getElementById("authButton");
+const authMessage = document.getElementById("authMessage");
 
-    questions: [
-      {
-        question: "He ___ football.",
-        options: ["play", "plays", "playing"],
-        answer: 1
-      },
-      {
-        question: "She ___ English.",
-        options: ["like", "likes", "liking"],
-        answer: 1
-      },
-      {
-        question: "They ___ to school.",
-        options: ["go", "goes", "going"],
-        answer: 0
-      }
-    ]
-  },
+const loginTab = document.getElementById("loginTab");
+const registerTab = document.getElementById("registerTab");
 
-  3: {
-    title: "Past Simple",
-    text:
-      "Mit dem Past Simple spricht man über abgeschlossene Ereignisse in der Vergangenheit.",
-    example:
-      "I played football yesterday. / We visited London.",
+const learningArea = document.getElementById("learningArea");
 
-    questions: [
-      {
-        question: "Yesterday I ___ football.",
-        options: ["play", "played", "playing"],
-        answer: 1
-      },
-      {
-        question: "We ___ London last year.",
-        options: ["visit", "visited", "visiting"],
-        answer: 1
-      },
-      {
-        question: "She ___ home early.",
-        options: ["walked", "walk", "walking"],
-        answer: 0
-      }
-    ]
-  },
+const pointsBadge = document.getElementById("pointsBadge");
+const heroPoints = document.getElementById("heroPoints");
+const heroUsername = document.getElementById("heroUsername");
+const welcomeText = document.getElementById("welcomeText");
 
-  4: {
-    title: "First Conditional",
-    text:
-      "Beim First Conditional wird If + Simple Present mit will + Verb verbunden.",
-    example:
-      "If I study, I will learn more.",
+const logoutButton = document.getElementById("logoutButton");
 
-    questions: [
-      {
-        question: "If I study, I ___ learn more.",
-        options: ["will", "am", "did"],
-        answer: 0
-      },
-      {
-        question: "If it rains, we ___ stay home.",
-        options: ["will", "are", "did"],
-        answer: 0
-      },
-      {
-        question: "If you practise, you ___ improve.",
-        options: ["will", "was", "were"],
-        answer: 0
-      }
-    ]
-  }
-
-};
-
-
-// ============================================================
-// DOM
-// ============================================================
-
-const authScreen =
-  document.getElementById("authScreen");
-
-const mainScreen =
-  document.getElementById("mainScreen");
-
-const authForm =
-  document.getElementById("authForm");
-
-const usernameInput =
-  document.getElementById("username");
-
-const passwordInput =
-  document.getElementById("password");
-
-const authButton =
-  document.getElementById("authButton");
-
-const authMessage =
-  document.getElementById("authMessage");
-
-const loginTab =
-  document.getElementById("loginTab");
-
-const registerTab =
-  document.getElementById("registerTab");
-
-const learningArea =
-  document.getElementById("learningArea");
-
-const pointsBadge =
-  document.getElementById("pointsBadge");
-
-const heroPoints =
-  document.getElementById("heroPoints");
-
-const heroUsername =
-  document.getElementById("heroUsername");
-
-const welcomeText =
-  document.getElementById("welcomeText");
-
-const logoutButton =
-  document.getElementById("logoutButton");
-
-const adminPanel =
-  document.getElementById("adminPanel");
-
-const adminUsers =
-  document.getElementById("adminUsers");
-
-const adminMessage =
-  document.getElementById("adminMessage");
-
-const refreshAdmin =
-  document.getElementById("refreshAdmin");
+const adminPanel = document.getElementById("adminPanel");
+const adminUsers = document.getElementById("adminUsers");
+const adminMessage = document.getElementById("adminMessage");
+const refreshAdmin = document.getElementById("refreshAdmin");
 
 
 // ============================================================
 // HILFSFUNKTIONEN
 // ============================================================
 
-function escapeHtml(value) {
-
-  return String(value ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-
-function setAuthMessage(
-  text,
-  error = true
-) {
-
+function setAuthMessage(text, error = true) {
   if (!authMessage) return;
 
   authMessage.textContent = text;
-
-  authMessage.style.color =
-    error
-      ? "#c0392b"
-      : "#18794e";
+  authMessage.style.color = error
+    ? "#c0392b"
+    : "#18794e";
 }
 
 
-function setAdminMessage(
-  text,
-  error = true
-) {
-
+function setAdminMessage(text, error = true) {
   if (!adminMessage) return;
 
   adminMessage.textContent = text;
-
-  adminMessage.style.color =
-    error
-      ? "#c0392b"
-      : "#18794e";
+  adminMessage.style.color = error
+    ? "#c0392b"
+    : "#18794e";
 }
 
 
 function authEmail(username) {
-
-  const safe =
-    username
-      .toLowerCase()
-      .replace(/[^a-z0-9._-]/g, "_");
+  const safe = username
+    .toLowerCase()
+    .replace(/[^a-z0-9._-]/g, "_");
 
   return `${safe}@english-master.local`;
 }
 
 
 function validUsername(username) {
-
-  return /^[A-Za-z0-9_-]{3,20}$/
-    .test(username);
+  return /^[A-Za-z0-9_-]{3,20}$/.test(username);
 }
 
 
 // ============================================================
-// LOGIN TABS
+// LOGIN / REGISTRIERUNG
 // ============================================================
 
 function showLogin() {
-
   isRegisterMode = false;
 
-  loginTab?.classList.add("active");
-  registerTab?.classList.remove("active");
+  loginTab.classList.add("active");
+  registerTab.classList.remove("active");
 
-  if (authButton) {
-    authButton.textContent =
-      "Anmelden";
-  }
+  authButton.textContent = "Anmelden";
 
-  if (passwordInput) {
-    passwordInput.autocomplete =
-      "current-password";
-  }
+  passwordInput.autocomplete = "current-password";
 
   setAuthMessage("");
 }
 
 
 function showRegister() {
-
   isRegisterMode = true;
 
-  registerTab?.classList.add("active");
-  loginTab?.classList.remove("active");
+  registerTab.classList.add("active");
+  loginTab.classList.remove("active");
 
-  if (authButton) {
-    authButton.textContent =
-      "Konto erstellen";
-  }
+  authButton.textContent = "Konto erstellen";
 
-  if (passwordInput) {
-    passwordInput.autocomplete =
-      "new-password";
-  }
+  passwordInput.autocomplete = "new-password";
 
   setAuthMessage("");
 }
 
 
-loginTab?.addEventListener(
-  "click",
-  showLogin
-);
-
-registerTab?.addEventListener(
-  "click",
-  showRegister
-);
-
-
-// ============================================================
-// PROFIL
-// ============================================================
-
 async function loadProfile(user) {
-
-  const {
-    data,
-    error
-  } = await supabaseClient
+  const { data, error } = await supabaseClient
     .from("profiles")
-    .select(
-      "id, username, points, is_admin, created_at"
-    )
+    .select("id, username, points, is_admin, created_at")
     .eq("id", user.id)
     .single();
 
   if (error) {
-
-    console.error(
-      "Profil konnte nicht geladen werden:",
-      error
-    );
-
+    console.error(error);
     return null;
   }
 
@@ -377,71 +294,34 @@ async function loadProfile(user) {
 
 
 function updateUserUI() {
-
   if (!currentProfile) return;
 
-  const username =
-    currentProfile.username;
+  const username = currentProfile.username;
+  const points = Number(currentProfile.points || 0);
 
-  const points =
-    Number(
-      currentProfile.points || 0
-    );
+  welcomeText.textContent = `👤 ${username}`;
 
+  heroUsername.textContent = username;
 
-  if (welcomeText) {
-    welcomeText.textContent =
-      `👤 ${username}`;
-  }
+  pointsBadge.textContent = `⭐ ${points} Punkte`;
 
+  heroPoints.textContent = points;
 
-  if (heroUsername) {
-    heroUsername.textContent =
-      username;
-  }
-
-
-  if (pointsBadge) {
-    pointsBadge.textContent =
-      `⭐ ${points} Punkte`;
-  }
-
-
-  if (heroPoints) {
-    heroPoints.textContent =
-      points;
-  }
-
-
-  if (adminPanel) {
-
-    if (currentProfile.is_admin) {
-      adminPanel.classList.remove(
-        "hidden"
-      );
-
-      loadAdminUsers();
-
-    } else {
-
-      adminPanel.classList.add(
-        "hidden"
-      );
-    }
+  if (currentProfile.is_admin) {
+    adminPanel.classList.remove("hidden");
+    loadAdminUsers();
+  } else {
+    adminPanel.classList.add("hidden");
   }
 }
 
 
 async function showApp(user) {
-
   currentUser = user;
 
-  currentProfile =
-    await loadProfile(user);
-
+  currentProfile = await loadProfile(user);
 
   if (!currentProfile) {
-
     await supabaseClient.auth.signOut();
 
     setAuthMessage(
@@ -451,15 +331,9 @@ async function showApp(user) {
     return;
   }
 
+  authScreen.classList.add("hidden");
 
-  authScreen?.classList.add(
-    "hidden"
-  );
-
-  mainScreen?.classList.remove(
-    "hidden"
-  );
-
+  mainScreen.classList.remove("hidden");
 
   updateUserUI();
 
@@ -468,203 +342,162 @@ async function showApp(user) {
 
 
 function showAuth() {
-
   currentUser = null;
   currentProfile = null;
 
-  authScreen?.classList.remove(
-    "hidden"
-  );
+  mainScreen.classList.add("hidden");
 
-  mainScreen?.classList.add(
-    "hidden"
-  );
+  authScreen.classList.remove("hidden");
 
-  if (usernameInput) {
-    usernameInput.value = "";
-  }
-
-  if (passwordInput) {
-    passwordInput.value = "";
-  }
+  usernameInput.value = "";
+  passwordInput.value = "";
 
   showLogin();
 }
 
 
 // ============================================================
-// LOGIN / REGISTRIERUNG
+// AUTH FORM
 // ============================================================
 
-authForm?.addEventListener(
-  "submit",
-  async event => {
+authForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
 
-    event.preventDefault();
+  const username = usernameInput.value.trim();
+  const password = passwordInput.value;
 
+  if (!validUsername(username)) {
+    setAuthMessage(
+      "Benutzername: 3–20 Zeichen, nur Buchstaben, Zahlen, _ und -."
+    );
 
-    const username =
-      usernameInput.value.trim();
+    return;
+  }
 
-    const password =
-      passwordInput.value;
+  if (password.length < 6) {
+    setAuthMessage(
+      "Das Passwort muss mindestens 6 Zeichen haben."
+    );
 
+    return;
+  }
 
-    if (!validUsername(username)) {
+  authButton.disabled = true;
 
-      setAuthMessage(
-        "Benutzername: 3–20 Zeichen, nur Buchstaben, Zahlen, _ und -."
-      );
+  authButton.textContent = isRegisterMode
+    ? "Konto wird erstellt..."
+    : "Anmeldung...";
 
-      return;
-    }
+  try {
+    const email = authEmail(username);
 
+    // --------------------------------------------------------
+    // REGISTRIEREN
+    // --------------------------------------------------------
 
-    if (password.length < 6) {
+    if (isRegisterMode) {
 
-      setAuthMessage(
-        "Das Passwort muss mindestens 6 Zeichen haben."
-      );
+      const { data, error } =
+        await supabaseClient.auth.signUp({
+          email,
+          password,
 
-      return;
-    }
-
-
-    authButton.disabled = true;
-
-    authButton.textContent =
-      isRegisterMode
-        ? "Konto wird erstellt..."
-        : "Anmeldung...";
-
-
-    try {
-
-      const email =
-        authEmail(username);
-
-
-      if (isRegisterMode) {
-
-        const {
-          data,
-          error
-        } =
-          await supabaseClient.auth.signUp({
-            email,
-            password,
-            options: {
-              data: {
-                username
-              }
+          options: {
+            data: {
+              username
             }
-          });
+          }
+        });
 
+      if (error) throw error;
 
-        if (error) {
-          throw error;
-        }
-
-
-        if (!data.user) {
-          throw new Error(
-            "Benutzer konnte nicht erstellt werden."
-          );
-        }
-
-
-        const {
-          error: profileError
-        } =
-          await supabaseClient
-            .from("profiles")
-            .insert({
-              id: data.user.id,
-              username,
-              points: 0,
-              is_admin: false
-            });
-
-
-        if (profileError) {
-
-          console.error(
-            profileError
-          );
-
-          await supabaseClient.auth.signOut();
-
-          throw new Error(
-            "Konto erstellt, aber das Profil konnte nicht angelegt werden."
-          );
-        }
-
-
-        await showApp(
-          data.user
-        );
-
-
-      } else {
-
-        const {
-          data,
-          error
-        } =
-          await supabaseClient.auth
-            .signInWithPassword({
-              email,
-              password
-            });
-
-
-        if (error) {
-          throw error;
-        }
-
-
-        await showApp(
-          data.user
+      if (!data.user) {
+        throw new Error(
+          "Benutzer konnte nicht erstellt werden."
         );
       }
 
+      const { error: profileError } =
+        await supabaseClient
+          .from("profiles")
+          .insert({
+            id: data.user.id,
+            username,
+            points: 0,
+            is_admin: false
+          });
 
-    } catch (error) {
+      if (profileError) {
+        console.error(profileError);
 
-      console.error(error);
+        await supabaseClient.auth.signOut();
+
+        throw new Error(
+          "Konto erstellt, aber das Profil konnte nicht angelegt werden."
+        );
+      }
 
       setAuthMessage(
-        error.message ||
-        "Anmeldung fehlgeschlagen."
+        "Konto erstellt! Du wirst angemeldet...",
+        false
       );
 
+      await showApp(data.user);
 
-    } finally {
-
-      authButton.disabled = false;
-
-      authButton.textContent =
-        isRegisterMode
-          ? "Konto erstellen"
-          : "Anmelden";
     }
 
+    // --------------------------------------------------------
+    // ANMELDEN
+    // --------------------------------------------------------
+
+    else {
+
+      const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+          email,
+          password
+        });
+
+      if (error) throw error;
+
+      await showApp(data.user);
+    }
+
+  } catch (error) {
+
+    console.error(error);
+
+    setAuthMessage(
+      error.message || "Anmeldung fehlgeschlagen."
+    );
+
+  } finally {
+
+    authButton.disabled = false;
+
+    authButton.textContent = isRegisterMode
+      ? "Konto erstellen"
+      : "Anmelden";
   }
+});
+
+
+loginTab.addEventListener(
+  "click",
+  showLogin
+);
+
+registerTab.addEventListener(
+  "click",
+  showRegister
 );
 
 
-// ============================================================
-// LOGOUT
-// ============================================================
-
-logoutButton?.addEventListener(
+logoutButton.addEventListener(
   "click",
   async () => {
-
     await supabaseClient.auth.signOut();
-
     showAuth();
-
   }
 );
 
@@ -675,37 +508,33 @@ logoutButton?.addEventListener(
 
 supabaseClient.auth
   .getSession()
-  .then(
-    async ({ data }) => {
+  .then(async ({ data }) => {
 
-      if (
-        data.session &&
-        data.session.user
-      ) {
-
-        await showApp(
-          data.session.user
-        );
-      }
-
+    if (data.session?.user) {
+      await showApp(data.session.user);
     }
-  );
+
+  });
 
 
-supabaseClient.auth
-  .onAuthStateChange(
-    async (event, session) => {
+supabaseClient.auth.onAuthStateChange(
+  async (event, session) => {
 
-      if (
-        event === "SIGNED_OUT"
-      ) {
+    if (event === "SIGNED_OUT") {
 
-        showAuth();
+      showAuth();
 
-      }
+    } else if (
+      event === "SIGNED_IN" &&
+      session?.user &&
+      !currentUser
+    ) {
 
+      await showApp(session.user);
     }
-  );
+
+  }
+);
 
 
 // ============================================================
@@ -714,62 +543,27 @@ supabaseClient.auth
 
 async function addPoints(amount) {
 
-  if (
-    !currentUser ||
-    !currentProfile
-  ) {
-    return;
-  }
-
+  if (!currentProfile || !currentUser) return;
 
   const newPoints =
-    Number(
-      currentProfile.points || 0
-    ) + amount;
+    Number(currentProfile.points || 0) + amount;
 
-
-  const {
-    data,
-    error
-  } =
+  const { data, error } =
     await supabaseClient
       .from("profiles")
       .update({
         points: newPoints
       })
-      .eq(
-        "id",
-        currentUser.id
-      )
-      .select(
-        "points, is_admin"
-      )
+      .eq("id", currentUser.id)
+      .select("points")
       .single();
 
-
   if (error) {
-
-    console.error(
-      "Punkte konnten nicht gespeichert werden:",
-      error
-    );
-
+    console.error(error);
     return;
   }
 
-
-  /*
-    Wichtig:
-    is_admin wird NICHT verändert.
-    Dadurch bleibt der Admin-Status erhalten.
-  */
-
-  currentProfile.points =
-    data.points;
-
-  currentProfile.is_admin =
-    data.is_admin;
-
+  currentProfile.points = data.points;
 
   updateUserUI();
 }
@@ -783,361 +577,148 @@ document
   .querySelectorAll(".class-btn")
   .forEach(button => {
 
-    button.addEventListener(
-      "click",
-      () => {
+    button.addEventListener("click", () => {
 
-        currentClass =
-          Number(
-            button.dataset.class
-          );
+      currentClass =
+        Number(button.dataset.class);
 
-        currentUnit = null;
-
-        quizSource = null;
-        quizQuestions = [];
-        quizQuestionIndex = 0;
-
-
-        document
-          .querySelectorAll(".class-btn")
-          .forEach(btn =>
-            btn.classList.remove(
-              "active"
-            )
-          );
-
-
-        button.classList.add(
-          "active"
+      document
+        .querySelectorAll(".class-btn")
+        .forEach(b =>
+          b.classList.remove("active")
         );
 
+      button.classList.add("active");
 
-        renderLearning();
-      }
-    );
+      currentQuestion = 0;
+
+      quizSelection = "all";
+
+      renderLearning();
+    });
 
   });
 
 
 // ============================================================
-// MODUS
+// LERNMODI
 // ============================================================
 
 document
   .querySelectorAll(".mode-btn")
   .forEach(button => {
 
-    button.addEventListener(
-      "click",
-      () => {
+    button.addEventListener("click", () => {
 
-        currentMode =
-          button.dataset.mode;
+      currentMode =
+        button.dataset.mode;
 
-        currentUnit = null;
+      currentQuestion = 0;
 
-        quizSource = null;
-        quizQuestions = [];
-        quizQuestionIndex = 0;
+      if (currentMode === "quiz") {
+        quizSelection = "all";
+      }
 
-
-        document
-          .querySelectorAll(".mode-btn")
-          .forEach(btn =>
-            btn.classList.remove(
-              "active"
-            )
-          );
-
-
-        button.classList.add(
-          "active"
+      document
+        .querySelectorAll(".mode-btn")
+        .forEach(b =>
+          b.classList.remove("active")
         );
 
+      button.classList.add("active");
 
-        renderLearning();
-      }
-    );
+      renderLearning();
+    });
 
   });
 
 
 // ============================================================
-// RENDER
+// RENDER LEARNING
 // ============================================================
 
 function renderLearning() {
 
-  if (!learningArea) {
-    return;
-  }
-
-
-  if (
-    currentMode === "vocab"
-  ) {
-
+  if (currentMode === "vocab") {
     renderVocab();
-
-    return;
   }
 
-
-  if (
-    currentMode === "grammar"
-  ) {
-
-    renderGrammar();
-
-    return;
-  }
-
-
-  if (
-    currentMode === "quiz"
-  ) {
-
+  if (currentMode === "quiz") {
     renderQuiz();
-
-    return;
   }
 
+  if (currentMode === "grammar") {
+    renderGrammar();
+  }
 
-  if (
-    currentMode === "exercise"
-  ) {
-
+  if (currentMode === "exercise") {
     renderExercise();
-
-    return;
   }
 }
 
 
 // ============================================================
-// VOKABELN AUS SUPABASE
+// VOKABELN
 // ============================================================
 
-async function getVocabulary(
-  unitNumber = null
-) {
+function renderVocab() {
 
-  let query =
-    supabaseClient
-      .from("vocab")
-      .select(
-        "english, german, example, unit_number, class_number"
-      )
-      .eq(
-        "class_number",
-        currentClass
-      )
-      .order(
-        "unit_number",
-        {
-          ascending: true
-        }
-      );
+  const lesson = lessons[currentClass];
 
-
-  if (
-    unitNumber !== null
-  ) {
-
-    query =
-      query.eq(
-        "unit_number",
-        unitNumber
-      );
-  }
-
-
-  const {
-    data,
-    error
-  } =
-    await query;
-
-
-  if (error) {
-
-    console.error(
-      "Vokabeln konnten nicht geladen werden:",
-      error
-    );
-
-    return [];
-  }
-
-
-  return data || [];
-}
-
-
-// ============================================================
-// VOKABELN + UNIT-SYSTEM
-// ============================================================
-
-async function renderVocab() {
+  const units = lesson.units;
 
   learningArea.innerHTML = `
 
-    <div class="vocab-header">
+    <div class="vocab-unit-navigation">
 
-      <div>
+      <div class="unit-header">
 
-        <h2>
-          📚 Vokabeln – ${currentClass}. Klasse
-        </h2>
+        <div>
 
-        <p>
-          Wähle eine Unit aus.
-        </p>
+          <h2>📚 Vokabeln</h2>
 
-      </div>
+          <p>
+            Wähle eine Unit aus.
+          </p>
 
-    </div>
-
-
-    <div
-      id="unitList"
-      class="unit-list"
-    >
-
-      <p>
-        Units werden geladen...
-      </p>
-
-    </div>
-
-  `;
-
-
-  const allWords =
-    await getVocabulary();
-
-
-  const units = {};
-
-
-  allWords.forEach(word => {
-
-    const unit =
-      Number(
-        word.unit_number
-      );
-
-
-    if (!units[unit]) {
-      units[unit] = [];
-    }
-
-
-    units[unit].push(
-      word
-    );
-
-  });
-
-
-  const unitNumbers =
-    Object.keys(units)
-      .map(Number)
-      .sort(
-        (a, b) => a - b
-      );
-
-
-  const unitList =
-    document.getElementById(
-      "unitList"
-    );
-
-
-  if (
-    !unitNumbers.length
-  ) {
-
-    unitList.innerHTML = `
-
-      <div class="empty-unit">
-
-        <p>
-          Für diese Klasse wurden noch keine Vokabeln eingetragen.
-        </p>
+        </div>
 
       </div>
 
-    `;
 
-    return;
-  }
+      <div id="unitList" class="unit-list">
 
+        ${units.map(unit => `
 
-  unitList.innerHTML =
-    unitNumbers
-      .map(
-        unitNumber => `
-
-          <details
-            class="unit"
-            data-unit="${unitNumber}"
-            ${currentUnit === unitNumber ? "open" : ""}
-          >
+          <details class="unit">
 
             <summary>
 
               <strong>
-                Unit ${unitNumber}
+                Unit ${unit.unit}
               </strong>
 
               <span>
-                ${units[unitNumber].length} Vokabeln
+                ${unit.vocab.length} Vokabeln
               </span>
 
             </summary>
-
 
             <div class="unit-content">
 
               <div class="content-grid">
 
-                ${units[unitNumber]
-                  .map(
-                    word => `
+                ${unit.vocab.map(([en, de]) => `
 
-                      <div class="vocab-card">
+                  <div class="vocab-card">
 
-                        <strong>
-                          ${escapeHtml(
-                            word.english
-                          )}
-                        </strong>
+                    <strong>${escapeHtml(en)}</strong>
 
-                        <span>
-                          ${escapeHtml(
-                            word.german
-                          )}
-                        </span>
+                    <span>${escapeHtml(de)}</span>
 
-                        ${
-                          word.example
-                            ? `
-                              <small>
-                                ${escapeHtml(
-                                  word.example
-                                )}
-                              </small>
-                            `
-                            : ""
-                        }
+                  </div>
 
-                      </div>
-
-                    `
-                  )
-                  .join("")}
+                `).join("")}
 
               </div>
 
@@ -1145,52 +726,13 @@ async function renderVocab() {
 
           </details>
 
-        `
-      )
-      .join("");
+        `).join("")}
 
+      </div>
 
-  document
-    .querySelectorAll(
-      ".unit"
-    )
-    .forEach(unit => {
+    </div>
 
-      unit.addEventListener(
-        "toggle",
-        () => {
-
-          if (
-            unit.open
-          ) {
-
-            currentUnit =
-              Number(
-                unit.dataset.unit
-              );
-
-
-            document
-              .querySelectorAll(
-                ".unit"
-              )
-              .forEach(other => {
-
-                if (
-                  other !== unit
-                ) {
-
-                  other.open =
-                    false;
-                }
-
-              });
-          }
-
-        }
-      );
-
-    });
+  `;
 }
 
 
@@ -1200,54 +742,25 @@ async function renderVocab() {
 
 function renderGrammar() {
 
-  const grammar =
-    grammarLessons[
-      currentClass
-    ];
-
-
-  if (!grammar) {
-
-    learningArea.innerHTML = `
-      <div class="content-area">
-        <h2>📖 Grammatik</h2>
-        <p>Für diese Klasse gibt es noch keine Grammatik.</p>
-      </div>
-    `;
-
-    return;
-  }
-
+  const lesson = lessons[currentClass];
 
   learningArea.innerHTML = `
 
-    <div class="content-area">
+    <h2>
+      📖 Grammatik – ${currentClass}. Klasse
+    </h2>
 
-      <h2>
-        📖 ${escapeHtml(
-          grammar.title
-        )}
-      </h2>
+    <p>
+      ${escapeHtml(lesson.grammar)}
+    </p>
 
-      <p>
-        ${escapeHtml(
-          grammar.text
-        )}
-      </p>
+    <div class="example">
 
-      <div class="example">
+      <strong>Beispiele:</strong>
 
-        <strong>
-          Beispiel:
-        </strong>
+      <br><br>
 
-        <br><br>
-
-        ${escapeHtml(
-          grammar.example
-        )}
-
-      </div>
+      ${escapeHtml(lesson.example)}
 
     </div>
 
@@ -1256,1086 +769,607 @@ function renderGrammar() {
 
 
 // ============================================================
-// QUIZ AUSWAHL
+// QUIZ-FRAGEN AUS VOKABELN ERSTELLEN
+// ============================================================
+
+function createVocabQuestions(words) {
+
+  const questions = [];
+
+  words.forEach(([english, german]) => {
+
+    const otherWords =
+      words
+        .filter(word => word[0] !== english)
+        .map(word => word[1]);
+
+    const wrongAnswers =
+      shuffleArray(otherWords).slice(0, 2);
+
+    if (wrongAnswers.length < 2) return;
+
+    const options =
+      shuffleArray([
+        german,
+        ...wrongAnswers
+      ]);
+
+    questions.push({
+      q: `Was bedeutet „${english}“?`,
+      options,
+      answer: options.indexOf(german)
+    });
+
+  });
+
+  return questions;
+}
+
+
+// ============================================================
+// QUIZ
 // ============================================================
 
 function renderQuiz() {
 
-  if (!quizSource) {
+  const lesson = lessons[currentClass];
+
+  const allWords =
+    lesson.units.flatMap(unit => unit.vocab);
+
+
+  // ----------------------------------------------------------
+  // GRAMMATIK QUIZ
+  // ----------------------------------------------------------
+
+  const grammarQuestion = {
+    q: "Welche Aussage gehört zur Grammatik dieser Klasse?",
+    options: [
+      lesson.grammar,
+      "Diese Regel gibt es im Englischen nicht.",
+      "Im Englischen werden alle Verben gleich verwendet."
+    ],
+    answer: 0
+  };
+
+
+  // ----------------------------------------------------------
+  // AUSGEWÄHLTE VOKABELN
+  // ----------------------------------------------------------
+
+  let selectedWords = allWords;
+
+  if (quizSelection !== "all") {
+
+    const selectedUnit =
+      lesson.units.find(
+        unit =>
+          String(unit.unit) ===
+          String(quizSelection)
+      );
+
+    if (selectedUnit) {
+      selectedWords = selectedUnit.vocab;
+    }
+  }
+
+
+  let questions;
+
+  if (quizSelection === "grammar") {
+
+    questions = [grammarQuestion];
+
+  } else {
+
+    questions =
+      createVocabQuestions(selectedWords);
+
+  }
+
+
+  if (!questions.length) {
 
     learningArea.innerHTML = `
 
-      <div class="content-area">
+      <h2>🧠 Quiz – ${currentClass}. Klasse</h2>
 
-        <h2>
-          🧠 Quiz – ${currentClass}. Klasse
-        </h2>
-
-        <p>
-          Wähle aus, was du abfragen möchtest.
-        </p>
-
-
-        <div class="quiz-source-list">
-
-          <button
-            class="quiz-source-btn"
-            data-source="all"
-            type="button"
-          >
-            📚 Alle Vokabeln
-          </button>
-
-
-          <button
-            class="quiz-source-btn"
-            data-source="unit"
-            data-unit="1"
-            type="button"
-          >
-            📦 Unit 1
-          </button>
-
-
-          <button
-            class="quiz-source-btn"
-            data-source="unit"
-            data-unit="2"
-            type="button"
-          >
-            📦 Unit 2
-          </button>
-
-
-          <button
-            class="quiz-source-btn"
-            data-source="unit"
-            data-unit="3"
-            type="button"
-          >
-            📦 Unit 3
-          </button>
-
-
-          <button
-            class="quiz-source-btn"
-            data-source="unit"
-            data-unit="4"
-            type="button"
-          >
-            📦 Unit 4
-          </button>
-
-
-          <button
-            class="quiz-source-btn"
-            data-source="grammar"
-            type="button"
-          >
-            📖 Grammatik
-          </button>
-
-        </div>
-
-      </div>
+      <p>
+        Für diese Auswahl sind noch keine Quizfragen vorhanden.
+      </p>
 
     `;
-
-
-    document
-      .querySelectorAll(
-        ".quiz-source-btn"
-      )
-      .forEach(button => {
-
-        button.addEventListener(
-          "click",
-          async () => {
-
-            const source =
-              button.dataset.source;
-
-
-            if (
-              source === "unit"
-            ) {
-
-              quizSource = {
-                type: "unit",
-                unit: Number(
-                  button.dataset.unit
-                )
-              };
-
-            } else {
-
-              quizSource = {
-                type: source
-              };
-
-            }
-
-
-            quizQuestionIndex = 0;
-
-            await loadQuizQuestions();
-
-          }
-        );
-
-      });
-
 
     return;
   }
 
 
-  if (
-    !quizQuestions.length
-  ) {
+  if (currentQuestion >= questions.length) {
+    currentQuestion = 0;
+  }
 
-    learningArea.innerHTML = `
 
-      <div class="content-area">
+  const q = questions[currentQuestion];
 
-        <h2>
-          🧠 Quiz
-        </h2>
 
-        <p>
-          Für diese Auswahl wurden keine Fragen gefunden.
-        </p>
+  // ----------------------------------------------------------
+  // QUIZ AUSWAHL
+  // ----------------------------------------------------------
+
+  learningArea.innerHTML = `
+
+    <h2>
+      🧠 Quiz – ${currentClass}. Klasse
+    </h2>
+
+
+    <div class="quiz-selection">
+
+      <h3>
+        📚 Was möchtest du üben?
+      </h3>
+
+      <p>
+        Wähle alle Vokabeln, eine bestimmte Unit oder Grammatik.
+      </p>
+
+
+      <div class="quiz-unit-grid">
 
         <button
-          id="quizBackButton"
-          class="secondary-btn"
           type="button"
+          class="quiz-unit-btn quiz-all-btn ${quizSelection === "all" ? "active" : ""}"
+          data-quiz-selection="all"
         >
-          ← Auswahl ändern
+
+          <span class="quiz-unit-title">
+            📚 Alle Vokabeln
+          </span>
+
+          <span class="quiz-unit-info">
+            Alle Units dieser Klasse
+          </span>
+
+        </button>
+
+
+        ${lesson.units.map(unit => `
+
+          <button
+            type="button"
+            class="quiz-unit-btn ${String(quizSelection) === String(unit.unit) ? "active" : ""}"
+            data-quiz-selection="${unit.unit}"
+          >
+
+            <span class="quiz-unit-title">
+              📖 Unit ${unit.unit}
+            </span>
+
+            <span class="quiz-unit-info">
+              ${unit.vocab.length} Vokabeln
+            </span>
+
+          </button>
+
+        `).join("")}
+
+
+        <button
+          type="button"
+          class="quiz-unit-btn ${quizSelection === "grammar" ? "active" : ""}"
+          data-quiz-selection="grammar"
+        >
+
+          <span class="quiz-unit-title">
+            📖 Grammatik
+          </span>
+
+          <span class="quiz-unit-info">
+            Grammatik-Regeln üben
+          </span>
+
         </button>
 
       </div>
 
-    `;
+    </div>
 
 
-    document
-      .getElementById(
-        "quizBackButton"
-      )
-      ?.addEventListener(
-        "click",
-        () => {
-
-          quizSource = null;
-          quizQuestions = [];
-
-          renderQuiz();
-
-        }
-      );
+    <p>
+      Frage ${currentQuestion + 1}
+      von ${questions.length}
+    </p>
 
 
-    return;
-  }
+    <h3>
+      ${escapeHtml(q.q)}
+    </h3>
 
 
-  if (
-    quizQuestionIndex >=
-    quizQuestions.length
-  ) {
+    <div id="quizOptions">
 
-    quizQuestionIndex = 0;
-  }
+      ${q.options.map((option, index) => `
 
+        <button
+          class="quiz-option"
+          data-answer="${index}"
+          type="button"
+        >
+          ${escapeHtml(option)}
+        </button>
 
-  const question =
-    quizQuestions[
-      quizQuestionIndex
-    ];
-
-
-  learningArea.innerHTML = `
-
-    <div class="content-area">
-
-      <button
-        id="quizBackButton"
-        class="secondary-btn"
-        type="button"
-      >
-        ← Auswahl ändern
-      </button>
-
-
-      <h2>
-        🧠 Quiz
-      </h2>
-
-      <p>
-        Frage
-        ${quizQuestionIndex + 1}
-        von
-        ${quizQuestions.length}
-      </p>
-
-
-      <h3>
-        ${escapeHtml(
-          question.question
-        )}
-      </h3>
-
-
-      <div id="quizOptions">
-
-        ${question.options
-          .map(
-            (option, index) => `
-
-              <button
-                class="quiz-option"
-                data-answer="${index}"
-                type="button"
-              >
-                ${escapeHtml(
-                  option
-                )}
-              </button>
-
-            `
-          )
-          .join("")}
-
-      </div>
-
-
-      <p
-        id="quizResult"
-        class="quiz-result"
-      ></p>
+      `).join("")}
 
     </div>
+
+
+    <p
+      id="quizResult"
+      class="quiz-result"
+    ></p>
 
   `;
 
 
-  document
-    .getElementById(
-      "quizBackButton"
-    )
-    ?.addEventListener(
-      "click",
-      () => {
+  // ----------------------------------------------------------
+  // QUIZ UNIT BUTTONS
+  // ----------------------------------------------------------
 
-        quizSource = null;
-        quizQuestions = [];
-        quizQuestionIndex = 0;
+  document
+    .querySelectorAll("[data-quiz-selection]")
+    .forEach(button => {
+
+      button.addEventListener("click", () => {
+
+        quizSelection =
+          button.dataset.quizSelection;
+
+        currentQuestion = 0;
 
         renderQuiz();
 
-      }
-    );
-
-
-  document
-    .querySelectorAll(
-      ".quiz-option"
-    )
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        async () => {
-
-          const selected =
-            Number(
-              button.dataset.answer
-            );
-
-
-          const result =
-            document.getElementById(
-              "quizResult"
-            );
-
-
-          document
-            .querySelectorAll(
-              ".quiz-option"
-            )
-            .forEach(btn => {
-              btn.disabled = true;
-            });
-
-
-          if (
-            selected ===
-            question.answer
-          ) {
-
-            result.textContent =
-              "✅ Richtig! +10 Punkte";
-
-            result.style.color =
-              "#18794e";
-
-            await addPoints(10);
-
-          } else {
-
-            result.textContent =
-              `❌ Richtig wäre: ${
-                question.options[
-                  question.answer
-                ]
-              }`;
-
-            result.style.color =
-              "#c0392b";
-          }
-
-
-          setTimeout(
-            () => {
-
-              quizQuestionIndex++;
-
-              renderQuiz();
-
-            },
-            1200
-          );
-
-        }
-      );
+      });
 
     });
+
+
+  // ----------------------------------------------------------
+  // ANTWORTEN
+  // ----------------------------------------------------------
+
+  document
+    .querySelectorAll(".quiz-option")
+    .forEach(button => {
+
+      button.addEventListener("click", () => {
+
+        const selected =
+          Number(button.dataset.answer);
+
+        const result =
+          document.getElementById("quizResult");
+
+
+        document
+          .querySelectorAll(".quiz-option")
+          .forEach(b => {
+            b.disabled = true;
+          });
+
+
+        if (selected === q.answer) {
+
+          result.textContent =
+            "✅ Richtig! +10 Punkte";
+
+          result.style.color =
+            "#18794e";
+
+          addPoints(10);
+
+        } else {
+
+          result.textContent =
+            `❌ Nicht ganz. Richtig wäre: ${q.options[q.answer]}`;
+
+          result.style.color =
+            "#c0392b";
+        }
+
+
+        setTimeout(() => {
+
+          currentQuestion =
+            (currentQuestion + 1) %
+            questions.length;
+
+          renderQuiz();
+
+        }, 1200);
+
+      });
+
+    });
+
 }
 
 
 // ============================================================
-// QUIZ FRAGEN LADEN
-// ============================================================
-
-async function loadQuizQuestions() {
-
-  quizQuestions = [];
-
-
-  if (
-    quizSource.type ===
-    "grammar"
-  ) {
-
-    const grammar =
-      grammarLessons[
-        currentClass
-      ];
-
-
-    if (grammar) {
-
-      quizQuestions =
-        grammar.questions.map(
-          question => ({
-            question:
-              question.question,
-
-            options:
-              [...question.options],
-
-            answer:
-              question.answer
-          })
-        );
-    }
-
-
-    renderQuiz();
-
-    return;
-  }
-
-
-  let words = [];
-
-
-  if (
-    quizSource.type ===
-    "all"
-  ) {
-
-    words =
-      await getVocabulary();
-
-  } else if (
-    quizSource.type ===
-    "unit"
-  ) {
-
-    words =
-      await getVocabulary(
-        quizSource.unit
-      );
-  }
-
-
-  if (
-    words.length < 3
-  ) {
-
-    renderQuiz();
-
-    return;
-  }
-
-
-  const shuffled =
-    [...words].sort(
-      () => Math.random() - 0.5
-    );
-
-
-  quizQuestions =
-    shuffled.map(
-      word => {
-
-        const wrongAnswers =
-          words
-            .filter(
-              other =>
-                other.german !==
-                word.german
-            )
-            .sort(
-              () =>
-                Math.random() - 0.5
-            )
-            .slice(0, 2)
-            .map(
-              other =>
-                other.german
-            );
-
-
-        const options = [
-          word.german,
-          ...wrongAnswers
-        ];
-
-
-        const shuffledOptions =
-          options
-            .map(
-              option => ({
-                option,
-                sort: Math.random()
-              })
-            )
-            .sort(
-              (a, b) =>
-                a.sort - b.sort
-            )
-            .map(
-              item =>
-                item.option
-            );
-
-
-        return {
-
-          question:
-            `Was bedeutet „${word.english}“?`,
-
-          options:
-            shuffledOptions,
-
-          answer:
-            shuffledOptions.indexOf(
-              word.german
-            )
-
-        };
-
-      }
-    );
-
-
-  renderQuiz();
-}
-
-
-// ============================================================
-// ÜBEN
+// ÜBUNGEN
 // ============================================================
 
 function renderExercise() {
 
-  learningArea.innerHTML = `
+  const lesson = lessons[currentClass];
 
-    <div class="content-area">
+  const allWords =
+    lesson.units.flatMap(unit => unit.vocab);
 
-      <h2>
-        ✏️ Üben – ${currentClass}. Klasse
-      </h2>
-
-      <p>
-        Wähle eine Übungsart.
-      </p>
-
-
-      <div class="exercise-type-selection">
-
-        <button
-          class="quiz-source-btn"
-          id="spellingExerciseButton"
-          type="button"
-        >
-          ✍️ Rechtschreibung
-        </button>
-
-
-        <button
-          class="quiz-source-btn"
-          id="grammarExerciseButton"
-          type="button"
-        >
-          📖 Grammatik
-        </button>
-
-      </div>
-
-
-      <div
-        id="exerciseContent"
-        style="margin-top:25px;"
-      ></div>
-
-    </div>
-
-  `;
-
-
-  document
-    .getElementById(
-      "spellingExerciseButton"
-    )
-    ?.addEventListener(
-      "click",
-      startSpellingExercise
-    );
-
-
-  document
-    .getElementById(
-      "grammarExerciseButton"
-    )
-    ?.addEventListener(
-      "click",
-      startGrammarExercise
-    );
-}
-
-
-// ============================================================
-// RECHTSCHREIBUNG
-// ============================================================
-
-async function startSpellingExercise() {
-
-  const container =
-    document.getElementById(
-      "exerciseContent"
-    );
-
-
-  container.innerHTML = `
-
-    <p>
-      Vokabeln werden geladen...
-    </p>
-
-  `;
-
-
-  const words =
-    await getVocabulary();
-
-
-  if (
-    words.length === 0
-  ) {
-
-    container.innerHTML = `
-
-      <p>
-        Für diese Klasse wurden noch keine Vokabeln eingetragen.
-      </p>
-
-    `;
-
-    return;
-  }
-
-
-  const shuffled =
-    [...words].sort(
-      () => Math.random() - 0.5
-    );
-
-
-  let index = 0;
-  let correct = 0;
-
-
-  function showWord() {
-
-    if (
-      index >= shuffled.length
-    ) {
-
-      container.innerHTML = `
-
-        <h3>
-          🎉 Rechtschreibübung beendet!
-        </h3>
-
-        <p>
-          Du hast
-          <strong>
-            ${correct}
-          </strong>
-          von
-          <strong>
-            ${shuffled.length}
-          </strong>
-          richtig.
-        </p>
-
-        <button
-          id="restartSpelling"
-          class="primary-btn"
-          type="button"
-        >
-          🔄 Nochmal
-        </button>
-
-      `;
-
-
-      document
-        .getElementById(
-          "restartSpelling"
-        )
-        ?.addEventListener(
-          "click",
-          startSpellingExercise
-        );
-
-
-      return;
-    }
-
-
-    const word =
-      shuffled[index];
-
-
-    container.innerHTML = `
-
-      <h3>
-        Übersetze dieses Wort ins Englische:
-      </h3>
-
-      <div class="example">
-
-        <strong>
-          ${escapeHtml(
-            word.german
-          )}
-        </strong>
-
-      </div>
-
-
-      <input
-        id="spellingAnswer"
-        type="text"
-        autocomplete="off"
-        placeholder="Englisches Wort..."
-      >
-
-
-      <button
-        id="checkSpelling"
-        class="primary-btn"
-        type="button"
-        style="margin-top:12px;"
-      >
-        Antwort prüfen
-      </button>
-
-
-      <p
-        id="spellingResult"
-        class="quiz-result"
-      ></p>
-
-    `;
-
-
-    const input =
-      document.getElementById(
-        "spellingAnswer"
-      );
-
-
-    input.focus();
-
-
-    document
-      .getElementById(
-        "checkSpelling"
-      )
-      ?.addEventListener(
-        "click",
-        async () => {
-
-          const answer =
-            input.value
-              .trim()
-              .toLowerCase();
-
-
-          const correctAnswer =
-            word.english
-              .trim()
-              .toLowerCase();
-
-
-          const result =
-            document.getElementById(
-              "spellingResult"
-            );
-
-
-          input.disabled = true;
-
-
-          document
-            .getElementById(
-              "checkSpelling"
-            )
-            .disabled = true;
-
-
-          if (
-            answer ===
-            correctAnswer
-          ) {
-
-            correct++;
-
-            result.textContent =
-              "✅ Richtig! +5 Punkte";
-
-            result.style.color =
-              "#18794e";
-
-            await addPoints(5);
-
-          } else {
-
-            result.textContent =
-              `❌ Richtig wäre: ${word.english}`;
-
-            result.style.color =
-              "#c0392b";
-          }
-
-
-          setTimeout(
-            () => {
-
-              index++;
-
-              showWord();
-
-            },
-            1400
-          );
-
-        }
-      );
-
-
-    input.addEventListener(
-      "keydown",
-      event => {
-
-        if (
-          event.key ===
-          "Enter"
-        ) {
-
-          document
-            .getElementById(
-              "checkSpelling"
-            )
-            ?.click();
-        }
-
-      }
-    );
-  }
-
-
-  showWord();
-}
-
-
-// ============================================================
-// GRAMMATIK-ÜBUNG
-// ============================================================
-
-async function startGrammarExercise() {
-
-  const container =
-    document.getElementById(
-      "exerciseContent"
-    );
-
-
-  const grammar =
-    grammarLessons[
-      currentClass
+  const randomWord =
+    allWords[
+      Math.floor(Math.random() * allWords.length)
     ];
 
 
-  if (
-    !grammar ||
-    !grammar.questions ||
-    !grammar.questions.length
-  ) {
+  learningArea.innerHTML = `
 
-    container.innerHTML = `
+    <h2>
+      ✏️ Übungen – ${currentClass}. Klasse
+    </h2>
 
-      <p>
-        Für diese Klasse gibt es noch keine Grammatikübungen.
-      </p>
-
-    `;
-
-    return;
-  }
+    <p>
+      Schreibe einen englischen Satz mit dem vorgegebenen Wort.
+    </p>
 
 
-  let index = 0;
-  let correct = 0;
+    <div class="example">
+
+      <strong>Aufgabe:</strong>
+
+      <br><br>
+
+      Verwende das Wort
+
+      <strong>
+        ${escapeHtml(randomWord[0])}
+      </strong>
+
+      in einem englischen Satz.
+
+    </div>
 
 
-  function showQuestion() {
+    <label for="exerciseInput">
+      Dein Satz
+    </label>
 
-    if (
-      index >=
-      grammar.questions.length
-    ) {
 
-      container.innerHTML = `
+    <input
+      id="exerciseInput"
+      type="text"
+      placeholder="Write your sentence here..."
+      autocomplete="off"
+    >
 
-        <h3>
-          🎉 Grammatikübung beendet!
-        </h3>
 
-        <p>
-          Du hast
-          <strong>
-            ${correct}
-          </strong>
-          von
-          <strong>
-            ${grammar.questions.length}
-          </strong>
-          richtig.
-        </p>
+    <button
+      id="exerciseButton"
+      class="primary-btn"
+      style="max-width:260px;"
+      type="button"
+    >
+      Übung abschließen
+    </button>
 
-        <button
-          id="restartGrammar"
-          class="primary-btn"
-          type="button"
-        >
-          🔄 Nochmal
-        </button>
 
-      `;
+    <p
+      id="exerciseResult"
+      class="quiz-result"
+    ></p>
 
+  `;
+
+
+  document
+    .getElementById("exerciseButton")
+    .addEventListener("click", async () => {
+
+      const input =
+        document.getElementById("exerciseInput");
+
+      const result =
+        document.getElementById("exerciseResult");
+
+
+      const sentence =
+        input.value.trim();
+
+
+      if (sentence.length < 4) {
+
+        result.textContent =
+          "❌ Bitte schreibe einen vollständigen Satz.";
+
+        result.style.color =
+          "#c0392b";
+
+        return;
+      }
+
+
+      // ------------------------------------------------------
+      // Einfaches Rechtschreibsystem
+      // ------------------------------------------------------
+
+      const normalizedSentence =
+        sentence
+          .toLowerCase()
+          .replace(/[.,!?]/g, "")
+          .trim();
+
+
+      const normalizedWord =
+        randomWord[0]
+          .toLowerCase()
+          .trim();
+
+
+      if (
+        !normalizedSentence.includes(
+          normalizedWord
+        )
+      ) {
+
+        result.textContent =
+          `❌ Dein Satz sollte das Wort „${randomWord[0]}“ enthalten.`;
+
+        result.style.color =
+          "#c0392b";
+
+        return;
+      }
+
+
+      // ------------------------------------------------------
+      // Einfache Satzprüfung
+      // ------------------------------------------------------
+
+      const words =
+        normalizedSentence.split(/\s+/);
+
+
+      if (words.length < 3) {
+
+        result.textContent =
+          "❌ Versuche einen etwas längeren Satz zu schreiben.";
+
+        result.style.color =
+          "#c0392b";
+
+        return;
+      }
+
+
+      // Großbuchstaben am Satzanfang prüfen
+      const firstCharacter =
+        sentence.charAt(0);
+
+      if (
+        firstCharacter !==
+        firstCharacter.toUpperCase()
+      ) {
+
+        result.textContent =
+          "❌ Beginne deinen Satz mit einem Großbuchstaben.";
+
+        result.style.color =
+          "#c0392b";
+
+        return;
+      }
+
+
+      // Satzzeichen prüfen
+      if (!/[.!?]$/.test(sentence)) {
+
+        result.textContent =
+          "❌ Setze am Ende des Satzes ein Satzzeichen.";
+
+        result.style.color =
+          "#c0392b";
+
+        return;
+      }
+
+
+      // ------------------------------------------------------
+      // ERFOLG
+      // ------------------------------------------------------
+
+      result.textContent =
+        "✅ Sehr gut! Satz ist korrekt aufgebaut. +5 Punkte";
+
+      result.style.color =
+        "#18794e";
+
+
+      input.disabled = true;
 
       document
-        .getElementById(
-          "restartGrammar"
-        )
-        ?.addEventListener(
-          "click",
-          startGrammarExercise
-        );
+        .getElementById("exerciseButton")
+        .disabled = true;
 
 
-      return;
-    }
+      await addPoints(5);
 
+    });
 
-    const question =
-      grammar.questions[index];
-
-
-    container.innerHTML = `
-
-      <p>
-        Frage
-        ${index + 1}
-        von
-        ${grammar.questions.length}
-      </p>
-
-
-      <h3>
-        ${escapeHtml(
-          question.question
-        )}
-      </h3>
-
-
-      <div id="grammarExerciseOptions">
-
-        ${question.options
-          .map(
-            (option, optionIndex) => `
-
-              <button
-                class="quiz-option"
-                data-answer="${optionIndex}"
-                type="button"
-              >
-                ${escapeHtml(
-                  option
-                )}
-              </button>
-
-            `
-          )
-          .join("")}
-
-      </div>
-
-
-      <p
-        id="grammarExerciseResult"
-        class="quiz-result"
-      ></p>
-
-    `;
-
-
-    document
-      .querySelectorAll(
-        "#grammarExerciseOptions .quiz-option"
-      )
-      .forEach(button => {
-
-        button.addEventListener(
-          "click",
-          async () => {
-
-            const selected =
-              Number(
-                button.dataset.answer
-              );
-
-
-            const result =
-              document.getElementById(
-                "grammarExerciseResult"
-              );
-
-
-            document
-              .querySelectorAll(
-                "#grammarExerciseOptions .quiz-option"
-              )
-              .forEach(btn => {
-                btn.disabled = true;
-              });
-
-
-            if (
-              selected ===
-              question.answer
-            ) {
-
-              correct++;
-
-              result.textContent =
-                "✅ Richtig! +5 Punkte";
-
-              result.style.color =
-                "#18794e";
-
-              await addPoints(5);
-
-            } else {
-
-              result.textContent =
-                `❌ Richtig wäre: ${
-                  question.options[
-                    question.answer
-                  ]
-                }`;
-
-              result.style.color =
-                "#c0392b";
-            }
-
-
-            setTimeout(
-              () => {
-
-                index++;
-
-                showQuestion();
-
-              },
-              1200
-            );
-
-          }
-        );
-
-      });
-  }
-
-
-  showQuestion();
 }
 
 
 // ============================================================
-// ADMIN - BENUTZER
+// SHUFFLE
+// ============================================================
+
+function shuffleArray(array) {
+
+  const result =
+    [...array];
+
+  for (
+    let i = result.length - 1;
+    i > 0;
+    i--
+  ) {
+
+    const j =
+      Math.floor(
+        Math.random() * (i + 1)
+      );
+
+    [
+      result[i],
+      result[j]
+    ] = [
+      result[j],
+      result[i]
+    ];
+  }
+
+  return result;
+}
+
+
+// ============================================================
+// HTML SICHER AUSGEBEN
+// ============================================================
+
+function escapeHtml(value) {
+
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+
+// ============================================================
+// ADMIN
 // ============================================================
 
 async function loadAdminUsers() {
 
-  if (
-    !currentProfile ||
-    !currentProfile.is_admin
-  ) {
+  if (!currentProfile?.is_admin) {
     return;
   }
 
 
-  if (!adminUsers) {
-    return;
-  }
+  setAdminMessage(
+    "Lade Benutzer...",
+    false
+  );
 
 
   const {
@@ -2343,20 +1377,17 @@ async function loadAdminUsers() {
     error
   } =
     await supabaseClient
-      .rpc(
-        "admin_list_profiles"
-      );
+      .rpc("admin_list_profiles");
 
 
   if (error) {
 
-    console.error(
-      "Admin-Liste:",
-      error
-    );
+    console.error(error);
+
+    adminUsers.innerHTML = "";
 
     setAdminMessage(
-      "Benutzer konnten nicht geladen werden."
+      "Admin-Liste konnte nicht geladen werden. Die Admin-SQL-Funktion muss noch eingerichtet werden."
     );
 
     return;
@@ -2364,333 +1395,50 @@ async function loadAdminUsers() {
 
 
   adminUsers.innerHTML =
-    (data || [])
-      .map(
-        user => `
+    data.map(user => `
 
-          <tr>
+      <tr>
 
-            <td>
-              ${escapeHtml(
-                user.username
-              )}
-            </td>
+        <td>
+          ${escapeHtml(user.username)}
+        </td>
 
-            <td>
-              ⭐ ${Number(
-                user.points || 0
-              )}
-            </td>
+        <td>
+          ⭐ ${Number(user.points || 0)}
+        </td>
 
-            <td>
-              ${escapeHtml(
-                user.class || "-"
-              )}
-            </td>
+        <td>
+          ${escapeHtml(user.class || "-")}
+        </td>
 
-            <td>
-              ${
-                user.is_admin
-                  ? "Ja"
-                  : "Nein"
-              }
-            </td>
+        <td>
+          ${user.is_admin ? "Ja" : "Nein"}
+        </td>
 
-            <td>
-              ${
-                user.created_at
-                  ? new Date(
-                      user.created_at
-                    ).toLocaleDateString(
-                      "de-AT"
-                    )
-                  : "-"
-              }
-            </td>
+        <td>
+          ${new Date(
+            user.created_at
+          ).toLocaleDateString("de-AT")}
+        </td>
 
-          </tr>
+      </tr>
 
-        `
-      )
-      .join("");
+    `).join("");
 
 
   setAdminMessage(
-    `${(data || []).length} Benutzer gefunden.`,
+    `${data.length} Benutzer gefunden.`,
     false
   );
 }
 
 
-refreshAdmin?.addEventListener(
-  "click",
-  loadAdminUsers
-);
+if (refreshAdmin) {
 
-
-// ============================================================
-// ADMIN - VOKABEL HINZUFÜGEN
-// ============================================================
-
-const vocabForm =
-  document.getElementById(
-    "vocabForm"
+  refreshAdmin.addEventListener(
+    "click",
+    loadAdminUsers
   );
 
-const vocabMessage =
-  document.getElementById(
-    "vocabMessage"
-  );
-
-
-vocabForm?.addEventListener(
-  "submit",
-  async event => {
-
-    event.preventDefault();
-
-
-    /*
-      Ganz wichtig:
-      Hier wird NICHT ausgeloggt,
-      NICHT showApp() aufgerufen
-      und NICHT die Session verändert.
-    */
-
-
-    if (
-      !currentUser ||
-      !currentProfile?.is_admin
-    ) {
-
-      if (vocabMessage) {
-        vocabMessage.textContent =
-          "Du hast keine Admin-Rechte.";
-      }
-
-      return;
-    }
-
-
-    const english =
-      document
-        .getElementById(
-          "vocabEnglish"
-        )
-        ?.value
-        .trim();
-
-
-    const german =
-      document
-        .getElementById(
-          "vocabGerman"
-        )
-        ?.value
-        .trim();
-
-
-    const unit =
-      Number(
-        document
-          .getElementById(
-            "vocabUnit"
-          )
-          ?.value
-      );
-
-
-    const classNumber =
-      Number(
-        document
-          .getElementById(
-            "vocabClass"
-          )
-          ?.value
-      );
-
-
-    const example =
-      document
-        .getElementById(
-          "vocabExample"
-        )
-        ?.value
-        .trim();
-
-
-    if (
-      !english ||
-      !german ||
-      !unit ||
-      !classNumber
-    ) {
-
-      if (vocabMessage) {
-
-        vocabMessage.textContent =
-          "Bitte Englisch, Deutsch, Unit und Klasse ausfüllen.";
-
-        vocabMessage.style.color =
-          "#c0392b";
-      }
-
-      return;
-    }
-
-
-    const addButton =
-      document.getElementById(
-        "addVocabButton"
-      );
-
-
-    if (addButton) {
-      addButton.disabled = true;
-      addButton.textContent =
-        "Wird gespeichert...";
-    }
-
-
-    try {
-
-      const {
-        error
-      } =
-        await supabaseClient
-          .from("vocab")
-          .insert({
-            class_number:
-              classNumber,
-
-            unit_number:
-              unit,
-
-            english,
-            german,
-
-            example:
-              example || null
-          });
-
-
-      if (error) {
-        throw error;
-      }
-
-
-      /*
-        Admin-Profil bleibt vollständig erhalten.
-        Wir laden NICHT die komplette App neu.
-      */
-
-      if (vocabMessage) {
-
-        vocabMessage.textContent =
-          "✅ Vokabel wurde gespeichert.";
-
-        vocabMessage.style.color =
-          "#18794e";
-      }
-
-
-      vocabForm.reset();
-
-
-      /*
-        Nur wenn gerade Vokabeln angezeigt werden,
-        wird der Vokabelbereich aktualisiert.
-        Der Login bleibt unangetastet.
-      */
-
-      if (
-        currentMode === "vocab" &&
-        currentClass === classNumber
-      ) {
-
-        await renderVocab();
-      }
-
-
-      /*
-        Admin-Bereich bleibt sichtbar.
-      */
-
-      if (
-        currentProfile?.is_admin &&
-        adminPanel
-      ) {
-
-        adminPanel.classList.remove(
-          "hidden"
-        );
-      }
-
-
-    } catch (error) {
-
-      console.error(
-        "Vokabel konnte nicht gespeichert werden:",
-        error
-      );
-
-
-      if (vocabMessage) {
-
-        vocabMessage.textContent =
-          error.message ||
-          "Vokabel konnte nicht gespeichert werden.";
-
-        vocabMessage.style.color =
-          "#c0392b";
-      }
-
-
-    } finally {
-
-      if (addButton) {
-
-        addButton.disabled = false;
-
-        addButton.textContent =
-          "➕ Vokabel hinzufügen";
-      }
-
-    }
-
-  }
-);
-
-
-// ============================================================
-// START
-// ============================================================
-
-if (
-  document
-    .querySelector(
-      '.class-btn[data-class="1"]'
-    )
-) {
-
-  document
-    .querySelector(
-      '.class-btn[data-class="1"]'
-    )
-    .classList.add("active");
 }
-
-
-if (
-  document
-    .querySelector(
-      '.mode-btn[data-mode="vocab"]'
-    )
-) {
-
-  document
-    .querySelector(
-      '.mode-btn[data-mode="vocab"]'
-    )
-    .classList.add("active");
-}
+```
